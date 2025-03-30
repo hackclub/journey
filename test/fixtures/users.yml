@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  slack_id: MyString
+  email: MyString
+  first_name: MyString
+  middle_name: MyString
+  last_name: MyString
+  display_name: MyString
+  timezone: MyString
+
+two:
+  slack_id: MyString
+  email: MyString
+  first_name: MyString
+  middle_name: MyString
+  last_name: MyString
+  display_name: MyString
+  timezone: MyString
