@@ -10,6 +10,7 @@
 
 
 # 100000% AI generated Seed. Thanks Sam Altman. You give me company when no one does <3. Please don't steal my data
+
 puts "Clearing existing data..."
 Update.destroy_all
 Project.destroy_all
