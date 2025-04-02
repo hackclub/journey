@@ -1,7 +1,15 @@
 @import "tailwindcss";
 
+@font-face {
+    font-family: "Steven";
+    font-weight: bold;
+    src: font-url("Steven.ttf") format(truetype);
+}
+
 @theme {
+    --font-steven: "Steven", "sans-serif";
     --color-sage: #B1C29E;
     --color-warm: #FCE7C8;
+    --color-sage-dark: #FADA7A;
 }
 

@@ -1,0 +1,27 @@
+<div class="fixed inset-y-0 left-0  bg-sage flex flex-col h-screen">
+  <nav class="flex-1 px-4 flex items-center text-justify text-5xl">
+    <ul class="space-y-4 w-full">
+      <li class="flex justify-start">
+        <%= link_to "Dashboard", dashboard_path, 
+            class: "font-light px-4 py-2 rounded-lg block hover:bg-sage-dark #{'bg-sage-dark' if current_page?(dashboard_path)}" %>
+      </li>
+      <li class="flex justify-start">
+        <%= link_to "Explore", explore_path,
+            class: " px-4 py-2 rounded-lg block hover:bg-sage-dark #{'bg-sage-dark' if current_page?(explore_path)}" %>
+      </li>
+      <li class="flex justify-start">
+        <%= link_to "My Project", my_projects_path,
+            class: " px-4 py-2 rounded-lg block hover:bg-sage-dark #{'bg-sage-dark' if current_page?(my_projects_path)}" %>
+      </li>
+      <li class="flex justify-start">
+        <%= link_to "Activity", projects_path,
+            class: " px-4 py-2 rounded-lg block hover:bg-sage-dark #{'bg-sage-dark' if current_page?(projects_path)}" %>
+      </li>
+      <li class="flex justify-start">
+        <%= link_to "Vote", projects_path,
+            class: " px-4 py-2 rounded-lg block hover:bg-sage-dark #{'bg-sage-dark' if current_page?(projects_path)}" %>
+      </li>
+    </ul>
+  </nav>
+
+</div> 
