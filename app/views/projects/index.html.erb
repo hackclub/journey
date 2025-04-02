@@ -1,0 +1,37 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-4xl mb-8 text-gray-800">Explore Projects</h1>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <% @projects.each do |project| %>
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+        <% project_image = project.updates.where.not(attachment: [nil, ""]).order(created_at: :desc).first&.attachment || "https://via.placeholder.com/600x400?text=No+Image" %>
+        <div class="h-48 overflow-hidden">
+          <img src="<%= project_image %>" alt="<%= project.title %>" class="w-full h-full object-cover">
+        </div>
+        
+        <div class="p-6">
+          <h2 class="text-2xl text-gray-800 mb-3"><%= project.title %></h2>
+          <p class="text-gray-600 mb-6 line-clamp-3"><%= project.description %></p>
+
+          <div class="flex items-center mb-6">
+            <% if project.user.avatar.present? %>
+              <img src="<%= project.user.avatar %>" alt="<%= project.user.display_name %>" class="w-8 h-8 rounded-full mr-3">
+            <% end %>
+            <span class="text-gray-500">By <%= project.user.display_name %></span>
+          </div>
+
+          <div class="flex space-x-4">
+            <a href="<%= project.demo_link %>" target="_blank"
+               class="px-4 py-2 bg-sage hover:bg-sage-dark rounded-lg text-white transition-colors duration-300 flex-1 text-center">
+              View Demo
+            </a>
+            <a href="<%= project.repo_link %>" target="_blank"
+               class="px-4 py-2 border border-sage text-sage hover:bg-sage hover:text-white rounded-lg transition-colors duration-300 flex-1 text-center">
+              Repository
+            </a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
