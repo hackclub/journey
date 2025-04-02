@@ -51,6 +51,8 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  gem "dotenv-rails"
 end
 
 group :development do
@@ -65,3 +67,9 @@ group :test do
 end
 
 gem "tailwindcss-ruby", "~> 4.0"
+
+gem "cskartikey-omniauth-slack", require: "omniauth-slack", github: "cskartikey/omniauth-slack"
+
+gem "slack-ruby-client"
+
+gem "inline_svg"
