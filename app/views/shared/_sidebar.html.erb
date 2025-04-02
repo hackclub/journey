@@ -1,27 +1,61 @@
-<div class="fixed inset-y-0 left-0  bg-sage flex flex-col h-screen">
-  <nav class="flex-1 px-4 flex items-center text-justify text-5xl">
+<div class="fixed inset-y-0 left-0 bg-sage flex flex-col h-screen transition-all duration-300"
+     data-controller="sidebar"
+     data-sidebar-target="sidebar">
+  <div class="flex justify-between items-center pt-2 px-2">
+    <div class="cursor-pointer">
+      <%= inline_svg "icon.svg", class: "2xl:h-12 2xl:w-12 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
+    </div>
+    <button id="collapse-sidebar" class="hover:scale-110 transition-transform cursor-pointer"
+           data-action="click->sidebar#toggle">
+        <%= inline_svg "collapse.svg", class: "2xl:h-12 2xl:w-12 transition-transform duration-300 h-10 w-10",
+                                       data: { 'sidebar-target': 'collapseIcon' } %>
+    </button>
+  </div>
+  <nav class="flex-1 px-4 flex items-center text-justify text-4xl 2xl:text-5xl">
     <ul class="space-y-4 w-full">
       <li class="flex justify-start">
-        <%= link_to "Dashboard", dashboard_path, 
-            class: "font-light px-4 py-2 rounded-lg block hover:bg-sage-dark #{'bg-sage-dark' if current_page?(dashboard_path)}" %>
+        <%= link_to dashboard_path, class: "font-light px-4 py-2 rounded-lg block hover:bg-sage-dark-op #{'bg-sage-dark-op bg-opacity-50' if current_page?(dashboard_path)}" do %>
+          <%= inline_svg "dashboard.svg", class: "2xl:h-12 2xl:w-12 inline mr-2 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
+          <span data-sidebar-target="content">Dashboard</span>
+        <% end %>
       </li>
       <li class="flex justify-start">
-        <%= link_to "Explore", explore_path,
-            class: " px-4 py-2 rounded-lg block hover:bg-sage-dark #{'bg-sage-dark' if current_page?(explore_path)}" %>
+        <%= link_to explore_path, class: "px-4 py-2 rounded-lg block hover:bg-sage-dark-op #{'bg-sage-dark-op bg-opacity-50' if current_page?(explore_path)}" do %>
+          <%= inline_svg "downasaur.svg", class: "2xl:h-12 2xl:w-12 inline mr-2 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
+          <span data-sidebar-target="content">Explore</span>
+        <% end %>
       </li>
       <li class="flex justify-start">
-        <%= link_to "My Project", my_projects_path,
-            class: " px-4 py-2 rounded-lg block hover:bg-sage-dark #{'bg-sage-dark' if current_page?(my_projects_path)}" %>
+        <%= link_to my_projects_path, class: "px-4 py-2 rounded-lg block hover:bg-sage-dark-op #{'bg-sage-dark-op bg-opacity-50' if current_page?(my_projects_path)}" do %>
+          <%= inline_svg "radio-tower.svg", class: "2xl:h-12 2xl:w-12 inline mr-2 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
+          <span data-sidebar-target="content">My Project</span>
+        <% end %>
       </li>
       <li class="flex justify-start">
-        <%= link_to "Activity", projects_path,
-            class: " px-4 py-2 rounded-lg block hover:bg-sage-dark #{'bg-sage-dark' if current_page?(projects_path)}" %>
+        <%= link_to projects_path, class: "px-4 py-2 rounded-lg block hover:bg-sage-dark-op #{'bg-sage-dark-op bg-opacity-50' if current_page?(projects_path)}" do %>
+          <%= inline_svg "notification.svg", class: "2xl:h-12 2xl:w-12 inline mr-2 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
+          <span data-sidebar-target="content">Activity</span>
+        <% end %>
       </li>
       <li class="flex justify-start">
-        <%= link_to "Vote", projects_path,
-            class: " px-4 py-2 rounded-lg block hover:bg-sage-dark #{'bg-sage-dark' if current_page?(projects_path)}" %>
+        <%= link_to projects_path, class: "px-4 py-2 rounded-lg block hover:bg-sage-dark-op #{'bg-sage-dark-op bg-opacity-50' if current_page?(projects_path)}" do %>
+          <%= inline_svg "trophy.svg", class: "2xl:h-12 2xl:w-12 inline mr-2 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
+          <span data-sidebar-target="content">Vote</span>
+        <% end %>
       </li>
     </ul>
   </nav>
 
-</div> 
+  <div class="p-4 flex items-center justify-between mt-auto" data-sidebar-target="logoutContainer">
+    <div class="flex items-center">
+      <%= image_tag current_user.avatar, class: "h-12 w-12 rounded-full mr-2", data: { 'sidebar-target': 'avatar' } %>
+      <span class="text-xl underline" data-sidebar-target="content">@<%= current_user.display_name %></span>
+    </div>
+
+    <div class="hover:scale-110 transition-transform cursor-pointer">
+      <%= button_to logout_path, method: :delete, class: "bg-transparent border-0 p-0 cursor-pointer" do %>
+          <%= inline_svg "logout.svg", class: "2xl:h-12 2xl:w-12 h-10 w-10" %>
+      <% end %>
+    </div>
+  </div>
+</div>
