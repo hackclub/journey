@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["sidebar", "content", "collapseIcon", "icon", "avatar", "logoutContainer"]
+  static targets = ["sidebar", "content", "collapseIcon", "icon", "avatar", "logoutContainer", "topContainer"]
   
   connect() {
     this.expanded = true
@@ -60,6 +60,12 @@ export default class extends Controller {
       this.avatarTarget.classList.add("hidden")
     }
     
+    // Centre the top container
+    if (this.hasTopContainerTarget) {
+      this.topContainerTarget.classList.add("justify-center")
+      this.topContainerTarget.classList.remove("justify-between")
+    }
+    
     // Centre the logout container
     if (this.hasLogoutContainerTarget) {
       this.logoutContainerTarget.classList.add("justify-center")
@@ -79,6 +85,11 @@ export default class extends Controller {
     
     if (this.hasAvatarTarget) {
       this.avatarTarget.classList.remove("hidden")
+    }
+    
+    if (this.hasTopContainerTarget) {
+      this.topContainerTarget.classList.remove("justify-center")
+      this.topContainerTarget.classList.add("justify-between")
     }
     
     if (this.hasLogoutContainerTarget) {
