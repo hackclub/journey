@@ -8,9 +8,10 @@
 
 @theme {
     --font-steven: "Steven", "sans-serif";
-    --color-sage: #B1C29E;
-    --color-warm: #FCE7C8;
-    --color-sage-dark: #FADA7A;
-    --color-sage-dark-op: rgba(250, 218, 122, 0.5);
+    --color-forest: #508364;
+    --color-warm: #e6c58e;
+    --color-bread: #f9e8c7;
+    --color-soft-bone: #f5d9a5;
+    --color-saddle-taupe: #ac6d3c;
 }
 

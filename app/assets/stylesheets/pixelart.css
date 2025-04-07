@@ -1,0 +1,30 @@
+.btn-pixel {
+    box-shadow: 
+      0px 5px #2e2e1f,
+      0px -5px #2e2e1f,
+      5px 0px #2e2e1f,
+      -5px 0px #2e2e1f;
+  }
+  
+.hover-btn-pixel:hover {
+    box-shadow: 
+      0px 5px #2e2e1f,
+      0px -5px #2e2e1f,
+      5px 0px #2e2e1f,
+      -5px 0px #2e2e1f;
+}
+  
+.card-pixel {
+    box-shadow: 
+      0px 4px #583c28,
+      0px -4px #583c28,
+      4px 0px #583c28,
+      -4px 0px #583c28,
+      
+      /* Internal shadows */
+      inset 5px 5px #d49d50,
+      inset -5px -5px #d49d50,
+      inset 9px 9px #f8e2b8,
+      inset -9px -9px #f8e2b8;
+  }
+  
