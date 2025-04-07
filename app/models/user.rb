@@ -20,7 +20,7 @@ class User < ApplicationRecord
         # TODO: first, middle & last name need to be pulled from YSWS DB
         user.first_name = user_info.user.profile.first_name
         user.last_name = user_info.user.profile.first_name
-        user.middle_name = user_info.user.profile.last_name
+        user.middle_name = user_info.user.profile.first_name
 
         user.save!
         user
