@@ -1,37 +1,105 @@
-<div class="container mx-auto px-4 py-8">
-  <h1 class="text-4xl mb-8 text-gray-800">Explore Projects</h1>
+<div data-controller="modal">
+  <div>
+    <div class="flex flex-col justify-between items-start mb-6 px-8">
+      <h1 class="text-5xl  font-steven mb-0"><%= params[:action] == 'my_projects' ? 'My Projects' : 'Explore Projects' %></h1>
+    </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    <% @projects.each do |project| %>
-      <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-        <% project_image = project.updates.where.not(attachment: [nil, ""]).order(created_at: :desc).first&.attachment || "https://via.placeholder.com/600x400?text=No+Image" %>
-        <div class="h-48 overflow-hidden">
-          <img src="<%= project_image %>" alt="<%= project.title %>" class="w-full h-full object-cover">
-        </div>
-        
-        <div class="p-6">
-          <h2 class="text-2xl text-gray-800 mb-3"><%= project.title %></h2>
-          <p class="text-gray-600 mb-6 line-clamp-3"><%= project.description %></p>
+    <div class="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 gap-8 px-8">
+      <% if @projects.any? %>
+        <% @projects.each do |project| %>
+          <div class="bg-soft-bone card-pixel transform hover:scale-[1.02] transition-transform duration-300">
+            <%= link_to project_path(project), class: "block" do %>
+              <% project_image = project.updates.where.not(attachment: [nil, ""]).order(created_at: :desc).first&.attachment || "https://via.placeholder.com/600x400?text=No+Image" %>
+              <div class="h-48 overflow-hidden relative">
+                <img src="<%= project_image %>" alt="<%= project.title %>" class="w-full h-full object-contain">
+              </div>
 
-          <div class="flex items-center mb-6">
-            <% if project.user.avatar.present? %>
-              <img src="<%= project.user.avatar %>" alt="<%= project.user.display_name %>" class="w-8 h-8 rounded-full mr-3">
+              <div class="p-6">
+                <h2 class="text-2xl 2xl:text-3xl mb-3 font-steven line-clamp-1"><%= project.title %></h2>
+                <p class="mb-6 line-clamp-3 text-base 2xl:text-lg text-gray-600"><%= project.description %></p>
+
+                <div class="flex flex-row space-x-4">
+                  <span class="px-4 py-2 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-lg 2xl:text-2xl">
+                    View Project
+                  </span>
+                  <span class="px-4 py-2 bg-nice-blue text-white hover:scale-[1.05] transition-colors duration-300 flex-1 text-center btn-pixel text-lg 2xl:text-xl">
+                    <%= project.updates.count %> Updates
+                  </span>
+                </div>
+              </div>
             <% end %>
-            <span class="text-gray-500">By <%= project.user.display_name %></span>
           </div>
+        <% end %>
+      <% elsif params[:action] == 'my_projects' %>
+        <div class="col-span-full flex flex-col items-center justify-center bg-soft-bone  p-12 card-pixel">
+          <h2 class="text-2xl 2xl:text-3xl mb-4 font-steven">You don't have any projects yet</h2>
+          <p class=" mb-8 text-center text-base 2xl:text-lg text-gray-600">Create your first project to start your journey oh god I need to fill these templates</p>
+          <button data-action="click->modal#open" class="px-6 py-3 bg-forest hover:bg-forest-dark text-white transition-colors duration-300 text-lg 2xl:text-xl btn-pixel hover:scale-[1.05] cursor-pointer">
+            Create Your First Project
+          </button>
+        </div>
+      <% else %>
+        <div class="col-span-full flex flex-col items-center justify-center bg-soft-bone  p-12 card-pixel">
+          <h2 class="text-2xl  mb-4 font-steven">No projects available</h2>
+          <p class=" mb-8 text-center text-base">Check back later for new projects</p>
+        </div>
+      <% end %>
+    </div>
+  </div>
 
-          <div class="flex space-x-4">
-            <a href="<%= project.demo_link %>" target="_blank"
-               class="px-4 py-2 bg-sage hover:bg-sage-dark rounded-lg text-white transition-colors duration-300 flex-1 text-center">
-              View Demo
-            </a>
-            <a href="<%= project.repo_link %>" target="_blank"
-               class="px-4 py-2 border border-sage text-sage hover:bg-sage hover:text-white rounded-lg transition-colors duration-300 flex-1 text-center">
-              Repository
-            </a>
-          </div>
+  <!-- Create Project Modal -->
+  <div id="create-project-modal" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
+    <div class="bg-soft-bone  w-full max-w-2xl card-pixel" data-modal-target="container">
+      <div class="p-6 border-b border-saddle-taupe border-opacity-30">
+        <div class="flex justify-between items-center">
+          <h3 class="text-2xl font-steven ">Create New Project</h3>
+          <button data-action="modal#close" class=" hover:">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
         </div>
       </div>
-    <% end %>
+
+      <%= form_with model: Project.new, class: "p-6" do |f| %>
+        <div class="mb-4">
+          <%= f.label :title, class: "block text-sm font-medium  mb-1" %>
+          <%= f.text_field :title, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50  focus:outline-none focus:ring-forest focus:border-forest text-base", required: true %>
+        </div>
+
+        <div class="mb-4">
+          <%= f.label :banner, "Project Banner", class: "block text-sm font-medium  mb-1" %>
+          <%= f.url_field :banner, placeholder: "https://example.com/banner.png", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50  focus:outline-none focus:ring-forest focus:border-forest text-base" %>
+          <p class="mt-1 text-sm text-gray-600">Optional: A banner image for your project (recommended size: 1200x630px)</p>
+        </div>
+
+        <div class="mb-4">
+          <%= f.label :description, class: "block text-sm font-medium  mb-1" %>
+          <%= f.text_area :description, rows: 4, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50  focus:outline-none focus:ring-forest focus:border-forest text-base", required: true %>
+        </div>
+
+        <div class="mb-4">
+          <%= f.label :readme_link, "Documentation Link", class: "block text-sm font-medium  mb-1" %>
+          <%= f.url_field :readme_link, placeholder: "https://github.com/hackclub/journey/README.md", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50  focus:outline-none focus:ring-forest focus:border-forest text-base", required: true %>
+        </div>
+
+        <div class="mb-4">
+          <%= f.label :demo_link, "Demo Link", class: "block text-sm font-medium  mb-1" %>
+          <%= f.url_field :demo_link, placeholder: "https://journey.hackclub.com", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50  focus:outline-none focus:ring-forest focus:border-forest text-base", required: true %>
+        </div>
+
+        <div class="mb-6">
+          <%= f.label :repo_link, "Repository Link", class: "block text-sm font-medium  mb-1" %>
+          <%= f.url_field :repo_link, placeholder: "https://github.com/hackclub/journey", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50  focus:outline-none focus:ring-forest focus:border-forest text-base", required: true %>
+        </div>
+
+        <div class="flex flex-row justify-end space-x-3">
+          <button type="button" data-action="modal#close" class="order-1 px-4 py-2 bg-vintage-red text-white hover:scale-[1.05] btn-pixel-sm">
+            Cancel
+          </button>
+          <%= f.submit "Create Project", class: "order-2 px-4 py-2 bg-forest text-white hover:scale-[1.05] btn-pixel-sm" %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>
