@@ -68,9 +68,9 @@
         </div>
 
         <div class="mb-4">
-          <%= f.label :banner, "Project Banner", class: "block text-sm font-medium  mb-1" %>
-          <%= f.url_field :banner, placeholder: "https://example.com/banner.png", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50  focus:outline-none focus:ring-forest focus:border-forest text-base" %>
-          <p class="mt-1 text-sm text-gray-600">Optional: A banner image for your project (recommended size: 1200x630px)</p>
+          <%= f.label :banner, "Project Banner *", class: "block text-sm font-medium  mb-1" %>
+          <%= f.url_field :banner, placeholder: "https://example.com/banner.png", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50  focus:outline-none focus:ring-forest focus:border-forest text-base", required: true %>
+          <p class="mt-1 text-sm text-gray-600">A banner image for your project (recommended size: 1200x630px)</p>
         </div>
 
         <div class="mb-4">
