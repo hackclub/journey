@@ -3,7 +3,7 @@
 @font-face {
     font-family: "Steven";
     font-weight: bold;
-    src: font-url("Steven.ttf") format(truetype);
+    src: url("Steven.ttf") format(truetype);
 }
 
 @theme {
