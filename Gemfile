@@ -66,7 +66,7 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "tailwindcss-ruby", "~> 4.0"
+gem "tailwindcss-ruby", "~> 4.1"
 
 gem "cskartikey-omniauth-slack", require: "omniauth-slack", github: "cskartikey/omniauth-slack"
 
