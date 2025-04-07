@@ -1,7 +1,6 @@
-<div class="fixed inset-y-0 left-0 bg-sage flex flex-col h-screen transition-all duration-300"
-     data-controller="sidebar"
+<div class="fixed inset-y-0 left-0 bg-forest flex flex-col h-screen transition-all duration-300 text-soft-bone z-50"
      data-sidebar-target="sidebar">
-  <div class="flex justify-between items-center pt-2 px-2">
+  <div class="flex justify-between items-center pt-2 px-2" data-sidebar-target="topContainer">
     <div class="cursor-pointer">
       <%= inline_svg "icon.svg", class: "2xl:h-12 2xl:w-12 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
     </div>
@@ -14,31 +13,31 @@
   <nav class="flex-1 px-4 flex items-center text-justify text-4xl 2xl:text-5xl">
     <ul class="space-y-4 w-full">
       <li class="flex justify-start">
-        <%= link_to dashboard_path, class: "font-light px-4 py-2 rounded-lg block hover:bg-sage-dark-op #{'bg-sage-dark-op bg-opacity-50' if current_page?(dashboard_path)}" do %>
+        <%= link_to dashboard_path, class: "font-light px-4 py-2 block hover:bg-saddle-taupe hover-btn-pixel #{'bg-saddle-taupe btn-pixel' if current_page?(dashboard_path)}" do %>
           <%= inline_svg "dashboard.svg", class: "2xl:h-12 2xl:w-12 inline mr-2 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
           <span data-sidebar-target="content">Dashboard</span>
         <% end %>
       </li>
       <li class="flex justify-start">
-        <%= link_to explore_path, class: "px-4 py-2 rounded-lg block hover:bg-sage-dark-op #{'bg-sage-dark-op bg-opacity-50' if current_page?(explore_path)}" do %>
+        <%= link_to explore_path, class: "px-4 py-2 block hover:bg-saddle-taupe hover-btn-pixel #{'bg-saddle-taupe btn-pixel' if current_page?(explore_path)}" do %>
           <%= inline_svg "downasaur.svg", class: "2xl:h-12 2xl:w-12 inline mr-2 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
           <span data-sidebar-target="content">Explore</span>
         <% end %>
       </li>
       <li class="flex justify-start">
-        <%= link_to my_projects_path, class: "px-4 py-2 rounded-lg block hover:bg-sage-dark-op #{'bg-sage-dark-op bg-opacity-50' if current_page?(my_projects_path)}" do %>
+        <%= link_to my_projects_path, class: "px-4 py-2 block hover:bg-saddle-taupe hover-btn-pixel #{'bg-saddle-taupe btn-pixel' if current_page?(my_projects_path)}" do %>
           <%= inline_svg "radio-tower.svg", class: "2xl:h-12 2xl:w-12 inline mr-2 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
           <span data-sidebar-target="content">My Project</span>
         <% end %>
       </li>
       <li class="flex justify-start">
-        <%= link_to projects_path, class: "px-4 py-2 rounded-lg block hover:bg-sage-dark-op #{'bg-sage-dark-op bg-opacity-50' if current_page?(projects_path)}" do %>
+        <%= link_to projects_path, class: "px-4 py-2 block hover:bg-saddle-taupe hover-btn-pixel #{'bg-saddle-taupe btn-pixel' if current_page?(projects_path)}" do %>
           <%= inline_svg "notification.svg", class: "2xl:h-12 2xl:w-12 inline mr-2 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
           <span data-sidebar-target="content">Activity</span>
         <% end %>
       </li>
       <li class="flex justify-start">
-        <%= link_to projects_path, class: "px-4 py-2 rounded-lg block hover:bg-sage-dark-op #{'bg-sage-dark-op bg-opacity-50' if current_page?(projects_path)}" do %>
+        <%= link_to new_vote_path, class: "px-4 py-2 block hover:bg-saddle-taupe hover-btn-pixel #{'bg-saddle-taupe btn-pixel' if current_page?(new_vote_path)}" do %>
           <%= inline_svg "trophy.svg", class: "2xl:h-12 2xl:w-12 inline mr-2 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
           <span data-sidebar-target="content">Vote</span>
         <% end %>
