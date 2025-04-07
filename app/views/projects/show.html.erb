@@ -1,115 +1,128 @@
-<div class="container mx-auto px-4 py-8">
-  <div class="bg-soft-bone card-pixel shadow-lg overflow-hidden mb-8">
-    <% project_image = @project.updates.where.not(attachment: [nil, ""]).order(created_at: :desc).first&.attachment || "https://via.placeholder.com/600x400?text=No+Image" %>
-    <div class="h-64 overflow-hidden relative">
-      <img src="<%= project_image %>" alt="<%= @project.title %>" class="w-full h-full object-contain">
-      <div class="absolute inset-0 bg-gradient-to-t from-soft-bone/30 to-transparent"></div>
+<div data-controller="image-viewer">
+  <!-- Image Viewer Modal -->
+  <div data-image-viewer-target="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-75" data-action="click->image-viewer#closeBackground">
+    <div class="relative max-w-7xl max-h-[90vh] w-full flex items-center justify-center">
+      <button class="absolute top-4 right-4 text-white p-2 hover:scale-110 transition-transform z-10" data-action="image-viewer#close">
+        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+      <img data-image-viewer-target="image" class="max-h-[85vh] max-w-full object-contain" src="" alt="Full size image">
+    </div>
+  </div>
+
+  <div class="container mx-auto px-4 py-8">
+    <div class="bg-soft-bone card-pixel shadow-lg overflow-hidden mb-8">
+      <div class="h-64 overflow-hidden relative">
+        <img src="<%= @project.banner %>" alt="<%= @project.title %>" class="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity" data-action="click->image-viewer#open">
+        <div class="absolute inset-0 bg-gradient-to-t from-soft-bone/30 to-transparent pointer-events-none"></div>
+      </div>
+
+      <div class="p-6">
+        <div class="flex items-center mb-4">
+          <h1 class="text-3xl text-black flex-grow font-steven"><%= @project.title %></h1>
+          <div class="flex items-center space-x-4">
+            <% if user_signed_in? && current_user == @project.user %>
+              <%= link_to edit_project_path(@project), class: "px-4 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel" do %>
+                Edit Project
+              <% end %>
+            <% else %>
+              <% if @project.user.avatar.present? %>
+                <img src="<%= @project.user.avatar %>" alt="<%= @project.user.display_name %>" class="w-10 h-10 rounded-full mr-3">
+              <% end %>
+              <span class="text-black">By <%= @project.user.display_name %></span>
+            <% end %>
+          </div>
+        </div>
+
+        <p class="text-black mb-6 text-gray-600"><%= @project.description %></p>
+
+        <div class="flex flex-row space-x-4">
+          <a href="<%= @project.demo_link %>" target="_blank"
+             class="px-4 py-2 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-lg 2xl:text-xl">
+            View Demo
+          </a>
+          <a href="<%= @project.repo_link %>" target="_blank"
+             class="px-4 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-lg 2xl:text-xl">
+            Repository
+          </a>
+          <a href="<%= @project.readme_link %>" target="_blank"
+             class="px-4 py-2 bg-saddle-taupe hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-lg 2xl:text-xl">
+            Documentation
+          </a>
+        </div>
+      </div>
     </div>
 
-    <div class="p-6">
-      <div class="flex items-center mb-4">
-        <h1 class="text-3xl text-black flex-grow font-steven"><%= @project.title %></h1>
-        <div class="flex items-center space-x-4">
-          <% if user_signed_in? && current_user == @project.user %>
-            <%= link_to edit_project_path(@project), class: "px-4 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel" do %>
-              Edit Project
+    <div class="flex flex-col justify-between items-start mb-6">
+      <h2 class="text-5xl font-steven mb-0">Project Timeline</h2>
+    </div>
+
+    <% if user_signed_in? && current_user == @project.user %>
+      <div class="bg-soft-bone card-pixel p-6 mb-8">
+        <h3 class="text-2xl font-steven mb-4">Add Update</h3>
+        <%= form_with(model: [@project, @project.updates.build], class: "space-y-4") do |f| %>
+          <div class="space-y-2">
+            <%= f.label :text, "Update Text", class: "block text-lg" %>
+            <%= f.text_area :text, class: "w-full p-2 border-2 border-black rounded-lg focus:outline-none focus:border-forest", rows: 4, required: true %>
+          </div>
+
+          <div class="space-y-2">
+            <%= f.label :attachment, "Image (Optional)", class: "block text-lg" %>
+            <%= f.text_field :attachment, class: "w-full p-2 border-2 border-black rounded-lg focus:outline-none focus:border-forest", placeholder: "Paste image URL here" %>
+          </div>
+
+          <div class="flex justify-end">
+            <%= f.submit "Post Update", class: "px-6 py-2 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <div class="space-y-8 relative">
+
+      <% @updates.reverse.each do |update| %>
+        <div class="bg-soft-bone card-pixel p-6 relative transform hover:scale-[1.02] transition-transform duration-300 ml-8">
+          <div class="flex items-center mb-4">
+            <% if update.user.avatar.present? %>
+              <img src="<%= update.user.avatar %>" alt="<%= update.user.display_name %>" class="w-10 h-10 rounded-full mr-3">
             <% end %>
-          <% else %>
-            <% if @project.user.avatar.present? %>
-              <img src="<%= @project.user.avatar %>" alt="<%= @project.user.display_name %>" class="w-10 h-10 rounded-full mr-3">
-            <% end %>
-            <span class="text-black">By <%= @project.user.display_name %></span>
+            <div>
+              <span class="font-medium text-lg"><%= update.user.display_name %></span>
+              <span class="text-gray-600 text-sm ml-2"><%= time_ago_in_words(update.created_at) %> ago</span>
+            </div>
+          </div>
+
+          <p class="text-base 2xl:text-lg text-gray-600 mb-4"><%= update.text %></p>
+
+          <% if update.attachment.present? %>
+            <div class="mt-4 overflow-hidden rounded-lg">
+              <img src="<%= update.attachment %>" alt="Update attachment" class="w-full h-64 object-contain cursor-pointer hover:opacity-90 transition-opacity" data-action="click->image-viewer#open">
+            </div>
           <% end %>
+
+          <div class="mt-4 flex justify-end items-center space-x-4">
+            <% if user_signed_in? && current_user == update.user %>
+              <%= button_to "Delete", project_update_path(@project, update),
+                  method: :delete,
+                  class: "px-4 py-2 bg-vintage-red hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel delete-button",
+                  data: { confirm: "Are you sure you want to delete this update?" },
+                  onclick: "return handleDeleteClick(this);" %>
+            <% end %>
+            <button class="px-4 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel">
+              Add Comment
+            </button>
+          </div>
         </div>
-      </div>
+      <% end %>
 
-      <p class="text-black mb-6 text-gray-600"><%= @project.description %></p>
-
-      <div class="flex flex-row space-x-4">
-        <a href="<%= @project.demo_link %>" target="_blank"
-           class="px-4 py-2 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-lg 2xl:text-xl">
-          View Demo
-        </a>
-        <a href="<%= @project.repo_link %>" target="_blank"
-           class="px-4 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-lg 2xl:text-xl">
-          Repository
-        </a>
-        <a href="<%= @project.readme_link %>" target="_blank"
-           class="px-4 py-2 bg-saddle-taupe hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-lg 2xl:text-xl">
-          Documentation
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <div class="flex flex-col justify-between items-start mb-6">
-    <h2 class="text-5xl font-steven mb-0">Project Timeline</h2>
-  </div>
-
-  <% if user_signed_in? && current_user == @project.user %>
-    <div class="bg-soft-bone card-pixel p-6 mb-8">
-      <h3 class="text-2xl font-steven mb-4">Add Update</h3>
-      <%= form_with(model: [@project, @project.updates.build], class: "space-y-4") do |f| %>
-        <div class="space-y-2">
-          <%= f.label :text, "Update Text", class: "block text-lg" %>
-          <%= f.text_area :text, class: "w-full p-2 border-2 border-black rounded-lg focus:outline-none focus:border-forest", rows: 4, required: true %>
-        </div>
-
-        <div class="space-y-2">
-          <%= f.label :attachment, "Image (Optional)", class: "block text-lg" %>
-          <%= f.text_field :attachment, class: "w-full p-2 border-2 border-black rounded-lg focus:outline-none focus:border-forest", placeholder: "Paste image URL here" %>
-        </div>
-
-        <div class="flex justify-end">
-          <%= f.submit "Post Update", class: "px-6 py-2 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel" %>
+      <% if @updates.empty? %>
+        <div class="bg-soft-bone card-pixel p-12 text-center">
+          <h2 class="text-2xl 2xl:text-3xl mb-4 font-steven">No updates yet</h2>
+          <p class="text-base 2xl:text-lg text-gray-600">Post an update!</p>
         </div>
       <% end %>
     </div>
-  <% end %>
-
-  <div class="space-y-8 relative">
-
-    <% @updates.reverse.each do |update| %>
-      <div class="bg-soft-bone card-pixel p-6 relative transform hover:scale-[1.02] transition-transform duration-300 ml-8">
-        <div class="flex items-center mb-4">
-          <% if update.user.avatar.present? %>
-            <img src="<%= update.user.avatar %>" alt="<%= update.user.display_name %>" class="w-10 h-10 rounded-full mr-3">
-          <% end %>
-          <div>
-            <span class="font-medium text-lg"><%= update.user.display_name %></span>
-            <span class="text-gray-600 text-sm ml-2"><%= time_ago_in_words(update.created_at) %> ago</span>
-          </div>
-        </div>
-
-        <p class="text-base 2xl:text-lg text-gray-600 mb-4"><%= update.text %></p>
-
-        <% if update.attachment.present? %>
-          <div class="mt-4 overflow-hidden rounded-lg">
-            <img src="<%= update.attachment %>" alt="Update attachment" class="w-full h-64 object-contain">
-          </div>
-        <% end %>
-
-        <div class="mt-4 flex justify-end items-center space-x-4">
-          <% if user_signed_in? && current_user == update.user %>
-            <%= button_to "Delete", project_update_path(@project, update),
-                method: :delete,
-                class: "px-4 py-2 bg-vintage-red hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel delete-button",
-                data: { confirm: "Are you sure you want to delete this update?" },
-                onclick: "return handleDeleteClick(this);" %>
-          <% end %>
-          <button class="px-4 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel">
-            Add Comment
-          </button>
-        </div>
-      </div>
-    <% end %>
-
-    <% if @updates.empty? %>
-      <div class="bg-soft-bone card-pixel p-12 text-center">
-        <h2 class="text-2xl 2xl:text-3xl mb-4 font-steven">No updates yet</h2>
-        <p class="text-base 2xl:text-lg text-gray-600">Post an update!</p>
-      </div>
-    <% end %>
   </div>
 </div>
 

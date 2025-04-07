@@ -9,9 +9,9 @@
         <% @projects.each do |project| %>
           <div class="bg-soft-bone card-pixel transform hover:scale-[1.02] transition-transform duration-300">
             <%= link_to project_path(project), class: "block" do %>
-              <% project_image = project.updates.where.not(attachment: [nil, ""]).order(created_at: :desc).first&.attachment || "https://via.placeholder.com/600x400?text=No+Image" %>
+              <% project_image = project.banner || "https://via.placeholder.com/600x400?text=No+Image" %>
               <div class="h-48 overflow-hidden relative">
-                <img src="<%= project_image %>" alt="<%= project.title %>" class="w-full h-full object-contain">
+                <img src="<%= project_image %>" alt="<%= project.title %>" class="w-full h-full object-cover">
               </div>
 
               <div class="p-6">
