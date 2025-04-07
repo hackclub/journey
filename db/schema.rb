@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_29_231921) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_02_144531) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -48,9 +48,31 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_29_231921) do
     t.string "timezone"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "provider"
+    t.string "uid"
+    t.string "slack_access_token"
+    t.string "slack_team_id"
+    t.string "slack_team_name"
+    t.string "slack_user_id"
+    t.string "slack_username"
+    t.string "avatar"
+    t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
+  end
+
+  create_table "votes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "project_id", null: false
+    t.text "explanation", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_votes_on_project_id"
+    t.index ["user_id", "project_id"], name: "index_votes_on_user_id_and_project_id", unique: true
+    t.index ["user_id"], name: "index_votes_on_user_id"
   end
 
   add_foreign_key "projects", "users"
   add_foreign_key "updates", "projects"
   add_foreign_key "updates", "users"
+  add_foreign_key "votes", "projects"
+  add_foreign_key "votes", "users"
 end

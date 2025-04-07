@@ -24,5 +24,9 @@ Rails.application.routes.draw do
 
   get "my_projects", to: "projects#my_projects"
 
-  resources :projects
+  resources :projects do
+    resources :updates, only: [ :create, :destroy ]
+  end
+
+  resources :votes, only: [ :new, :create ]
 end
