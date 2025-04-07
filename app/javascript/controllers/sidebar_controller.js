@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["sidebar", "content", "collapseIcon", "icon", "avatar", "logoutContainer", "topContainer"]
+  static targets = ["sidebar", "content", "collapseIcon", "icon", "avatar", "logoutContainer", "topContainer", "mainContent"]
   
   connect() {
     this.expanded = true
@@ -71,6 +71,12 @@ export default class extends Controller {
       this.logoutContainerTarget.classList.add("justify-center")
       this.logoutContainerTarget.classList.remove("justify-between")
     }
+
+    // Adjust main content margin when sidebar is collapsed
+    if (this.hasMainContentTarget) {
+      this.mainContentTarget.classList.remove("ml-64", "2xl:ml-96")
+      this.mainContentTarget.classList.add("ml-32")
+    }
   }
   
   expand() {
@@ -95,6 +101,11 @@ export default class extends Controller {
     if (this.hasLogoutContainerTarget) {
       this.logoutContainerTarget.classList.remove("justify-center")
       this.logoutContainerTarget.classList.add("justify-between")
+    }
+    
+    if (this.hasMainContentTarget) {
+      this.mainContentTarget.classList.remove("ml-32")
+      this.mainContentTarget.classList.add("ml-64", "2xl:ml-96")
     }
   }
 } 
