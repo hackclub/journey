@@ -9,11 +9,23 @@ class VotesController < ApplicationController
     def create
         @vote = current_user.votes.build(vote_params)
 
-        if @vote.save
-            redirect_to new_vote_path, notice: "Voted Submitted!"
-        else
-            flash.now[:alert] = "Failed to submit vote: #{@vote.errors.full_messages.join(', ')}"
-            render :new, status: :unprocessable_entity
+        respond_to do |format|
+            if @vote.save
+                format.html { redirect_to new_vote_path, notice: "Vote Submitted!" }
+                format.turbo_stream { 
+                    flash[:notice] = "Vote Submitted!"
+                    redirect_to new_vote_path
+                }
+            else
+                format.html {
+                    flash.now[:alert] = "Failed to submit vote: #{@vote.errors.full_messages.join(', ')}"
+                    render :new, status: :unprocessable_entity
+                }
+                format.turbo_stream { 
+                    flash.now[:alert] = "Failed to submit vote: #{@vote.errors.full_messages.join(', ')}"
+                    render :new, status: :unprocessable_entity
+                }
+            end
         end
     end
 

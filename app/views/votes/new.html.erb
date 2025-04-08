@@ -67,7 +67,7 @@
         <!-- Voting Section -->
         <div class="bg-soft-bone card-pixel p-6">
           <h3 class="text-2xl font-steven mb-6">Cast Your Vote</h3>
-          <%= form_with(model: [project, Vote.new], url: votes_path, class: "space-y-4") do |f| %>
+          <%= form_with(model: [project, Vote.new], url: votes_path, class: "space-y-4", data: { controller: "form", action: "submit->form#preventDoubleSubmission" }) do |f| %>
             <%= f.hidden_field :project_id, value: project.id %>
 
             <div class="space-y-2">
@@ -80,7 +80,7 @@
             </div>
 
             <div class="flex justify-end">
-              <%= f.submit "Vote for this Project", class: "px-8 py-3 bg-forest hover:scale-[1.05] text-white transition-all duration-300 text-xl btn-pixel" %>
+              <%= f.submit "Vote for this Project", class: "px-8 py-3 bg-forest hover:scale-[1.05] text-white transition-all duration-300 text-xl btn-pixel", data: { form_target: "submitButton" } %>
             </div>
           <% end %>
         </div>

@@ -8,18 +8,38 @@ class UpdatesController < ApplicationController
         @update = @project.updates.build(update_params)
         @update.user = current_user
 
-        if @update.save
-            redirect_to project_path(@project), notice: "Update posted successfully!"
-        else
-            redirect_to project_path(@project), alert: "Failed to post update: #{@update.errors.full_messages.join(', ')}"
+        respond_to do |format|
+            if @update.save
+                format.html { redirect_to project_path(@project), notice: "Update posted successfully!" }
+                format.turbo_stream { 
+                    flash[:notice] = "Update posted successfully!"
+                    redirect_to project_path(@project)
+                }
+            else
+                format.html { redirect_to project_path(@project), alert: "Failed to post update: #{@update.errors.full_messages.join(', ')}" }
+                format.turbo_stream { 
+                    flash[:alert] = "Failed to post update: #{@update.errors.full_messages.join(', ')}"
+                    redirect_to project_path(@project)
+                }
+            end
         end
     end
 
     def destroy
-        if @update.destroy
-            redirect_to project_path(@project), notice: "Update deleted successfully!"
-        else
-            redirect_to project_path(@project), alert: "Failed to delete update."
+        respond_to do |format|
+            if @update.destroy
+                format.html { redirect_to project_path(@project), notice: "Update deleted successfully!" }
+                format.turbo_stream { 
+                    flash[:notice] = "Update deleted successfully!"
+                    redirect_to project_path(@project)
+                }
+            else
+                format.html { redirect_to project_path(@project), alert: "Failed to delete update." }
+                format.turbo_stream { 
+                    flash[:alert] = "Failed to delete update."
+                    redirect_to project_path(@project)
+                }
+            end
         end
     end
 

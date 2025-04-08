@@ -35,13 +35,13 @@
             </div>
           </div>
         <% end %>
-      <% elsif params[:action] == 'my_projects' %>
+      <% elsif params[:action] == 'my_projects' || @show_create_project %>
         <div class="col-span-full flex flex-col items-center justify-center bg-soft-bone  p-12 card-pixel">
           <h2 class="text-2xl 2xl:text-3xl mb-4 font-steven">You don't have any projects yet</h2>
           <p class=" mb-8 text-center text-base 2xl:text-lg text-gray-600">Create your first project to start your journey</p>
-          <%= link_to new_project_path, class: "px-6 py-3 bg-forest hover:bg-forest-dark text-white transition-colors duration-300 text-lg 2xl:text-xl btn-pixel hover:scale-[1.05] cursor-pointer" do %>
+          <button data-action="click->modal#open" class="px-6 py-3 bg-forest hover:bg-forest-dark text-white transition-colors duration-300 text-lg 2xl:text-xl btn-pixel hover:scale-[1.05] cursor-pointer">
             Create Your Project
-          <% end %>
+          </button>
         </div>
       <% else %>
         <div class="col-span-full flex flex-col items-center justify-center bg-soft-bone  p-12 card-pixel">

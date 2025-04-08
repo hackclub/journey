@@ -61,7 +61,7 @@
     <% if user_signed_in? && current_user == @project.user %>
       <div class="bg-soft-bone card-pixel p-6 mb-8">
         <h3 class="text-2xl font-steven mb-4">Add Update</h3>
-        <%= form_with(model: [@project, @project.updates.build], class: "space-y-4") do |f| %>
+        <%= form_with(model: [@project, @project.updates.build], class: "space-y-4", data: { controller: "form", action: "submit->form#preventDoubleSubmission" }) do |f| %>
           <div class="space-y-2">
             <%= f.label :text, "Update Text", class: "block text-lg" %>
             <%= f.text_area :text, class: "w-full p-2 border-2 border-black rounded-lg focus:outline-none focus:border-forest", rows: 4, required: true %>
@@ -73,7 +73,7 @@
           </div>
 
           <div class="flex justify-end">
-            <%= f.submit "Post Update", class: "px-6 py-2 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel" %>
+            <%= f.submit "Post Update", class: "px-6 py-2 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel", data: { form_target: "submitButton" } %>
           </div>
         <% end %>
       </div>
@@ -103,11 +103,17 @@
 
           <div class="mt-4 flex justify-end items-center space-x-4">
             <% if user_signed_in? && current_user == update.user %>
-              <%= button_to "Delete", project_update_path(@project, update),
+              <%= button_to project_update_path(@project, update),
                   method: :delete,
                   class: "px-4 py-2 bg-vintage-red hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel delete-button",
-                  data: { confirm: "Are you sure you want to delete this update?" },
-                  onclick: "return handleDeleteClick(this);" %>
+                  data: { 
+                    confirm: "Are you sure you want to delete this update?",
+                    controller: "form",
+                    form_target: "submitButton",
+                    action: "click->form#preventDoubleSubmission" 
+                  } do %>
+                Delete
+              <% end %>
             <% end %>
             <button class="px-4 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel">
               Add Comment
