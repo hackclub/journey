@@ -1,0 +1,2 @@
+<%= turbo_stream.update("flash-container", partial: "shared/flash") %>
+<%= turbo_stream.replace(dom_id(@project, :follow_button), partial: "projects/follow_button", locals: { project: @project, following: true }) %> 

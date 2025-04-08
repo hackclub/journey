@@ -26,6 +26,10 @@ Rails.application.routes.draw do
 
   resources :projects do
     resources :updates, only: [ :create, :destroy ]
+    member do
+      post :follow
+      delete :unfollow
+    end
   end
 
   resources :votes, only: [ :new, :create ]

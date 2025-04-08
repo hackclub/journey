@@ -1,6 +1,8 @@
 class Project < ApplicationRecord
   belongs_to :user
   has_many :updates, dependent: :destroy
+  has_many :project_follows, dependent: :destroy
+  has_many :followers, through: :project_follows, source: :user
   validates :title, :description, :readme_link, :demo_link, :repo_link, :banner, presence: true
   validates :readme_link, :demo_link, :repo_link, :banner,
     format: { with: URI::DEFAULT_PARSER.make_regexp, message: "must be a valid URL" }
