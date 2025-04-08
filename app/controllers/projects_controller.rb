@@ -7,7 +7,12 @@ class ProjectsController < ApplicationController
         @projects = Project.includes(:user)
                           .where.not(user_id: current_user.id)
                           .order(rating: :desc)
-        @followed_project_ids = current_user.project_follows.pluck(:project_id)
+        
+        @projects ||= []
+
+        if params[:action] == 'my_projects' && @projects.empty?
+            @show_create_project = true
+        end
     end
 
     def show
@@ -38,14 +43,30 @@ class ProjectsController < ApplicationController
     end
 
     def create
-        @project = current_user.projects.build(project_params)
+        if current_user.project.present?
+            respond_to do |format|
+                format.html { 
+                    redirect_to my_projects_path, 
+                    alert: "You can only have one project. Please edit your existing project instead." 
+                }
+                format.turbo_stream { 
+                    flash[:alert] = "You can only have one project. Please edit your existing project instead."
+                    redirect_to my_projects_path
+                }
+            end
+            return
+        end
+
+        @project = current_user.build_project(project_params)
 
         respond_to do |format|
             if @project.save
                 format.html { redirect_to project_path(@project), notice: "Project was successfully created." }
-                format.turbo_stream { redirect_to project_path(@project), notice: "Project was successfully created." }
+                format.turbo_stream { 
+                    flash[:notice] = "Project was successfully created."
+                    redirect_to project_path(@project)
+                }
             else
-                @projects = current_user.projects
                 format.html {
                     flash.now[:alert] = "Could not create project. Please check the form for errors."
                     render :index, status: :unprocessable_entity
@@ -59,9 +80,16 @@ class ProjectsController < ApplicationController
     end
 
     def my_projects
-        @projects = current_user.projects
-        render :index
+        @project = current_user.project
+        if @project.nil?
+            @projects = []
+            @show_create_project = true
+            render :index
+        else
+            redirect_to project_path(@project)
+        end
     end
+
     # Gotta say I love turbo frames and turbo streams and flashes in general
     def follow
         @project_follow = current_user.project_follows.build(project: @project)

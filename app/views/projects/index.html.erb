@@ -38,10 +38,10 @@
       <% elsif params[:action] == 'my_projects' %>
         <div class="col-span-full flex flex-col items-center justify-center bg-soft-bone  p-12 card-pixel">
           <h2 class="text-2xl 2xl:text-3xl mb-4 font-steven">You don't have any projects yet</h2>
-          <p class=" mb-8 text-center text-base 2xl:text-lg text-gray-600">Create your first project to start your journey oh god I need to fill these templates</p>
-          <button data-action="click->modal#open" class="px-6 py-3 bg-forest hover:bg-forest-dark text-white transition-colors duration-300 text-lg 2xl:text-xl btn-pixel hover:scale-[1.05] cursor-pointer">
-            Create Your First Project
-          </button>
+          <p class=" mb-8 text-center text-base 2xl:text-lg text-gray-600">Create your first project to start your journey</p>
+          <%= link_to new_project_path, class: "px-6 py-3 bg-forest hover:bg-forest-dark text-white transition-colors duration-300 text-lg 2xl:text-xl btn-pixel hover:scale-[1.05] cursor-pointer" do %>
+            Create Your Project
+          <% end %>
         </div>
       <% else %>
         <div class="col-span-full flex flex-col items-center justify-center bg-soft-bone  p-12 card-pixel">
@@ -66,7 +66,7 @@
         </div>
       </div>
 
-      <%= form_with model: Project.new, class: "p-6" do |f| %>
+      <%= form_with model: Project.new, class: "p-6", data: { controller: "form", action: "submit->form#preventDoubleSubmission" } do |f| %>
         <div class="mb-4">
           <%= f.label :title, class: "block text-sm font-medium  mb-1" %>
           <%= f.text_field :title, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50  focus:outline-none focus:ring-forest focus:border-forest text-base", required: true %>
@@ -102,7 +102,7 @@
           <button type="button" data-action="modal#close" class="order-1 px-4 py-2 bg-vintage-red text-white hover:scale-[1.05] btn-pixel-sm">
             Cancel
           </button>
-          <%= f.submit "Create Project", class: "order-2 px-4 py-2 bg-forest text-white hover:scale-[1.05] btn-pixel-sm" %>
+          <%= f.submit "Create Project", class: "order-2 px-4 py-2 bg-forest text-white hover:scale-[1.05] btn-pixel-sm", data: { form_target: "submitButton" } %>
         </div>
       <% end %>
     </div>
