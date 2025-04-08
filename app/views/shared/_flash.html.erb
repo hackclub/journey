@@ -1,0 +1,22 @@
+<% if flash[:notice] %>
+  <div class="bg-soft-bone p-4 mb-4 card-pixel flex items-center justify-between max-w-md mx-auto" role="alert">
+    <div class="flex items-center text-forest">
+      <%= inline_svg "check.svg", class: "w-6 h-6 mr-2" %>
+      <%= flash[:notice] %>
+    </div>
+    <button type="button" class="text-forest hover:text-gray-200" onclick="this.parentElement.remove()">
+      <%= inline_svg "close.svg", class: "w-5 h-5" %>
+    </button>
+  </div>
+<% end %>
+<% if flash[:alert] %>
+  <div class="bg-soft-bone p-4 mb-4 card-pixel flex items-center justify-between max-w-md mx-auto" role="alert">
+    <div class="flex items-center text-vintage-red">
+      <%= inline_svg "close.svg", class: "w-6 h-6 mr-2" %>
+      <%= flash[:alert] %>
+    </div>
+    <button type="button" class="text-vintage-red hover:text-gray-200" onclick="this.parentElement.remove()">
+      <%= inline_svg "close.svg", class: "w-5 h-5" %>
+    </button>
+  </div>
+<% end %> 
