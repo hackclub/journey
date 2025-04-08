@@ -4,7 +4,7 @@
       <%= inline_svg "check.svg", class: "w-6 h-6 mr-2" %>
       <%= flash[:notice] %>
     </div>
-    <button type="button" class="text-forest hover:text-gray-200" onclick="this.parentElement.remove()">
+    <button type="button" class="text-forest hover:scale-[1.1]" onclick="this.parentElement.remove()">
       <%= inline_svg "close.svg", class: "w-5 h-5" %>
     </button>
   </div>
@@ -15,7 +15,7 @@
       <%= inline_svg "close.svg", class: "w-6 h-6 mr-2" %>
       <%= flash[:alert] %>
     </div>
-    <button type="button" class="text-vintage-red hover:text-gray-200" onclick="this.parentElement.remove()">
+    <button type="button" class="text-vintage-red hover:scale-[1.1]" onclick="this.parentElement.remove()">
       <%= inline_svg "close.svg", class: "w-5 h-5" %>
     </button>
   </div>
