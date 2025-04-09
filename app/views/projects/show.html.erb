@@ -1,5 +1,4 @@
 <div data-controller="image-viewer">
-  <!-- Image Viewer Modal -->
   <div data-image-viewer-target="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-75" data-action="click->image-viewer#closeBackground">
     <div class="relative max-w-7xl max-h-[90vh] w-full flex items-center justify-center">
       <button class="absolute top-4 right-4 text-white p-2 hover:scale-110 transition-transform z-10" data-action="image-viewer#close">
@@ -108,11 +107,11 @@
                   <%= button_to project_update_path(@project, update),
                       method: :delete,
                       class: "px-4 py-2 bg-vintage-red hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel delete-button",
-                      data: { 
+                      data: {
                         confirm: "Are you sure you want to delete this update?",
                         controller: "form",
                         form_target: "submitButton",
-                        action: "click->form#preventDoubleSubmission" 
+                        action: "click->form#preventDoubleSubmission"
                       } do %>
                     Delete
                   <% end %>
