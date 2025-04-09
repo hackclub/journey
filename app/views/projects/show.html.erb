@@ -27,10 +27,9 @@
                 Edit Project
               <% end %>
             <% else %>
-              <% if @project.user.avatar.present? %>
-                <img src="<%= @project.user.avatar %>" alt="<%= @project.user.display_name %>" class="w-10 h-10 rounded-full mr-3">
+              <% if user_signed_in? %>
+                <%= render "projects/follow_button", project: @project %>
               <% end %>
-              <span class="text-black">By <%= @project.user.display_name %></span>
             <% end %>
           </div>
         </div>
@@ -79,55 +78,60 @@
       </div>
     <% end %>
 
-    <div class="space-y-8 relative">
+    <div class="relative">
+      <div class="absolute left-8 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-saddle-taupe/30"></div>
 
-      <% @updates.reverse.each do |update| %>
-        <div class="bg-soft-bone card-pixel p-6 relative transform hover:scale-[1.02] transition-transform duration-300 ml-8">
-          <div class="flex items-center mb-4">
-            <% if update.user.avatar.present? %>
-              <img src="<%= update.user.avatar %>" alt="<%= update.user.display_name %>" class="w-10 h-10 rounded-full mr-3">
-            <% end %>
-            <div>
-              <span class="font-medium text-lg"><%= update.user.display_name %></span>
-              <span class="text-gray-600 text-sm ml-2"><%= time_ago_in_words(update.created_at) %> ago</span>
-            </div>
-          </div>
+      <div class="space-y-8">
+        <% @updates.reverse.each_with_index do |update, index| %>
+          <div class="relative">
+            <div class="bg-soft-bone card-pixel p-6 ml-16 relative transform hover:scale-[1.02] transition-transform duration-300">
+              <div class="flex items-center mb-4">
+                <% if update.user.avatar.present? %>
+                  <img src="<%= update.user.avatar %>" alt="<%= update.user.display_name %>" class="w-10 h-10 rounded-full mr-3">
+                <% end %>
+                <div>
+                  <span class="font-medium text-lg"><%= update.user.display_name %></span>
+                  <span class="text-gray-600 text-sm ml-2"><%= time_ago_in_words(update.created_at) %> ago</span>
+                </div>
+              </div>
 
-          <p class="text-base 2xl:text-lg text-gray-600 mb-4"><%= update.text %></p>
+              <p class="text-base 2xl:text-lg text-gray-600 mb-4"><%= update.text %></p>
 
-          <% if update.attachment.present? %>
-            <div class="mt-4 overflow-hidden rounded-lg">
-              <img src="<%= update.attachment %>" alt="Update attachment" class="w-full h-64 object-contain cursor-pointer hover:opacity-90 transition-opacity" data-action="click->image-viewer#open">
-            </div>
-          <% end %>
-
-          <div class="mt-4 flex justify-end items-center space-x-4">
-            <% if user_signed_in? && current_user == update.user %>
-              <%= button_to project_update_path(@project, update),
-                  method: :delete,
-                  class: "px-4 py-2 bg-vintage-red hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel delete-button",
-                  data: { 
-                    confirm: "Are you sure you want to delete this update?",
-                    controller: "form",
-                    form_target: "submitButton",
-                    action: "click->form#preventDoubleSubmission" 
-                  } do %>
-                Delete
+              <% if update.attachment.present? %>
+                <div class="mt-4 overflow-hidden rounded-lg">
+                  <img src="<%= update.attachment %>" alt="Update attachment" class="w-full h-64 object-contain cursor-pointer hover:opacity-90 transition-opacity" data-action="click->image-viewer#open">
+                </div>
               <% end %>
-            <% end %>
-            <button class="px-4 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel">
-              Add Comment
-            </button>
-          </div>
-        </div>
-      <% end %>
 
-      <% if @updates.empty? %>
-        <div class="bg-soft-bone card-pixel p-12 text-center">
-          <h2 class="text-2xl 2xl:text-3xl mb-4 font-steven">No updates yet</h2>
-          <p class="text-base 2xl:text-lg text-gray-600">Post an update!</p>
-        </div>
-      <% end %>
+              <div class="mt-4 flex justify-end items-center space-x-4">
+                <% if user_signed_in? && current_user == update.user %>
+                  <%= button_to project_update_path(@project, update),
+                      method: :delete,
+                      class: "px-4 py-2 bg-vintage-red hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel delete-button",
+                      data: { 
+                        confirm: "Are you sure you want to delete this update?",
+                        controller: "form",
+                        form_target: "submitButton",
+                        action: "click->form#preventDoubleSubmission" 
+                      } do %>
+                    Delete
+                  <% end %>
+                <% end %>
+                <button class="px-4 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel">
+                  Add Comment
+                </button>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <% if @updates.empty? %>
+          <div class="bg-soft-bone card-pixel p-12 text-center ml-16">
+            <h2 class="text-2xl 2xl:text-3xl mb-4 font-steven">No updates yet</h2>
+            <p class="text-base 2xl:text-lg text-gray-600">Post an update!</p>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
