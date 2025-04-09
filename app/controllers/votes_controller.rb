@@ -12,7 +12,7 @@ class VotesController < ApplicationController
         respond_to do |format|
             if @vote.save
                 format.html { redirect_to new_vote_path, notice: "Vote Submitted!" }
-                format.turbo_stream { 
+                format.turbo_stream {
                     flash[:notice] = "Vote Submitted!"
                     redirect_to new_vote_path
                 }
@@ -21,7 +21,7 @@ class VotesController < ApplicationController
                     flash.now[:alert] = "Failed to submit vote: #{@vote.errors.full_messages.join(', ')}"
                     render :new, status: :unprocessable_entity
                 }
-                format.turbo_stream { 
+                format.turbo_stream {
                     flash.now[:alert] = "Failed to submit vote: #{@vote.errors.full_messages.join(', ')}"
                     render :new, status: :unprocessable_entity
                 }

@@ -1,16 +1,16 @@
 class ProjectsController < ApplicationController
     include ActionView::RecordIdentifier
     before_action :authenticate_user!
-    before_action :set_project, only: [:show, :edit, :update, :follow, :unfollow]
-    
+    before_action :set_project, only: [ :show, :edit, :update, :follow, :unfollow ]
+
     def index
         @projects = Project.includes(:user)
                           .where.not(user_id: current_user.id)
                           .order(rating: :desc)
-        
+
         @projects ||= []
 
-        if params[:action] == 'my_projects' && @projects.empty?
+        if params[:action] == "my_projects" && @projects.empty?
             @show_create_project = true
         end
     end
@@ -45,11 +45,11 @@ class ProjectsController < ApplicationController
     def create
         if current_user.project.present?
             respond_to do |format|
-                format.html { 
-                    redirect_to my_projects_path, 
-                    alert: "You can only have one project. Please edit your existing project instead." 
+                format.html {
+                    redirect_to my_projects_path,
+                    alert: "You can only have one project. Please edit your existing project instead."
                 }
-                format.turbo_stream { 
+                format.turbo_stream {
                     flash[:alert] = "You can only have one project. Please edit your existing project instead."
                     redirect_to my_projects_path
                 }
@@ -62,7 +62,7 @@ class ProjectsController < ApplicationController
         respond_to do |format|
             if @project.save
                 format.html { redirect_to project_path(@project), notice: "Project was successfully created." }
-                format.turbo_stream { 
+                format.turbo_stream {
                     flash[:notice] = "Project was successfully created."
                     redirect_to project_path(@project)
                 }
@@ -90,32 +90,40 @@ class ProjectsController < ApplicationController
         end
     end
 
+    def activity
+        @followed_projects = current_user.followed_projects.includes(:user)
+        @recent_updates = Update.includes(:project, :user)
+                              .where(project_id: @followed_projects.pluck(:id))
+                              .order(created_at: :desc)
+                              .limit(30)
+    end
+
     # Gotta say I love turbo frames and turbo streams and flashes in general
     def follow
         @project_follow = current_user.project_follows.build(project: @project)
-        
+
         respond_to do |format|
             if @project_follow.save
-                format.html { redirect_to projects_path, notice: "You are now following this project!" }
+                format.html { redirect_to request.referer || projects_path, notice: "You are now following this project!" }
                 format.turbo_stream do
                     flash.now[:notice] = "You are now following this project!"
                     render turbo_stream: [
                         turbo_stream.update("flash-container", partial: "shared/flash"),
-                        turbo_stream.replace(dom_id(@project, :follow_button), 
-                            partial: "projects/follow_button", 
+                        turbo_stream.replace(dom_id(@project, :follow_button),
+                            partial: "projects/follow_button",
                             locals: { project: @project, following: true }
                         )
                     ]
                 end
             else
-                error_message = @project_follow.errors.full_messages.join(', ')
-                format.html { redirect_to projects_path, alert: "Could not follow project: #{error_message}" }
+                error_message = @project_follow.errors.full_messages.join(", ")
+                format.html { redirect_to request.referer || projects_path, alert: "Could not follow project: #{error_message}" }
                 format.turbo_stream do
                     flash.now[:alert] = "Could not follow project: #{error_message}"
                     render turbo_stream: [
                         turbo_stream.update("flash-container", partial: "shared/flash"),
-                        turbo_stream.replace(dom_id(@project, :follow_button), 
-                            partial: "projects/follow_button", 
+                        turbo_stream.replace(dom_id(@project, :follow_button),
+                            partial: "projects/follow_button",
                             locals: { project: @project, following: false }
                         )
                     ]
@@ -126,28 +134,28 @@ class ProjectsController < ApplicationController
 
     def unfollow
         @project_follow = current_user.project_follows.find_by(project: @project)
-        
+
         respond_to do |format|
             if @project_follow&.destroy
-                format.html { redirect_to projects_path, notice: "You have unfollowed this project." }
+                format.html { redirect_to request.referer || projects_path, notice: "You have unfollowed this project." }
                 format.turbo_stream do
                     flash.now[:notice] = "You have unfollowed this project."
                     render turbo_stream: [
                         turbo_stream.update("flash-container", partial: "shared/flash"),
-                        turbo_stream.replace(dom_id(@project, :follow_button), 
-                            partial: "projects/follow_button", 
+                        turbo_stream.replace(dom_id(@project, :follow_button),
+                            partial: "projects/follow_button",
                             locals: { project: @project, following: false }
                         )
                     ]
                 end
             else
-                format.html { redirect_to projects_path, alert: "Could not unfollow project." }
+                format.html { redirect_to request.referer || projects_path, alert: "Could not unfollow project." }
                 format.turbo_stream do
                     flash.now[:alert] = "Could not unfollow project."
                     render turbo_stream: [
                         turbo_stream.update("flash-container", partial: "shared/flash"),
-                        turbo_stream.replace(dom_id(@project, :follow_button), 
-                            partial: "projects/follow_button", 
+                        turbo_stream.replace(dom_id(@project, :follow_button),
+                            partial: "projects/follow_button",
                             locals: { project: @project, following: true }
                         )
                     ]
@@ -163,6 +171,6 @@ class ProjectsController < ApplicationController
     end
 
     def project_params
-        params.require(:project).permit(:title, :description, :readme_link, :demo_link, :repo_link, :banner)
+        params.require(:project).permit(:title, :description, :readme_link, :demo_link, :repo_link, :banner, :category)
     end
 end

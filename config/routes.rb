@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   get "dashboard", to: "dashboard#index"
 
   get "explore", to: "projects#index"
-
+  get "activity", to: "projects#activity"
   get "my_projects", to: "projects#my_projects"
 
   resources :projects do
@@ -32,5 +32,6 @@ Rails.application.routes.draw do
     end
   end
 
+  get "updates", to: "updates#index"
   resources :votes, only: [ :new, :create ]
 end
