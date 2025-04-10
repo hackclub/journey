@@ -11,19 +11,21 @@ class VotesController < ApplicationController
 
         respond_to do |format|
             if @vote.save
-                format.html { redirect_to new_vote_path, notice: "Vote Submitted!" }
-                format.turbo_stream {
-                    flash[:notice] = "Vote Submitted!"
+                format.turbo_stream { 
+                    flash.now[:notice] = "Vote Submitted!"
                     redirect_to new_vote_path
                 }
+                format.html { redirect_to new_vote_path, notice: "Vote Submitted!" }
             else
-                format.html {
-                    flash.now[:alert] = "Failed to submit vote: #{@vote.errors.full_messages.join(', ')}"
-                    render :new, status: :unprocessable_entity
+                format.turbo_stream { 
+                    flash.now[:alert] = @vote.errors.full_messages.join(", ")
+                    render turbo_stream: turbo_stream.update("vote_form_#{@vote.project_id}", 
+                        partial: "votes/form", 
+                        locals: { project: Project.find(@vote.project_id), vote: @vote })
                 }
-                format.turbo_stream {
-                    flash.now[:alert] = "Failed to submit vote: #{@vote.errors.full_messages.join(', ')}"
-                    render :new, status: :unprocessable_entity
+                format.html { 
+                    flash.now[:alert] = @vote.errors.full_messages.join(", ")
+                    render :new, status: :unprocessable_entity 
                 }
             end
         end
@@ -33,11 +35,12 @@ class VotesController < ApplicationController
 
     def set_projects
         voted_project_ids = current_user.votes.pluck(:project_id)
-        @projects = Project.where.not(id: voted_project_ids).order("RANDOM()").limit(2)
-
-        if @projects.size < 2
-            redirect_to root_path, alert: "Not enough projects available for voting. Check back later!"
-        end
+        projects_with_updates = Project.joins(:updates).distinct.pluck(:id)
+        
+        @projects = Project.where(id: projects_with_updates)
+                          .where.not(id: voted_project_ids)
+                          .order("RANDOM()")
+                          .limit(2)
     end
 
     def vote_params

@@ -1,98 +1,122 @@
 <div class="container mx-auto px-4 py-8">
   <h1 class="text-5xl font-steven text-center mb-12">Vote</h1>
 
-  <div class="space-y-16">
-    <% @projects.each_with_index do |project, index| %>
-      <div class="space-y-8">
-        <div class="bg-soft-bone card-pixel p-6">
-          <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div class="flex items-center space-x-6">
-              <div class="h-24 w-24 overflow-hidden">
-                <% project_image = project.updates.where.not(attachment: [nil, ""]).order(created_at: :desc).first&.attachment || "https://via.placeholder.com/600x400?text=No+Image" %>
-                <img src="<%= project_image %>" alt="<%= project.title %>" class="w-full h-full object-cover">
-              </div>
-              <div class="space-y-2">
-                <h2 class="text-4xl font-steven"><%= project.title %></h2>
-                <p class="text-xl text-gray-600"><%= project.description %></p>
-              </div>
-            </div>
-            <div class="flex flex-wrap gap-4">
-              <% if project.demo_link.present? %>
-                <a href="<%= project.demo_link %>" target="_blank"
-                   class="px-6 py-2 bg-forest hover:scale-[1.05] text-white transition-all duration-300 text-lg btn-pixel flex items-center">
-                  Demo
-                </a>
-              <% end %>
-              <% if project.repo_link.present? %>
-                <a href="<%= project.repo_link %>" target="_blank"
-                   class="px-6 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-all duration-300 text-lg btn-pixel flex items-center">
-                  Repo
-                </a>
-              <% end %>
-              <% if project.readme_link.present? %>
-                <a href="<%= project.readme_link %>" target="_blank"
-                   class="px-6 py-2 bg-saddle-taupe hover:scale-[1.05] text-white transition-all duration-300 text-lg btn-pixel flex items-center">
-                  Docs
-                </a>
-              <% end %>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-soft-bone card-pixel p-6">
-          <h3 class="text-2xl font-steven mb-6">Project Journey</h3>
-          <div class="space-y-6">
-            <% project.updates.order(created_at: :asc).each do |update| %>
-              <div class="p-4 transform hover:scale-[1.02] transition-transform duration-300">
-                <div class="flex items-center mb-3">
-                  <% if update.user.avatar.present? %>
-                    <img src="<%= update.user.avatar %>" alt="<%= update.user.display_name %>" class="w-10 h-10 rounded-full mr-3 border-2 border-black">
-                  <% end %>
-                  <div>
-                    <span class="font-medium text-lg"><%= update.user.display_name %></span>
-                    <span class="text-gray-600 text-sm ml-2"><%= time_ago_in_words(update.created_at) %> ago</span>
+  <% if @projects.size < 2 %>
+    <div class="bg-soft-bone card-pixel p-12 text-center">
+      <h2 class="text-2xl 2xl:text-3xl font-steven mb-4">Not Enough Projects Available</h2>
+      <p class="mb-8 text-gray-600 2xl:text-lg">You need at least 2 projects to cast a vote. Check back later for more projects!</p>
+      <%= link_to explore_path, class: "px-6 py-3 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 text-lg 2xl:text-xl btn-pixel" do %>
+        Explore Projects
+      <% end %>
+    </div>
+  <% else %>
+    <div data-controller="voting-steps" class="space-y-8">
+      <!-- Step 1: Journeys -->
+      <div data-voting-steps-target="step1" class="space-y-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <% @projects.each do |project| %>
+            <div class="bg-soft-bone card-pixel p-6">
+              <div class="space-y-6">
+                <div class="flex items-start gap-4">
+                  <div class="h-20 w-20 flex-shrink-0 overflow-hidden">
+                    <% project_image = project.updates.where.not(attachment: [nil, ""]).order(created_at: :desc).first&.attachment || "https://via.placeholder.com/600x400?text=No+Image" %>
+                    <img src="<%= project_image %>" alt="<%= project.title %>" class="w-full h-full object-cover">
+                  </div>
+                  <div class="flex-grow">
+                    <h3 class="text-3xl font-steven mb-2"><%= project.title %></h3>
+                    <p class="text-lg text-gray-600 line-clamp-2"><%= project.description %></p>
                   </div>
                 </div>
-                <p class="text-xl"><%= update.text %></p>
-                <% if update.attachment.present? %>
-                  <div class="mt-3  overflow-hidden">
-                    <img src="<%= update.attachment %>" alt="Update attachment" class="w-full max-h-64 object-contain">
-                  </div>
-                <% end %>
+
+                <div class="space-y-6">
+                  <% project.updates.order(created_at: :asc).each do |update| %>
+                    <div class="p-4 transform hover:scale-[1.02] transition-transform duration-300">
+                      <div class="flex items-center mb-3">
+                        <% if update.user.avatar.present? %>
+                          <img src="<%= update.user.avatar %>" alt="<%= update.user.display_name %>" class="w-10 h-10 rounded-full mr-3 border-2 border-black">
+                        <% end %>
+                        <div>
+                          <span class="font-medium text-lg"><%= update.user.display_name %></span>
+                          <span class="text-gray-600 text-sm ml-2"><%= time_ago_in_words(update.created_at) %> ago</span>
+                        </div>
+                      </div>
+                      <p class="text-xl"><%= update.text %></p>
+                      <% if update.attachment.present? %>
+                        <div class="mt-3 overflow-hidden">
+                          <img src="<%= update.attachment %>" alt="Update attachment" class="w-full max-h-64 object-contain">
+                        </div>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
               </div>
-            <% end %>
-          </div>
-        </div>
-
-        <!-- Voting Section -->
-        <div class="bg-soft-bone card-pixel p-6">
-          <h3 class="text-2xl font-steven mb-6">Cast Your Vote</h3>
-          <%= form_with(model: [project, Vote.new], url: votes_path, class: "space-y-4", data: { controller: "form", action: "submit->form#preventDoubleSubmission" }) do |f| %>
-            <%= f.hidden_field :project_id, value: project.id %>
-
-            <div class="space-y-2">
-              <%= f.label :explanation, "Why are you voting for this project?", class: "block text-xl" %>
-              <%= f.text_area :explanation,
-                  class: "w-full p-4 border-2 border-black  focus:outline-none focus:border-forest bg-warm",
-                  rows: 4,
-                  required: true,
-                  placeholder: "I love something everything nothing" %>
-            </div>
-
-            <div class="flex justify-end">
-              <%= f.submit "Vote for this Project", class: "px-8 py-3 bg-forest hover:scale-[1.05] text-white transition-all duration-300 text-xl btn-pixel", data: { form_target: "submitButton" } %>
             </div>
           <% end %>
         </div>
+
+        <div class="flex justify-center mt-8">
+          <button class="px-8 py-3 bg-forest hover:scale-[1.05] text-white transition-all duration-300 text-xl 2xl:text-2xl btn-pixel" data-action="voting-steps#nextStep">
+            Compare Projects
+          </button>
+        </div>
       </div>
 
-      <% if index == 0 %>
-        <div class="flex items-center justify-center my-12">
-          <div class="p-12 text-center transform hover:scale-[1.05] transition-all duration-300 hover:rotate-3">
-            <span class="text-8xl font-steven text-vintage-red">VS</span>
-          </div>
+      <!-- Step 2: Voting -->
+      <div data-voting-steps-target="step2" class="hidden">
+        <h2 class="text-3xl font-steven text-center mb-8">Vote</h2>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <% @projects.each do |project| %>
+            <div class="bg-soft-bone card-pixel p-6">
+              <div class="space-y-6">
+                <div class="flex items-start gap-4">
+                  <div class="h-20 w-20 flex-shrink-0 overflow-hidden">
+                    <% project_image = project.updates.where.not(attachment: [nil, ""]).order(created_at: :desc).first&.attachment || "https://via.placeholder.com/600x400?text=No+Image" %>
+                    <img src="<%= project_image %>" alt="<%= project.title %>" class="w-full h-full object-cover">
+                  </div>
+                  <div class="flex-grow">
+                    <h3 class="text-3xl font-steven mb-2"><%= project.title %></h3>
+                    <p class="text-lg text-gray-600 line-clamp-2"><%= project.description %></p>
+                  </div>
+                </div>
+
+                <div class="space-y-4">
+                  <h4 class="text-xl font-steven">Project Links</h4>
+                  <div class="flex flex-wrap gap-4">
+                    <% if project.demo_link.present? %>
+                      <a href="<%= project.demo_link %>" target="_blank"
+                         class="px-4 py-1.5 bg-forest hover:scale-[1.05] text-white transition-all duration-300 text-sm btn-pixel text-base 2xl:text-lg">
+                        Demo
+                      </a>
+                    <% end %>
+                    <% if project.repo_link.present? %>
+                      <a href="<%= project.repo_link %>" target="_blank"
+                         class="px-4 py-1.5 bg-nice-blue hover:scale-[1.05] text-white transition-all duration-300 text-sm btn-pixel text-base 2xl:text-lg">
+                        Repository
+                      </a>
+                    <% end %>
+                    <% if project.readme_link.present? %>
+                      <a href="<%= project.readme_link %>" target="_blank"
+                         class="px-4 py-1.5 bg-saddle-taupe hover:scale-[1.05] text-white transition-all duration-300 text-sm btn-pixel text-base 2xl:text-lg">
+                        Documentation
+                      </a>
+                    <% end %>
+                  </div>
+                </div>
+
+                <%= render "votes/form", project: project, vote: Vote.new %>
+              </div>
+            </div>
+          <% end %>
         </div>
-      <% end %>
-    <% end %>
-  </div>
+
+        <div class="flex justify-center mt-8">
+          <button class="px-8 py-3 bg-saddle-taupe hover:scale-[1.05] text-white transition-all duration-300 text-xl 2xl:text-2xl btn-pixel" data-action="voting-steps#prevStep">
+            Back to Journeys
+          </button>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>
