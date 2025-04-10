@@ -25,7 +25,7 @@
         <% end %>
       </li>
       <li class="flex justify-start">
-        <%= link_to my_projects_path, class: "px-4 py-2 block hover:bg-saddle-taupe hover-btn-pixel #{'bg-saddle-taupe btn-pixel' if current_page?(my_projects_path)}" do %>
+        <%= link_to my_projects_path, class: "px-4 py-2 block hover:bg-saddle-taupe hover-btn-pixel #{'bg-saddle-taupe btn-pixel' if current_page?(my_projects_path) || (controller_name == 'projects' && action_name == 'show' && @project&.user == current_user)}" do %>
           <%= inline_svg "radio-tower.svg", class: "2xl:h-12 2xl:w-12 inline mr-2 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
           <span data-sidebar-target="content">My Project</span>
         <% end %>
