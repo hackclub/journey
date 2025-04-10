@@ -11,13 +11,27 @@ export default class extends Controller {
     this.messageTarget.classList.remove('translate-x-full')
 
     if (this.hasHideAfterValue) {
-      setTimeout(() => {
+      this.timeout = setTimeout(() => {
         this.hide()
       }, this.hideAfterValue)
     }
   }
 
+  disconnect() {
+    if (this.timeout) {
+      clearTimeout(this.timeout)
+    }
+  }
+
+  close() {
+    this.hide()
+  }
+
   hide() {
+    if (this.timeout) {
+      clearTimeout(this.timeout)
+    }
+    
     this.messageTarget.classList.add('translate-x-full')
     this.messageTarget.classList.remove('translate-x-0')
     
