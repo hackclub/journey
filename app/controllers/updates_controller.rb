@@ -1,4 +1,5 @@
 class UpdatesController < ApplicationController
+    include ActionView::RecordIdentifier
     before_action :authenticate_user!
     before_action :set_project, only: [ :create, :destroy ]
     before_action :set_update, only: [ :destroy ]
@@ -43,11 +44,18 @@ class UpdatesController < ApplicationController
     def destroy
         if @update.user == current_user
             @update.destroy
+            flash.now[:notice] = "Update was successfully deleted."
             respond_to do |format|
-                format.turbo_stream { render turbo_stream: turbo_stream.remove(@update) }
+                format.turbo_stream do
+                    render turbo_stream: [
+                        turbo_stream.remove(dom_id(@update)),
+                        turbo_stream.replace("flash-container", partial: "shared/flash")
+                    ]
+                end
                 format.html { redirect_to project_path(@project), notice: "Update was successfully deleted." }
             end
         else
+            flash.now[:alert] = "You can only delete your own updates."
             respond_to do |format|
                 format.turbo_stream { render turbo_stream: turbo_stream.replace("flash-container", partial: "shared/flash") }
                 format.html { redirect_to project_path(@project), alert: "You can only delete your own updates." }

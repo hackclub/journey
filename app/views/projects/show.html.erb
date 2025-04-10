@@ -65,7 +65,7 @@
     <div class="relative">
       <div class="absolute left-8 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-saddle-taupe/30"></div>
 
-      <div id="updates" class="space-y-8">
+      <div id="updates" class="space-y-8" data-controller="updates">
         <% @updates.reverse.each do |update| %>
           <%= render "updates/update", update: update %>
         <% end %>
