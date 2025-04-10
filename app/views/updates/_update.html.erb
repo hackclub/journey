@@ -1,30 +1,30 @@
 <div class="relative" id="<%= dom_id(update) %>">
-  <div class="bg-soft-bone card-pixel p-6 ml-16 relative transform hover:scale-[1.02] transition-transform duration-300">
-    <div class="flex items-center mb-4">
+  <div class="bg-soft-bone card-pixel p-4 md:p-6 ml-6 md:ml-16 relative transform hover:scale-[1.02] transition-transform duration-300">
+    <div class="flex items-center mb-3 md:mb-4">
       <% if update.user.avatar.present? %>
-        <img src="<%= update.user.avatar %>" alt="<%= update.user.display_name %>" class="w-10 h-10 rounded-full mr-3">
+        <img src="<%= update.user.avatar %>" alt="<%= update.user.display_name %>" class="w-8 h-8 md:w-10 md:h-10 rounded-full mr-2 md:mr-3">
       <% end %>
       <div>
-        <span class="font-medium text-lg"><%= update.user.display_name %></span>
-        <span class="text-gray-600 text-sm ml-2"><%= time_ago_in_words(update.created_at) %> ago</span>
+        <span class="font-medium text-base md:text-lg"><%= update.user.display_name %></span>
+        <span class="text-gray-600 text-xs md:text-sm ml-2"><%= time_ago_in_words(update.created_at) %> ago</span>
       </div>
     </div>
 
-    <p class="text-base 2xl:text-lg text-gray-600 mb-4"><%= update.text %></p>
+    <p class="text-sm md:text-base 2xl:text-lg text-gray-600 mb-3 md:mb-4"><%= update.text %></p>
 
     <% if update.attachment.present? %>
-      <div class="mt-4 overflow-hidden rounded-lg">
-        <img src="<%= update.attachment %>" alt="Update attachment" class="w-full h-64 object-contain cursor-pointer hover:opacity-90 transition-opacity" data-action="click->image-viewer#open">
+      <div class="mt-3 md:mt-4 overflow-hidden rounded-lg">
+        <img src="<%= update.attachment %>" alt="Update attachment" class="w-full h-48 md:h-64 object-contain cursor-pointer hover:opacity-90 transition-opacity" data-action="click->image-viewer#open">
       </div>
     <% end %>
 
-    <div class="mt-4 flex justify-end items-center space-x-4">
+    <div class="mt-3 md:mt-4 flex justify-end items-center space-x-2 md:space-x-4">
       <% if user_signed_in? && current_user == update.user %>
         <%= button_to "Delete", project_update_path(@project, update),
             method: :delete,
-            class: "px-4 py-2 bg-vintage-red hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel delete-button" %>
+            class: "px-3 md:px-4 py-2 bg-vintage-red hover:scale-[1.05] text-white transition-colors duration-300 text-sm md:text-base 2xl:text-large btn-pixel delete-button" %>
       <% end %>
-      <button class="px-4 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel">
+      <button class="px-3 md:px-4 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 text-sm md:text-base 2xl:text-large btn-pixel">
         Add Comment
       </button>
     </div>

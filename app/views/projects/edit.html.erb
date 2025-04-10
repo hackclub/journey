@@ -1,42 +1,42 @@
-<div class="container mx-auto px-4 py-8">
-  <div class="bg-soft-bone card-pixel p-6">
-    <h1 class="text-base 2xl:text-xl font-steven mb-6">Edit Project</h1>
+<div class="container mx-auto px-4 py-4 sm:py-8">
+  <div class="bg-soft-bone card-pixel p-4 sm:p-6">
+    <h1 class="text-2xl sm:text-3xl font-steven mb-4 sm:mb-6">Edit Project</h1>
 
-    <%= form_with(model: @project, class: "space-y-6") do |f| %>
-      <div class="space-y-2">
-        <%= f.label :title, class: "block text-lg font-medium" %>
-        <%= f.text_field :title, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base", required: true %>
+    <%= form_with(model: @project, class: "space-y-4 sm:space-y-6") do |f| %>
+      <div class="space-y-1 sm:space-y-2">
+        <%= f.label :title, class: "block text-base sm:text-lg font-medium" %>
+        <%= f.text_field :title, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-sm sm:text-base rounded-sm", required: true %>
       </div>
 
-      <div class="space-y-2">
-        <%= f.label :banner, "Project Banner", class: "block text-lg font-medium" %>
-        <%= f.url_field :banner, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base", required: true %>
-        <p class="text-sm text-gray-600">A banner image for your project (recommended size: 1200x630px)</p>
+      <div class="space-y-1 sm:space-y-2">
+        <%= f.label :banner, "Project Banner", class: "block text-base sm:text-lg font-medium" %>
+        <%= f.url_field :banner, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-sm sm:text-base rounded-sm", required: true %>
+        <p class="text-xs sm:text-sm text-gray-600">A banner image for your project (recommended size: 1200x630px)</p>
       </div>
 
-      <div class="space-y-2">
-        <%= f.label :description, class: "block text-lg font-medium" %>
-        <%= f.text_area :description, rows: 4, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base", required: true %>
+      <div class="space-y-1 sm:space-y-2">
+        <%= f.label :description, class: "block text-base sm:text-lg font-medium" %>
+        <%= f.text_area :description, rows: 4, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-sm sm:text-base rounded-sm", required: true %>
       </div>
 
-      <div class="space-y-2">
-        <%= f.label :readme_link, "Documentation Link", class: "block text-lg font-medium" %>
-        <%= f.url_field :readme_link, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base", required: true %>
+      <div class="space-y-1 sm:space-y-2">
+        <%= f.label :readme_link, "Documentation Link", class: "block text-base sm:text-lg font-medium" %>
+        <%= f.url_field :readme_link, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-sm sm:text-base rounded-sm", required: true %>
       </div>
 
-      <div class="space-y-2">
-        <%= f.label :demo_link, "Demo Link", class: "block text-lg font-medium" %>
-        <%= f.url_field :demo_link, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base", required: true %>
+      <div class="space-y-1 sm:space-y-2">
+        <%= f.label :demo_link, "Demo Link", class: "block text-base sm:text-lg font-medium" %>
+        <%= f.url_field :demo_link, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-sm sm:text-base rounded-sm", required: true %>
       </div>
 
-      <div class="space-y-2">
-        <%= f.label :repo_link, "Repository Link", class: "block text-lg font-medium" %>
-        <%= f.url_field :repo_link, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base", required: true %>
+      <div class="space-y-1 sm:space-y-2">
+        <%= f.label :repo_link, "Repository Link", class: "block text-base sm:text-lg font-medium" %>
+        <%= f.url_field :repo_link, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-sm sm:text-base rounded-sm", required: true %>
       </div>
 
-      <div class="flex justify-end space-x-4">
-        <%= link_to "Cancel", project_path(@project), class: "px-4 py-2 bg-vintage-red text-white hover:scale-[1.05] btn-pixel-sm text-lg 2xl:text-xl" %>
-        <%= f.submit "Update Project", class: "px-4 py-2 bg-forest text-white hover:scale-[1.05] btn-pixel-sm text-lg 2xl:text-xl" %>
+      <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 mt-6">
+        <%= link_to "Cancel", project_path(@project), class: "w-full sm:w-auto px-4 py-2 bg-vintage-red text-white hover:scale-[1.05] btn-pixel-sm text-base sm:text-lg text-center" %>
+        <%= f.submit "Update Project", class: "w-full sm:w-auto px-4 py-2 bg-forest text-white hover:scale-[1.05] btn-pixel-sm text-base sm:text-lg" %>
       </div>
     <% end %>
   </div>

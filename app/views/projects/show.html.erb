@@ -1,26 +1,26 @@
 <div data-controller="image-viewer">
   <div data-image-viewer-target="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-75" data-action="click->image-viewer#closeBackground">
     <div class="relative max-w-7xl max-h-[90vh] w-full flex items-center justify-center">
-      <button class="absolute top-4 right-4 text-white p-2 hover:scale-110 transition-transform z-10" data-action="image-viewer#close">
-        <%= inline_svg "close.svg", class: "h-8 w-8" %>
+      <button class="absolute top-2 right-2 md:top-4 md:right-4 text-white p-2 hover:scale-110 transition-transform z-10" data-action="image-viewer#close">
+        <%= inline_svg "close.svg", class: "h-6 w-6 md:h-8 md:w-8" %>
       </button>
       <img data-image-viewer-target="image" class="max-h-[85vh] max-w-full object-contain" src="" alt="Full size image">
     </div>
   </div>
 
-  <div class="container mx-auto px-4 py-8">
-    <div class="bg-soft-bone card-pixel shadow-lg overflow-hidden mb-8">
-      <div class="h-64 overflow-hidden relative">
+  <div class="container mx-auto px-4 py-4 md:py-8">
+    <div class="bg-soft-bone card-pixel shadow-lg overflow-hidden mb-4 md:mb-8">
+      <div class="h-48 md:h-64 overflow-hidden relative">
         <img src="<%= @project.banner %>" alt="<%= @project.title %>" class="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity" data-action="click->image-viewer#open">
         <div class="absolute inset-0 bg-gradient-to-t from-soft-bone/30 to-transparent pointer-events-none"></div>
       </div>
 
-      <div class="p-6">
-        <div class="flex items-center mb-4">
-          <h1 class="text-3xl 2xl:text-4xl text-black flex-grow font-steven"><%= @project.title %></h1>
-          <div class="flex items-center space-x-4">
+      <div class="p-4 md:p-6">
+        <div class="flex flex-col md:flex-row md:items-center mb-4 space-y-3 md:space-y-0">
+          <h1 class="text-2xl md:text-3xl 2xl:text-4xl text-black md:flex-grow font-steven"><%= @project.title %></h1>
+          <div class="flex items-center space-x-3 md:space-x-4">
             <% if user_signed_in? && current_user == @project.user %>
-              <%= link_to edit_project_path(@project), class: "px-4 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-xl btn-pixel" do %>
+              <%= link_to edit_project_path(@project), class: "px-3 md:px-4 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 text-sm md:text-base 2xl:text-xl btn-pixel" do %>
                 Edit Project
               <% end %>
             <% else %>
@@ -31,47 +31,47 @@
           </div>
         </div>
 
-        <p class="text-black mb-6 text-gray-600 text-lg 2xl:text-xl"><%= @project.description %></p>
+        <p class="text-black mb-4 md:mb-6 text-gray-600 text-base md:text-lg 2xl:text-xl"><%= @project.description %></p>
 
-        <div class="flex flex-row space-x-4">
+        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
           <a href="<%= @project.demo_link %>" target="_blank"
-             class="px-4 py-2 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-lg 2xl:text-2xl">
-            View Demo
+             class="px-3 md:px-4 py-3 md:py-2 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-base md:text-lg 2xl:text-2xl">
+            Demo
           </a>
           <a href="<%= @project.repo_link %>" target="_blank"
-             class="px-4 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-lg 2xl:text-2xl">
+             class="px-3 md:px-4 py-3 md:py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-base md:text-lg 2xl:text-2xl">
             Repository
           </a>
           <a href="<%= @project.readme_link %>" target="_blank"
-             class="px-4 py-2 bg-saddle-taupe hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-lg 2xl:text-2xl">
+             class="px-3 md:px-4 py-3 md:py-2 bg-saddle-taupe hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-base md:text-lg 2xl:text-2xl">
             Documentation
           </a>
         </div>
       </div>
     </div>
 
-    <div class="flex flex-col justify-between items-start mb-6">
-      <h2 class="text-5xl font-steven mb-0">Project Timeline</h2>
+    <div class="flex flex-col justify-between items-start mb-2 md:mb-6">
+      <h2 class="text-3xl md:text-5xl font-steven">Project Timeline</h2>
     </div>
 
     <% if user_signed_in? && current_user == @project.user %>
-      <div id="update-form">
+      <div id="update-form" class="mb-4 md:mb-6">
         <%= render "projects/update_form" %>
       </div>
     <% end %>
 
     <div class="relative">
-      <div class="absolute left-8 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-saddle-taupe/30"></div>
+      <div class="absolute left-3 md:left-8 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-saddle-taupe/30"></div>
 
-      <div id="updates" class="space-y-8" data-controller="updates">
+      <div id="updates" class="space-y-3 md:space-y-8" data-controller="updates">
         <% @updates.reverse.each do |update| %>
           <%= render "updates/update", update: update %>
         <% end %>
 
         <% if @updates.empty? %>
-          <div class="bg-soft-bone card-pixel p-12 text-center ml-16">
-            <h2 class="text-2xl 2xl:text-3xl mb-4 font-steven">No updates yet</h2>
-            <p class="text-base 2xl:text-lg text-gray-600">Post an update!</p>
+          <div class="bg-soft-bone card-pixel p-6 md:p-12 text-center ml-6 md:ml-16">
+            <h2 class="text-xl md:text-2xl 2xl:text-3xl mb-3 md:mb-4 font-steven">No updates yet</h2>
+            <p class="text-sm md:text-base 2xl:text-lg text-gray-600">Post an update!</p>
           </div>
         <% end %>
       </div>

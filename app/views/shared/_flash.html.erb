@@ -1,23 +1,23 @@
 <% if notice %>
-  <div class="fixed top-4 right-4 z-50 transform transition-transform duration-500 ease-in-out" 
+  <div class="fixed top-4 right-4 left-4 md:left-auto z-50 transform transition-transform duration-500 ease-in-out" 
        data-controller="flash"
        data-flash-target="message"
        data-flash-hide-after-value="5000">
-    <div class="bg-forest text-white px-6 py-3 shadow-lg flex items-center space-x-3 btn-pixel">
-      <%= inline_svg "check.svg", class: "h-6 w-6" %>
-      <p><%= notice %></p>
+    <div class="bg-forest text-white px-4 md:px-6 py-3 shadow-lg flex items-center space-x-3 btn-pixel max-w-full break-words">
+      <%= inline_svg "check.svg", class: "h-5 w-5 md:h-6 md:w-6 flex-shrink-0" %>
+      <p class="text-sm md:text-base"><%= notice %></p>
     </div>
   </div>
 <% end %>
 
 <% if alert %>
-  <div class="fixed top-4 right-4 z-50 transform transition-transform duration-500 ease-in-out"
+  <div class="fixed top-4 right-4 left-4 md:left-auto z-50 transform transition-transform duration-500 ease-in-out"
        data-controller="flash"
        data-flash-target="message"
        data-flash-hide-after-value="5000">
-    <div class="bg-vintage-red text-white px-6 py-3 shadow-lg flex items-center space-x-3 btn-pixel">
-      <%= inline_svg "close.svg", class: "h-6 w-6" %>
-      <p><%= alert %></p>
+    <div class="bg-vintage-red text-white px-4 md:px-6 py-3 shadow-lg flex items-center space-x-3 btn-pixel max-w-full break-words">
+      <%= inline_svg "close.svg", class: "h-5 w-5 md:h-6 md:w-6 flex-shrink-0" %>
+      <p class="text-sm md:text-base"><%= alert %></p>
     </div>
   </div>
 <% end %>

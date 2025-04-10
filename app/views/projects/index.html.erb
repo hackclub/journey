@@ -1,34 +1,34 @@
 <div data-controller="modal">
   <div>
-    <div class="flex flex-col justify-between items-start mb-6 px-8">
-      <h1 class="text-5xl  font-steven mb-0"><%= params[:action] == 'my_projects' ? 'My Projects' : 'Explore Projects' %></h1>
+    <div class="flex flex-col justify-between items-start mb-4 md:mb-6 px-4 md:px-8">
+      <h1 class="text-3xl md:text-5xl font-steven mb-0"><%= params[:action] == 'my_projects' ? 'My Projects' : 'Explore Projects' %></h1>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-4 gap-8 px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-8 px-4 md:px-8">
       <% if @projects.any? %>
         <% @projects.each do |project| %>
           <div class="bg-soft-bone card-pixel transform hover:scale-[1.02] transition-transform duration-300 flex flex-col h-full">
             <% project_image = project.banner %>
-            <div class="h-48 overflow-hidden relative">
+            <div class="h-36 md:h-48 overflow-hidden relative">
               <img src="<%= project_image %>" alt="<%= project.title %>" class="w-full h-full object-cover">
             </div>
 
-            <div class="p-6 flex flex-col flex-grow">
-              <div class="flex items-center justify-between mb-3">
-                <h2 class="text-2xl 2xl:text-3xl font-steven line-clamp-1"><%= project.title %></h2>
+            <div class="p-4 md:p-6 flex flex-col flex-grow">
+              <div class="flex items-center justify-between mb-2 md:mb-3">
+                <h2 class="text-xl md:text-2xl 2xl:text-3xl font-steven line-clamp-1"><%= project.title %></h2>
                 <% if user_signed_in? && current_user != project.user %>
                   <div>
                     <%= render "projects/follow_button", project: project %>
                   </div>
                 <% end %>
               </div>
-              <p class="mb-6 line-clamp-3 text-base 2xl:text-lg text-gray-600"><%= project.description %></p>
+              <p class="mb-4 md:mb-6 line-clamp-3 text-sm md:text-base 2xl:text-lg text-gray-600"><%= project.description %></p>
 
               <div class="flex flex-row space-x-4 mt-auto">
-                <%= link_to project_path(project), class: "px-4 py-2 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-lg 2xl:text-2xl" do %>
+                <%= link_to project_path(project), class: "px-3 md:px-4 py-2 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-base md:text-lg 2xl:text-2xl" do %>
                   View Project
                 <% end %>
-                <%= link_to project_path(project), class: "px-4 py-2 bg-nice-blue text-white hover:scale-[1.05] transition-colors duration-300 flex-1 text-center btn-pixel text-lg 2xl:text-xl" do %>
+                <%= link_to project_path(project), class: "px-3 md:px-4 py-2 bg-nice-blue text-white hover:scale-[1.05] transition-colors duration-300 flex-1 text-center btn-pixel text-base md:text-lg 2xl:text-xl" do %>
                   <%= project.updates.count %> Updates
                 <% end %>
               </div>
@@ -36,43 +36,43 @@
           </div>
         <% end %>
       <% elsif params[:action] == 'my_projects' || @show_create_project %>
-        <div class="col-span-full flex flex-col items-center justify-center bg-soft-bone  p-12 card-pixel">
-          <h2 class="text-2xl 2xl:text-3xl mb-4 font-steven">You don't have any projects yet</h2>
-          <p class=" mb-8 text-center text-base 2xl:text-lg text-gray-600">Create your first project to start your journey</p>
-          <button data-action="click->modal#open" class="px-6 py-3 bg-forest hover:bg-forest-dark text-white transition-colors duration-300 text-lg 2xl:text-xl btn-pixel hover:scale-[1.05] cursor-pointer">
+        <div class="col-span-full flex flex-col items-center justify-center bg-soft-bone p-6 md:p-12 card-pixel">
+          <h2 class="text-xl md:text-2xl 2xl:text-3xl mb-3 md:mb-4 font-steven text-center">You don't have any projects yet</h2>
+          <p class="mb-6 md:mb-8 text-center text-sm md:text-base 2xl:text-lg text-gray-600">Create your first project to start your journey</p>
+          <button data-action="click->modal#open" class="px-4 md:px-6 py-2 md:py-3 bg-forest hover:bg-forest-dark text-white transition-colors duration-300 text-base md:text-lg 2xl:text-xl btn-pixel hover:scale-[1.05] cursor-pointer">
             Create Your Project
           </button>
         </div>
       <% else %>
-        <div class="col-span-full flex flex-col items-center justify-center bg-soft-bone  p-12 card-pixel">
-          <h2 class="text-2xl  mb-4 font-steven">No projects available</h2>
-          <p class=" mb-8 text-center text-base">Check back later for new projects</p>
+        <div class="col-span-full flex flex-col items-center justify-center bg-soft-bone p-6 md:p-12 card-pixel">
+          <h2 class="text-xl md:text-2xl mb-3 md:mb-4 font-steven text-center">No projects available</h2>
+          <p class="mb-6 md:mb-8 text-center text-sm md:text-base">Check back later for new projects</p>
         </div>
       <% end %>
     </div>
   </div>
 
   <div id="create-project-modal" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
-    <div class="bg-soft-bone  w-full max-w-2xl card-pixel" data-modal-target="container">
-      <div class="p-6 border-b border-saddle-taupe border-opacity-30">
+    <div class="bg-soft-bone w-full max-w-2xl card-pixel mx-4" data-modal-target="container">
+      <div class="p-4 md:p-6 border-b border-saddle-taupe border-opacity-30">
         <div class="flex justify-between items-center">
-          <h3 class="text-2xl font-steven ">Create New Project</h3>
+          <h3 class="text-xl md:text-2xl font-steven">Create New Project</h3>
         </div>
       </div>
 
-      <%= form_with model: Project.new, class: "p-6", data: { controller: "multi-step-form" } do |f| %>
-        <div data-multi-step-form-target="step" class="space-y-4">
-          <div class="mb-4">
+      <%= form_with model: Project.new, class: "p-4 md:p-6", data: { controller: "multi-step-form" } do |f| %>
+        <div data-multi-step-form-target="step" class="space-y-3 md:space-y-4">
+          <div class="mb-3 md:mb-4">
             <%= f.label :title, class: "block text-sm font-medium mb-1" %>
             <%= f.text_field :title, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base", required: true %>
           </div>
 
-          <div class="mb-4">
+          <div class="mb-3 md:mb-4">
             <%= f.label :description, class: "block text-sm font-medium mb-1" %>
             <%= f.text_area :description, rows: 4, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base", required: true %>
           </div>
 
-          <div class="mb-4">
+          <div class="mb-3 md:mb-4">
             <%= f.label :category, class: "block text-sm font-medium mb-1" %>
             <div class="relative">
               <%= f.select :category,
@@ -86,47 +86,47 @@
           </div>
         </div>
 
-        <div data-multi-step-form-target="step" class="hidden space-y-4">
-          <p class="text-sm text-gray-600">
+        <div data-multi-step-form-target="step" class="hidden space-y-3 md:space-y-4">
+          <p class="text-xs md:text-sm text-gray-600">
             All of these are optional at project creation, but you need to add these when you ship the project!
           <p>
-          <div class="mb-4">
+          <div class="mb-3 md:mb-4">
             <%= f.label :banner, "Project Banner", class: "block text-sm font-medium mb-1" %>
             <%= f.url_field :banner, placeholder: "https://journey.hacklub.com/banner.png", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base" %>
-            <p class="mt-1 text-sm text-gray-600">A banner image for your project (recommended size: smth X smth px)</p>
+            <p class="mt-1 text-xs md:text-sm text-gray-600">A banner image for your project (recommended size: smth X smth px)</p>
           </div>
 
-          <div class="mb-4">
+          <div class="mb-3 md:mb-4">
             <%= f.label :readme_link, "Documentation Link", class: "block text-sm font-medium mb-1" %>
             <%= f.url_field :readme_link, placeholder: "https://github.com/hackclub/journey/README.md", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base" %>
           </div>
 
-          <div class="mb-4">
+          <div class="mb-3 md:mb-4">
             <%= f.label :demo_link, "Demo Link", class: "block text-sm font-medium mb-1" %>
             <%= f.url_field :demo_link, placeholder: "https://journey.hackclub.com", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base" %>
           </div>
 
-          <div class="mb-6">
+          <div class="mb-4 md:mb-6">
             <%= f.label :repo_link, "Repository Link", class: "block text-sm font-medium mb-1" %>
             <%= f.url_field :repo_link, placeholder: "https://github.com/hackclub/journey", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base" %>
           </div>
         </div>
 
-        <div class="flex flex-row justify-end space-x-3">
-          <div class="flex space-x-3">
-            <button type="button" data-action="modal#close" class="px-4 py-2 bg-vintage-red text-white hover:scale-[1.05] btn-pixel-sm">
+        <div class="flex flex-row justify-end space-x-2 md:space-x-3">
+          <div class="flex space-x-2 md:space-x-3">
+            <button type="button" data-action="modal#close" class="px-3 md:px-4 py-2 bg-vintage-red text-white hover:scale-[1.05] btn-pixel-sm text-sm md:text-base">
               Cancel
             </button>
-            <button type="button" data-multi-step-form-target="nextButton" data-action="multi-step-form#next" class="px-4 py-2 bg-nice-blue text-white hover:scale-[1.05] btn-pixel-sm">
+            <button type="button" data-multi-step-form-target="nextButton" data-action="multi-step-form#next" class="px-3 md:px-4 py-2 bg-nice-blue text-white hover:scale-[1.05] btn-pixel-sm text-sm md:text-base">
               Next
             </button>
           </div>
 
-          <div class="flex space-x-3">
-            <button type="button" data-multi-step-form-target="prevButton" data-action="multi-step-form#previous" class="hidden px-4 py-2 bg-nice-blue text-white hover:scale-[1.05] btn-pixel-sm">
+          <div class="flex space-x-2 md:space-x-3">
+            <button type="button" data-multi-step-form-target="prevButton" data-action="multi-step-form#previous" class="hidden px-3 md:px-4 py-2 bg-nice-blue text-white hover:scale-[1.05] btn-pixel-sm text-sm md:text-base">
               Previous
             </button>
-            <%= f.submit "Create Project", class: "hidden px-4 py-2 bg-forest text-white hover:scale-[1.05] btn-pixel-sm", data: { form_target: "submitButton", multi_step_form_target: "submitButton" } %>
+            <%= f.submit "Create Project", class: "hidden px-3 md:px-4 py-2 bg-forest text-white hover:scale-[1.05] btn-pixel-sm text-sm md:text-base", data: { form_target: "submitButton", multi_step_form_target: "submitButton" } %>
           </div>
         </div>
       <% end %>
