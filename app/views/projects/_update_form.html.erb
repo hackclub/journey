@@ -1,6 +1,6 @@
 <div class="bg-soft-bone card-pixel p-6 mb-8">
   <h3 class="text-2xl font-steven mb-4">Add Update</h3>
-  <%= form_with(model: [@project, @project.updates.build], class: "space-y-4", data: { controller: "form", action: "submit->form#preventDoubleSubmission" }) do |f| %>
+  <%= form_with(model: [@project, @project.updates.build], class: "space-y-4", data: { controller: "form", action: "submit->form#preventDoubleSubmission", form_loading_spinner_path: asset_path("lollipop.svg") }) do |f| %>
     <div class="space-y-2">
       <%= f.label :text, "Update Text", class: "block text-lg" %>
       <%= f.text_area :text, class: "w-full p-2 border-2 border-black focus:outline-none focus:border-forest", rows: 4, required: true %>
@@ -12,7 +12,7 @@
     </div>
 
     <div class="flex justify-end">
-      <%= f.submit "Post Update", class: "px-6 py-2 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel" %>
+      <%= f.submit "Post Update", class: "px-6 py-2 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 text-base 2xl:text-large btn-pixel", data: { form_target: "submitButton" } %>
     </div>
   <% end %>
 </div> 
