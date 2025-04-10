@@ -33,7 +33,7 @@ class ProjectsController < ApplicationController
                 render :edit, status: :unprocessable_entity
             end
         else
-            redirect_to project_path(@project), alert: "You can only edit your own projects."
+            redirect_to project_path(@project), alert: "Something went wrong. Please try again."
         end
     end
 
