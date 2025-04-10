@@ -10,7 +10,7 @@
           <h2 class="text-3xl 2xl:text-4xl font-steven mb-6">Projects You Follow</h2>
           <div class="space-y-4 max-h-[calc(100vh-12rem)] overflow-y-auto pr-2">
             <% @followed_projects.each do |project| %>
-              <div class="transform hover:scale-[1.02] transition-transform duration-300">
+              <div class="transform transition-transform duration-300">
                 <div class="flex items-center space-x-4">
                   <div class="h-16 w-16 overflow-hidden rounded-lg flex-shrink-0">
                     <img src="<%= project.banner %>" alt="<%= project.title %>" class="w-full h-full object-cover">
@@ -34,7 +34,7 @@
           <h2 class="text-3xl 2xl:text-4xl font-steven mb-6">Recent Updates</h2>
           <div class="space-y-6">
             <% @recent_updates.each do |update| %>
-              <div class="transform hover:scale-[1.02] transition-transform duration-300 mb-6">
+              <div class="transform transition-transform duration-300 mb-6">
                 <div class="flex items-center mb-3">
                   <% if update.user.avatar.present? %>
                     <img src="<%= update.user.avatar %>" alt="<%= update.user.display_name %>" class="w-10 h-10 rounded-full mr-3">
