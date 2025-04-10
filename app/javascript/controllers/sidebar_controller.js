@@ -21,10 +21,7 @@ export default class extends Controller {
   disconnect() {
     document.removeEventListener('click', this.handleDocumentClick.bind(this))
   }
-  
-  handleDocumentClick(event) {
-  }
-  
+    
   toggle(event) {
     if (event) {
       event.stopPropagation()
