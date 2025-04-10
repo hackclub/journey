@@ -2,7 +2,7 @@
      data-sidebar-target="sidebar">
   <div class="flex justify-between items-center pt-2 px-2" data-sidebar-target="topContainer">
     <div class="cursor-pointer">
-      <%= inline_svg "icon.svg", class: "2xl:h-12 2xl:w-12 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
+      <%= link_to inline_svg("icon.svg", class: "2xl:h-12 2xl:w-12 h-10 w-10", data: { 'sidebar-target': 'icon' }), root_path %>
     </div>
     <button id="collapse-sidebar" class="hover:scale-110 transition-transform cursor-pointer"
            data-action="click->sidebar#toggle">
