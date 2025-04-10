@@ -1,4 +1,4 @@
-<div class="fixed bottom-0 left-0 right-0 bg-forest flex justify-around items-center py-2 px-4 text-soft-bone z-50">
+<div class="fixed bottom-0 left-0 right-0 bg-forest flex justify-around items-center py-2 px-2 text-soft-bone z-50">
 
   <%= link_to explore_path, class: "flex flex-col items-center #{'text-saddle-taupe' if current_page?(explore_path)}" do %>
     <%= inline_svg "downasaur.svg", class: "h-8 w-8" %>
@@ -18,5 +18,10 @@
   <%= link_to new_vote_path, class: "flex flex-col items-center #{'text-saddle-taupe' if current_page?(new_vote_path)}" do %>
     <%= inline_svg "trophy.svg", class: "h-8 w-8" %>
     <span class="text-xs mt-1">Vote</span>
+  <% end %>
+
+  <%= button_to logout_path, method: :delete, class: "flex flex-col items-center" do %>
+    <%= inline_svg "logout.svg", class: "h-8 w-8" %>
+    <span class="text-xs mt-1">Logout</span>
   <% end %>
 </div> 
