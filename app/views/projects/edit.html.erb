@@ -1,6 +1,6 @@
 <div class="container mx-auto px-4 py-8">
   <div class="bg-soft-bone card-pixel p-6">
-    <h1 class="text-3xl font-steven mb-6">Edit Project</h1>
+    <h1 class="text-base 2xl:text-xl font-steven mb-6">Edit Project</h1>
 
     <%= form_with(model: @project, class: "space-y-6") do |f| %>
       <div class="space-y-2">
@@ -35,8 +35,8 @@
       </div>
 
       <div class="flex justify-end space-x-4">
-        <%= link_to "Cancel", project_path(@project), class: "px-4 py-2 bg-vintage-red text-white hover:scale-[1.05] btn-pixel-sm" %>
-        <%= f.submit "Update Project", class: "px-4 py-2 bg-forest text-white hover:scale-[1.05] btn-pixel-sm" %>
+        <%= link_to "Cancel", project_path(@project), class: "px-4 py-2 bg-vintage-red text-white hover:scale-[1.05] btn-pixel-sm text-lg 2xl:text-xl" %>
+        <%= f.submit "Update Project", class: "px-4 py-2 bg-forest text-white hover:scale-[1.05] btn-pixel-sm text-lg 2xl:text-xl" %>
       </div>
     <% end %>
   </div>

@@ -64,7 +64,6 @@
 
       <!-- Step 2: Voting -->
       <div data-voting-steps-target="step2" class="hidden">
-        <h2 class="text-3xl font-steven text-center mb-8">Vote</h2>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <% @projects.each do |project| %>
@@ -86,19 +85,19 @@
                   <div class="flex flex-wrap gap-4">
                     <% if project.demo_link.present? %>
                       <a href="<%= project.demo_link %>" target="_blank"
-                         class="px-4 py-1.5 bg-forest hover:scale-[1.05] text-white transition-all duration-300 text-sm btn-pixel text-base 2xl:text-lg">
+                         class="px-4 py-1.5 bg-forest hover:scale-[1.05] text-white transition-all duration-300 btn-pixel text-lg 2xl:text-xl">
                         Demo
                       </a>
                     <% end %>
                     <% if project.repo_link.present? %>
                       <a href="<%= project.repo_link %>" target="_blank"
-                         class="px-4 py-1.5 bg-nice-blue hover:scale-[1.05] text-white transition-all duration-300 text-sm btn-pixel text-base 2xl:text-lg">
+                         class="px-4 py-1.5 bg-nice-blue hover:scale-[1.05] text-white transition-all duration-300 btn-pixel text-lg 2xl:text-xl">
                         Repository
                       </a>
                     <% end %>
                     <% if project.readme_link.present? %>
                       <a href="<%= project.readme_link %>" target="_blank"
-                         class="px-4 py-1.5 bg-saddle-taupe hover:scale-[1.05] text-white transition-all duration-300 text-sm btn-pixel text-base 2xl:text-lg">
+                         class="px-4 py-1.5 bg-saddle-taupe hover:scale-[1.05] text-white transition-all duration-300 btn-pixel text-lg 2xl:text-xl">
                         Documentation
                       </a>
                     <% end %>
