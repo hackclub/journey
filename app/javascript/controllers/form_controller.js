@@ -12,6 +12,7 @@ export default class extends Controller {
     this.submitting = false
     this.originalButtonText = null
     this.isDelete = this.element.dataset.delete === 'true'
+    this.lollipopPath = this.element.dataset.formLoadingSpinnerPath
   }
 
   disconnect() {
@@ -49,7 +50,7 @@ export default class extends Controller {
       
       button.innerHTML = `
         <div class="inline-flex items-center">
-          <img src="/assets/images/lollipop.svg" class="animate-spin h-6 w-6 mr-2" style="transform-origin: center center;">
+          <img src="${this.lollipopPath}" class="animate-spin h-6 w-6 mr-2" style="transform-origin: center center;">
           <span>${this.loadingTextValue[Math.floor(Math.random() * this.loadingTextValue.length)]}</span>
         </div>
       `

@@ -21,6 +21,12 @@ export default class extends Controller {
   disconnect() {
     document.removeEventListener('click', this.handleDocumentClick.bind(this))
   }
+  
+  handleDocumentClick(event) {
+    if (this.expanded && !this.element.contains(event.target)) {
+      this.toggle()
+    }
+  }
     
   toggle(event) {
     if (event) {
