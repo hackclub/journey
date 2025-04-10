@@ -60,7 +60,7 @@
         </div>
       </div>
 
-      <%= form_with model: Project.new, class: "p-6", data: { controller: "form multi-step-form", action: "submit->form#preventDoubleSubmission" } do |f| %>
+      <%= form_with model: Project.new, class: "p-6", data: { controller: "multi-step-form" } do |f| %>
         <div data-multi-step-form-target="step" class="space-y-4">
           <div class="mb-4">
             <%= f.label :title, class: "block text-sm font-medium mb-1" %>
