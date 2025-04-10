@@ -20,20 +20,30 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-     <%= stylesheet_link_tag "pixelart" %>
+    <%= stylesheet_link_tag "pixelart" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body class="min-h-screen bg-warm font-steven tracking-wider">
     <% if user_signed_in? %>
       <div data-controller="sidebar">
-        <%= render "shared/sidebar" %>
-        <main class="ml-64 2xl:ml-96 pt-12 py-8 pl-8" data-sidebar-target="mainContent">
-          <div id="flash-container">
-            <%= render "shared/flash" %>
-          </div>
-          <%= yield %>
-        </main>
+        <% if mobile_device? %>
+          <%= render "shared/mobile_nav" %>
+          <main class="pb-20 pt-12 px-4" data-sidebar-target="mainContent">
+            <div id="flash-container">
+              <%= render "shared/flash" %>
+            </div>
+            <%= yield %>
+          </main>
+        <% else %>
+          <%= render "shared/sidebar" %>
+          <main class="ml-64 2xl:ml-96 pt-12 py-8 pl-8" data-sidebar-target="mainContent">
+            <div id="flash-container">
+              <%= render "shared/flash" %>
+            </div>
+            <%= yield %>
+          </main>
+        <% end %>
       </div>
     <% else %>
       <div id="flash-container">
