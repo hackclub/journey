@@ -33,12 +33,33 @@ class ProjectsController < ApplicationController
     def update
         if current_user == @project.user
             if @project.update(project_params)
-                redirect_to project_path(@project), notice: "Project was successfully updated."
+                respond_to do |format|
+                    format.html { redirect_to project_path(@project), notice: "Project was successfully updated." }
+                    format.turbo_stream {
+                        flash.now[:notice] = "Project was successfully updated."
+                        render turbo_stream: [
+                            turbo_stream.update("flash-container", partial: "shared/flash"),
+                            turbo_stream.action(:redirect, project_path(@project))
+                        ]
+                    }
+                end
             else
-                render :edit, status: :unprocessable_entity
+                respond_to do |format|
+                    format.html { render :edit, status: :unprocessable_entity }
+                    format.turbo_stream {
+                        flash.now[:alert] = "Could not update project. Please check the form for errors."
+                        render turbo_stream: turbo_stream.update("flash-container", partial: "shared/flash")
+                    }
+                end
             end
         else
-            redirect_to project_path(@project), alert: "You can only edit your own projects."
+            respond_to do |format|
+                format.html { redirect_to project_path(@project), alert: "You can only edit your own projects." }
+                format.turbo_stream {
+                    flash.now[:alert] = "You can only edit your own projects."
+                    render turbo_stream: turbo_stream.update("flash-container", partial: "shared/flash")
+                }
+            end
         end
     end
 
@@ -50,8 +71,8 @@ class ProjectsController < ApplicationController
                     alert: "You can only have one project. Please edit your existing project instead."
                 }
                 format.turbo_stream {
-                    flash[:alert] = "You can only have one project. Please edit your existing project instead."
-                    redirect_to my_projects_path
+                    flash.now[:alert] = "You can only have one project. Please edit your existing project instead."
+                    render turbo_stream: turbo_stream.update("flash-container", partial: "shared/flash")
                 }
             end
             return
@@ -63,8 +84,11 @@ class ProjectsController < ApplicationController
             if @project.save
                 format.html { redirect_to project_path(@project), notice: "Project was successfully created." }
                 format.turbo_stream {
-                    flash[:notice] = "Project was successfully created."
-                    redirect_to project_path(@project)
+                    flash.now[:notice] = "Project was successfully created."
+                    render turbo_stream: [
+                        turbo_stream.update("flash-container", partial: "shared/flash"),
+                        turbo_stream.action(:redirect, project_path(@project))
+                    ]
                 }
             else
                 format.html {
@@ -73,7 +97,7 @@ class ProjectsController < ApplicationController
                 }
                 format.turbo_stream {
                     flash.now[:alert] = "Could not create project. Please check the form for errors."
-                    render :index, status: :unprocessable_entity
+                    render turbo_stream: turbo_stream.update("flash-container", partial: "shared/flash")
                 }
             end
         end
