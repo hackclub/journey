@@ -39,6 +39,7 @@ class VotesController < ApplicationController
         
         @projects = Project.where(id: projects_with_updates)
                           .where.not(id: voted_project_ids)
+                          .where.not(user_id: current_user.id)
                           .order("RANDOM()")
                           .limit(2)
     end
