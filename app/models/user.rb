@@ -15,10 +15,10 @@ class User < ApplicationRecord
 
         client = Slack::Web::Client.new(token: ENV["SLACK_BOT_TOKEN"])
         user_info = client.users_info(user: auth.info.authed_user.id)
-        user.display_name = user_info.user.profile.display_name
+        user.display_name = user_info.user.profile.display_name.presence || user_info.user.profile.real_name
         user.email = user_info.user.profile.email
         user.timezone = user_info.user.tz
-        user.avatar = user_info.user.profile.image_original
+        user.avatar = user_info.user.profile.image_original.presence || user_info.user.profile.image_512
         # TODO: first, middle & last name need to be pulled from YSWS DB
         user.first_name = user_info.user.profile.first_name
         user.last_name = user_info.user.profile.first_name
