@@ -34,18 +34,24 @@
         <p class="text-black mb-4 md:mb-6 text-gray-600 text-base md:text-lg 2xl:text-xl"><%= @project.description %></p>
 
         <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-          <a href="<%= @project.demo_link %>" target="_blank"
-             class="px-3 md:px-4 py-3 md:py-2 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-base md:text-lg 2xl:text-2xl">
-            Demo
-          </a>
-          <a href="<%= @project.repo_link %>" target="_blank"
-             class="px-3 md:px-4 py-3 md:py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-base md:text-lg 2xl:text-2xl">
-            Repository
-          </a>
-          <a href="<%= @project.readme_link %>" target="_blank"
-             class="px-3 md:px-4 py-3 md:py-2 bg-saddle-taupe hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-base md:text-lg 2xl:text-2xl">
-            Documentation
-          </a>
+          <% if @project.demo_link.present? %>
+            <a href="<%= @project.demo_link %>" target="_blank"
+               class="px-3 md:px-4 py-3 md:py-2 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-base md:text-lg 2xl:text-2xl">
+              Demo
+            </a>
+          <% end %>
+          <% if @project.repo_link.present? %>
+            <a href="<%= @project.repo_link %>" target="_blank"
+               class="px-3 md:px-4 py-3 md:py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-base md:text-lg 2xl:text-2xl">
+              Repository
+            </a>
+          <% end %>
+          <% if @project.readme_link.present? %>
+            <a href="<%= @project.readme_link %>" target="_blank"
+               class="px-3 md:px-4 py-3 md:py-2 bg-saddle-taupe hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-base md:text-lg 2xl:text-2xl">
+              Documentation
+            </a>
+          <% end %>
         </div>
       </div>
     </div>
