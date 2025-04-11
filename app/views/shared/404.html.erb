@@ -1,0 +1,9 @@
+<% content_for :title, "404 - Page Not Found" %>
+<% content_for :message, "Oops! The page you're looking for seems to not exist." %>
+<% content_for :mascot do %>
+  <div class="mascot-404">
+    <%= image_tag "sad.png", class: "w-full h-full mx-auto transform scale-x-[-1]" %>
+  </div>
+<% end %>
+
+<%= render "shared/error_layout" %> 

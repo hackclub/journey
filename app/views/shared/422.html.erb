@@ -1,0 +1,9 @@
+<% content_for :title, "422 - Unprocessable Entity" %>
+<% content_for :message, "Hmm, something about your request didn't quite make sense to us. Let's try that again!" %>
+<% content_for :mascot do %>
+  <div class="mascot-422">
+    <%= image_tag "sad.png", class: "w-full h-full mx-auto transform scale-x-[-1]" %>
+  </div>
+<% end %>
+
+<%= render "shared/error_layout" %> 
