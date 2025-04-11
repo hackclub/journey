@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
       begin
         user = User.find_or_create(auth)
         session[:user_id] = user.id
-        redirect_to dashboard_path, notice: "Signed in successfully!"
+        redirect_to explore_path, notice: "Signed in successfully!"
       rescue => e
         Rails.logger.error "Error during sign in: #{e.message}"
         redirect_to root_path, alert: "Error during sign in"
