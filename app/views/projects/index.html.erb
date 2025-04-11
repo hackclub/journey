@@ -53,7 +53,10 @@
   </div>
 
   <div id="create-project-modal" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
-    <div class="bg-soft-bone w-full max-w-2xl card-pixel mx-4" data-modal-target="container">
+    <div class="bg-soft-bone w-full max-w-2xl card-pixel mx-4 relative" data-modal-target="container">
+      <div class="absolute -top-8 -right-8 w-16 h-16 z-10">
+        <%= image_tag "puppyeyes.svg", class: "w-full h-full", alt: "Puppyeyes peeking" %>
+      </div>
       <div class="p-4 md:p-6 border-b border-saddle-taupe border-opacity-30">
         <div class="flex justify-between items-center">
           <h3 class="text-xl md:text-2xl font-steven">Create New Project</h3>
@@ -93,12 +96,12 @@
           <div class="mb-3 md:mb-4">
             <%= f.label :banner, "Project Banner", class: "block text-sm font-medium mb-1" %>
             <%= f.url_field :banner, placeholder: "https://journey.hacklub.com/banner.png", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base" %>
-            <p class="mt-1 text-xs md:text-sm text-gray-600">A banner image for your project (recommended size: smth X smth px)</p>
+            <p class="mt-1 text-xs md:text-sm text-gray-600">A banner image for your project</p>
           </div>
 
           <div class="mb-3 md:mb-4">
             <%= f.label :readme_link, "Documentation Link", class: "block text-sm font-medium mb-1" %>
-            <%= f.url_field :readme_link, placeholder: "https://github.com/hackclub/journey/README.md", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base" %>
+            <%= f.url_field :readme_link, placeholder: "https://raw.github.com/hackclub/journey/README.md", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base" %>
           </div>
 
           <div class="mb-3 md:mb-4">
