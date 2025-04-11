@@ -1,13 +1,18 @@
-<div class="flex flex-col items-center justify-center min-h-screen bg-warm">
-  <div class="bg-white p-10 rounded-xl shadow-xl text-center max-w-md mx-auto transform transition duration-300 hover:scale-105">
-    <h1 class="text-4xl font-steven mb-4 text-gray-800">Welcome to Journey</h1>
+<div class="flex flex-col items-center justify-center min-h-screen relative">
+  <div class="absolute top-4 left-4">
+    <%= inline_svg "icon.svg", class: "h-12 w-12" %>
+  </div>
+    
+  <div class="card-pixel bg-soft-bone p-10 text-center max-w-11/12 sm:max-w-md mx-auto">
+    <h1 class="text-4xl font-steven mb-4">Welcome to the Journey</h1>
 
     <div class="space-y-4">
-      <%= link_to "Sign in with Slack", "/auth/slack",
-          class: "inline-block w-full py-3 px-6 bg-black text-white rounded-lg transition duration-300 hover:bg-sage-dark hover:shadow-md" %>
-
-      <p class="text-sm text-gray-500 mt-4">Chris, Click <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">here</a></p>
+      <%= link_to "/auth/slack", class: "inline-block w-full py-3 px-6 bg-forest text-white btn-pixel flex items-center justify-center hover:scale-105 transition-transform duration-300" do %>
+        <div class="flex items-center justify-center w-full">
+          <%= inline_svg "slack.svg", class: "h-6 w-6 mr-2" %>
+          <span class="md:text-lg 2xl:text-2xl">Sign in with Slack</span>
+        </div>
+      <% end %>
     </div>
   </div>
-
 </div>
