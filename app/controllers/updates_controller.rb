@@ -100,6 +100,6 @@ class UpdatesController < ApplicationController
     end
 
     def update_params
-        params.permit(:text, :attachment)
+        params.require(:update).permit(:text, :attachment)
     end
 end
