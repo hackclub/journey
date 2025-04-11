@@ -25,10 +25,10 @@
               <p class="mb-4 md:mb-6 line-clamp-3 text-sm md:text-base 2xl:text-lg text-gray-600"><%= project.description %></p>
 
               <div class="flex flex-row space-x-4 mt-auto">
-                <%= link_to project_path(project), class: "px-3 md:px-4 py-2 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 flex-1 text-center btn-pixel text-base md:text-lg 2xl:text-2xl" do %>
+                <%= link_to project_path(project), class: "px-3 md:px-4 py-2 bg-forest hover:scale-[1.05] text-white transition-transform duration-300 flex-1 text-center btn-pixel text-base md:text-lg 2xl:text-2xl" do %>
                   View Project
                 <% end %>
-                <%= link_to project_path(project), class: "px-3 md:px-4 py-2 bg-nice-blue text-white hover:scale-[1.05] transition-colors duration-300 flex-1 text-center btn-pixel text-base md:text-lg 2xl:text-xl" do %>
+                <%= link_to project_path(project), class: "px-3 md:px-4 py-2 bg-nice-blue text-white hover:scale-[1.05] transition-transform duration-300 flex-1 text-center btn-pixel text-base md:text-lg 2xl:text-xl" do %>
                   <%= project.updates.count %> Updates
                 <% end %>
               </div>
@@ -39,7 +39,7 @@
         <div class="col-span-full flex flex-col items-center justify-center bg-soft-bone p-6 md:p-12 card-pixel">
           <h2 class="text-xl md:text-2xl 2xl:text-3xl mb-3 md:mb-4 font-steven text-center">You don't have any projects yet</h2>
           <p class="mb-6 md:mb-8 text-center text-sm md:text-base 2xl:text-lg text-gray-600">Create your first project to start your journey</p>
-          <button data-action="click->modal#open" class="px-4 md:px-6 py-2 md:py-3 bg-forest hover:bg-forest-dark text-white transition-colors duration-300 text-base md:text-lg 2xl:text-xl btn-pixel hover:scale-[1.05] cursor-pointer">
+          <button data-action="click->modal#open" class="px-4 md:px-6 py-2 md:py-3 bg-forest hover:bg-forest-dark text-white transition-transform duration-300 text-base md:text-lg 2xl:text-xl btn-pixel hover:scale-[1.05] cursor-pointer">
             Create Your Project
           </button>
         </div>

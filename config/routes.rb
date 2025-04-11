@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   delete "/logout", to: "sessions#destroy", as: :logout
 
   # Dashboard
-  get "dashboard", to: "dashboard#index"
+  # get "dashboard", to: "dashboard#index"
 
   get "explore", to: "projects#index"
   get "activity", to: "projects#activity"
@@ -38,4 +38,9 @@ Rails.application.routes.draw do
   # api stuff ooooh
   get "api/check_user", to: "users#check_user"
   post "api/updates", to: "updates#api_create"
+  # HTTP Error Routes
+  match '/404', to: 'errors#not_found', via: :all
+  match '/500', to: 'errors#internal_server_error', via: :all
+  match '/422', to: 'errors#unprocessable_entity', via: :all
+  match '/400', to: 'errors#bad_request', via: :all
 end

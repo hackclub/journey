@@ -1,0 +1,9 @@
+<% content_for :title, "400 - Bad Request" %>
+<% content_for :message, "Oops! That request didn't look quite right. Let's try something else!" %>
+<% content_for :mascot do %>
+  <div class="mascot-400">
+    <%= image_tag "sad.png", class: "w-full h-full mx-auto transform scale-x-[-1]" %>
+  </div>
+<% end %>
+
+<%= render "shared/error_layout" %> 

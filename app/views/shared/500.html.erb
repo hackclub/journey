@@ -1,0 +1,11 @@
+<% content_for :title, "500 - Server Error" %>
+<% content_for :message do %>
+  Oh no! Something went wrong on our end. Our <span class="line-through">slaves</span> engineers are working hard to fix it.
+<% end %>
+<% content_for :mascot do %>
+  <div class="mascot-500">
+    <%= image_tag "sad.png", class: "w-full h-full mx-auto transform scale-x-[-1]" %>
+  </div>
+<% end %>
+
+<%= render "shared/error_layout" %> 
