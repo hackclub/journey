@@ -13,12 +13,6 @@
   <nav class="flex-1 px-4 flex items-center text-justify text-4xl 2xl:text-5xl">
     <ul class="space-y-4 w-full">
       <li class="flex justify-start">
-        <%= link_to dashboard_path, class: "font-light px-4 py-2 block hover:bg-saddle-taupe hover-btn-pixel #{'bg-saddle-taupe btn-pixel' if current_page?(dashboard_path)}" do %>
-          <%= inline_svg "dashboard.svg", class: "2xl:h-12 2xl:w-12 inline mr-2 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
-          <span data-sidebar-target="content">Dashboard</span>
-        <% end %>
-      </li>
-      <li class="flex justify-start">
         <%= link_to explore_path, class: "px-4 py-2 block hover:bg-saddle-taupe hover-btn-pixel #{'bg-saddle-taupe btn-pixel' if current_page?(explore_path)}" do %>
           <%= inline_svg "downasaur.svg", class: "2xl:h-12 2xl:w-12 inline mr-2 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
           <span data-sidebar-target="content">Explore</span>

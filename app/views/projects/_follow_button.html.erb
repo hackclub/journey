@@ -1,10 +1,10 @@
 <%= turbo_frame_tag dom_id(project, :follow_button) do %>
   <% if defined?(following) ? following : current_user.project_follows.exists?(project_id: project.id) %>
-    <%= button_to unfollow_project_path(project), method: :delete, class: "p-1.5 sm:p-2 bg-vintage-red hover:scale-[1.05] text-white transition-colors duration-300 btn-pixel" do %>
+    <%= button_to unfollow_project_path(project), method: :delete, class: "p-1.5 sm:p-2 bg-vintage-red hover:scale-[1.05] text-white transition-transform duration-300 btn-pixel cursor-pointer" do %>
       <%= inline_svg "close.svg", class: "h-5 w-5 sm:h-6 sm:w-6" %>
     <% end %>
   <% else %>
-    <%= button_to follow_project_path(project), class: "p-1.5 sm:p-2 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 btn-pixel" do %>
+    <%= button_to follow_project_path(project), class: "p-1.5 sm:p-2 bg-forest hover:scale-[1.05] text-white transition-transform duration-300 btn-pixel cursor-pointer" do %>
       <%= inline_svg "plus.svg", class: "h-5 w-5 sm:h-6 sm:w-6" %>
     <% end %>
   <% end %>
