@@ -5,7 +5,7 @@
     <div class="bg-soft-bone card-pixel p-6 sm:p-12 text-center">
       <h2 class="text-xl sm:text-2xl 2xl:text-3xl font-steven mb-3 sm:mb-4">Not Enough Projects Available</h2>
       <p class="mb-6 sm:mb-8 text-gray-600 text-sm sm:text-base 2xl:text-lg">You need at least 2 projects to cast a vote. Check back later for more projects!</p>
-      <%= link_to explore_path, class: "px-4 sm:px-6 py-2 sm:py-3 bg-forest hover:scale-[1.05] text-white transition-colors duration-300 text-base sm:text-lg 2xl:text-xl btn-pixel" do %>
+      <%= link_to explore_path, class: "px-4 sm:px-6 py-2 sm:py-3 bg-forest hover:scale-[1.05] text-white transition-transform duration-300 text-base sm:text-lg 2xl:text-xl btn-pixel" do %>
         Explore Projects
       <% end %>
     </div>
@@ -56,7 +56,7 @@
         </div>
 
         <div class="flex justify-center mt-6 sm:mt-8">
-          <button class="w-full sm:w-auto px-6 sm:px-8 py-2 sm:py-3 bg-forest hover:scale-[1.05] text-white transition-all duration-300 text-lg sm:text-xl 2xl:text-2xl btn-pixel cursor-pointer" data-action="voting-steps#nextStep">
+          <button class="w-full sm:w-auto px-6 sm:px-8 py-2 sm:py-3 bg-forest hover:scale-[1.05] text-white transition-transform duration-300 text-lg sm:text-xl 2xl:text-2xl btn-pixel cursor-pointer" data-action="voting-steps#nextStep">
             Compare Projects
           </button>
         </div>
@@ -91,19 +91,19 @@
                   <div class="grid grid-cols-1 sm:flex sm:flex-wrap gap-3 sm:gap-4">
                     <% if project.demo_link.present? %>
                       <a href="<%= project.demo_link %>" target="_blank"
-                         class="px-4 sm:px-6 py-2.5 bg-forest hover:scale-[1.05] text-white transition-all duration-300 btn-pixel text-base sm:text-lg 2xl:text-xl text-center">
+                         class="px-4 sm:px-6 py-2.5 bg-forest hover:scale-[1.05] text-white transition-transform duration-300 btn-pixel text-base sm:text-lg 2xl:text-xl text-center">
                         Demo
                       </a>
                     <% end %>
                     <% if project.repo_link.present? %>
                       <a href="<%= project.repo_link %>" target="_blank"
-                         class="px-4 sm:px-6 py-2.5 bg-nice-blue hover:scale-[1.05] text-white transition-all duration-300 btn-pixel text-base sm:text-lg 2xl:text-xl text-center">
+                         class="px-4 sm:px-6 py-2.5 bg-nice-blue hover:scale-[1.05] text-white transition-transform duration-300 btn-pixel text-base sm:text-lg 2xl:text-xl text-center">
                         Repository
                       </a>
                     <% end %>
                     <% if project.readme_link.present? %>
                       <a href="<%= project.readme_link %>" target="_blank"
-                         class="px-4 sm:px-6 py-2.5 bg-saddle-taupe hover:scale-[1.05] text-white transition-all duration-300 btn-pixel text-base sm:text-lg 2xl:text-xl text-center">
+                         class="px-4 sm:px-6 py-2.5 bg-saddle-taupe hover:scale-[1.05] text-white transition-transform duration-300 btn-pixel text-base sm:text-lg 2xl:text-xl text-center">
                         Documentation
                       </a>
                     <% end %>
@@ -117,7 +117,7 @@
         </div>
 
         <div class="flex justify-center mt-6 sm:mt-8">
-          <button class="w-full sm:w-auto px-6 sm:px-8 py-2 sm:py-3 bg-saddle-taupe hover:scale-[1.05] text-white transition-all duration-300 text-lg sm:text-xl 2xl:text-2xl btn-pixel cursor-pointer" data-action="voting-steps#prevStep">
+          <button class="w-full sm:w-auto px-6 sm:px-8 py-2 sm:py-3 bg-saddle-taupe hover:scale-[1.05] text-white transition-transform duration-300 text-lg sm:text-xl 2xl:text-2xl btn-pixel cursor-pointer" data-action="voting-steps#prevStep">
             Back to Journeys
           </button>
         </div>
