@@ -20,7 +20,6 @@ export default class extends Controller {
   }
 
   open() {
-    console.log("Opening modal")
     const modal = document.getElementById("create-project-modal")
     modal.classList.remove("hidden")
     document.body.classList.add("overflow-hidden")
@@ -32,7 +31,6 @@ export default class extends Controller {
   }
 
   close() {
-    console.log("Closing modal")
     const modal = document.getElementById("create-project-modal")
     modal.classList.add("hidden")
     document.body.classList.remove("overflow-hidden")
