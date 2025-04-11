@@ -22,7 +22,8 @@
       <% if user_signed_in? && current_user == update.user %>
         <%= button_to "Delete", project_update_path(@project, update),
             method: :delete,
-            class: "px-3 md:px-4 py-2 bg-vintage-red hover:scale-[1.05] text-white transition-colors duration-300 text-sm md:text-base 2xl:text-large btn-pixel delete-button" %>
+            class: "px-3 md:px-4 py-2 bg-vintage-red hover:scale-[1.05] text-white transition-colors duration-300 text-sm md:text-base 2xl:text-large btn-pixel delete-button",
+            data: { controller: "delete-confirmation", action: "click->delete-confirmation#confirm" } %>
       <% end %>
       <button class="px-3 md:px-4 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-colors duration-300 text-sm md:text-base 2xl:text-large btn-pixel">
         Add Comment

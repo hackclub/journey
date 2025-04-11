@@ -3,15 +3,13 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["submitButton", "form"]
   static values = {
-    loadingText: { type: String, default: "This might be an intentional delay because Kartikey loves the loading indicator so much..." },
-    isDelete: { type: Boolean, default: false },
+    loadingText: { type: String, default: "Processing..." },
     isConfirming: { type: Boolean, default: false }
   }
 
   connect() {
     this.submitting = false
     this.originalButtonText = null
-    this.isDelete = this.element.dataset.delete === 'true'
   }
 
   disconnect() {
@@ -25,13 +23,7 @@ export default class extends Controller {
       event.preventDefault()
       return
     }
-
-    if (this.isDelete && !this.isConfirming) {
-      event.preventDefault()
-      this.confirmDelete()
-      return
-    }
-
+    
     this.submitting = true
     this.disableSubmitButton()
 
@@ -39,13 +31,6 @@ export default class extends Controller {
       this.resetButton()
       this.element.reset() 
     }, { once: true })
-  }
-
-  confirmDelete() {
-    const button = this.submitButtonTarget
-    this.originalButtonText = button.innerHTML
-    button.innerHTML = 'Sure?'
-    this.isConfirming = true
   }
 
   disableSubmitButton() {
