@@ -4,7 +4,7 @@ class User < ApplicationRecord
     has_many :votes
     has_many :project_follows
     has_many :followed_projects, through: :project_follows, source: :project
-    has_many :projects
+
     validates :slack_id, presence: true, uniqueness: true
     validates :email, :first_name, :middle_name, :last_name, :display_name, :timezone, :avatar, presence: true
     validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
