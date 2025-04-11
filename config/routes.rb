@@ -34,4 +34,8 @@ Rails.application.routes.draw do
 
   get "updates", to: "updates#index"
   resources :votes, only: [ :new, :create ]
+
+  # api stuff ooooh
+  get "api/check_user", to: "users#check_user"
+  post "api/updates", to: "updates#api_create"
 end

@@ -3,7 +3,9 @@ class UpdatesController < ApplicationController
     before_action :authenticate_user!
     before_action :set_project, only: [ :create, :destroy ]
     before_action :set_update, only: [ :destroy ]
-
+    skip_before_action :authenticate_user!, only: [ :api_create ]
+    before_action :authenticate_api_key, only: [ :api_create ]
+    skip_before_action :verify_authenticity_token, only: [ :api_create ]
     def index
         @page = [ params[:page].to_i, 1 ].max
         @per_page = 10
@@ -63,6 +65,23 @@ class UpdatesController < ApplicationController
         end
     end
 
+    def api_create
+        user = User.find_by(slack_id: params[:slack_id])
+        return render json: { error: "User not found" }, status: :not_found unless user
+
+        project = Project.find_by(id: params[:project_id])
+        return render json: { error: "Project not found" }, status: :not_found unless project
+
+        update = project.updates.build(update_params)
+        update.user = user
+
+        if update.save
+            render json: { message: "Update successfully created", update: update }, status: :created
+        else
+            render json: { error: "Failed to create update", details: update.errors.full_messages }, status: :unprocessable_entity
+        end
+    end
+
     private
 
     def set_project
@@ -73,7 +92,14 @@ class UpdatesController < ApplicationController
         @update = @project.updates.find(params[:id])
     end
 
+    def authenticate_api_key
+        api_key = request.headers["Authorization"]
+        unless api_key.present? && api_key == ENV["API_KEY"]
+            render json: { error: "Unauthorized" }, status: :unauthorized
+        end
+    end
+
     def update_params
-        params.require(:update).permit(:text, :attachment)
+        params.permit(:text, :attachment)
     end
 end
