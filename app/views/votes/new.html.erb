@@ -1,9 +1,23 @@
-<div class="container mx-auto px-4 pt-2 md:pt-8">
-  <h1 class="text-4xl sm:text-5xl font-steven sm:text-center mb-6 sm:mb-12">Vote</h1>
+<div class="container mx-auto px-4 sm:px-4 pt-2 md:pt-8">
+  <h1 class="text-4xl sm:text-5xl font-steven mb-4 sm:text-center">Vote</h1>
 
-  <% if @projects.size < 2 %>
+  <% if ENV['VOTING_STATUS'] == 'locked' %>
+    <div class="bg-soft-bone card-pixel p-6 sm:p-12 text-center">
+      <h2 class="text-xl sm:text-2xl 2xl:text-3xl font-steven mb-3 sm:mb-4">Voting is Locked</h2>
+      <div class="flex justify-center items-center">
+        <%= image_tag 'sad.png', class: 'w-16 h-16 sm:w-48 sm:h-48 2xl:w-64 2xl:h-64 transform scale-x-[-1] mb-4 sm:mb-6' %>
+      </div>
+      <p class="mb-6 sm:mb-8 text-gray-600 text-sm sm:text-base 2xl:text-lg">Voting is currently locked. Please check back later when voting is unlocked.</p>
+      <%= link_to explore_path, class: "px-4 sm:px-6 py-2 sm:py-3 bg-forest hover:scale-[1.05] text-white transition-transform duration-300 text-base sm:text-lg 2xl:text-xl btn-pixel" do %>
+        Explore Projects
+      <% end %>
+    </div>
+  <% elsif @projects.size < 2 %>
     <div class="bg-soft-bone card-pixel p-6 sm:p-12 text-center">
       <h2 class="text-xl sm:text-2xl 2xl:text-3xl font-steven mb-3 sm:mb-4">Not Enough Projects Available</h2>
+      <div class="flex justify-center items-center">
+        <%= image_tag 'sad.png', class: 'w-16 h-16 sm:w-32 sm:h-32 mb-4 sm:mb-6 transform scale-x-[-1]' %>
+      </div>
       <p class="mb-6 sm:mb-8 text-gray-600 text-sm sm:text-base 2xl:text-lg">You need at least 2 projects to cast a vote. Check back later for more projects!</p>
       <%= link_to explore_path, class: "px-4 sm:px-6 py-2 sm:py-3 bg-forest hover:scale-[1.05] text-white transition-transform duration-300 text-base sm:text-lg 2xl:text-xl btn-pixel" do %>
         Explore Projects
@@ -16,8 +30,8 @@
         
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
           <% @projects.each do |project| %>
-            <div class="bg-soft-bone card-pixel p-4 sm:p-6">
-              <div class="space-y-4 sm:space-y-6">
+            <div class="bg-soft-bone card-pixel p-6 sm:p-12">
+              <div class="space-y-6 sm:space-y-8">
                 <div class="flex items-start gap-3 sm:gap-4">
                   <div class="h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 overflow-hidden rounded-lg">
                     <% project_image = project.banner %>
@@ -29,10 +43,10 @@
                   </div>
                 </div>
 
-                <div class="space-y-4 sm:space-y-6">
+                <div class="space-y-6 sm:space-y-8">
                   <% project.updates.order(created_at: :asc).each do |update| %>
-                    <div class="p-3 sm:p-4 transform hover:scale-[1.02] transition-transform duration-300">
-                      <div class="flex items-center mb-2 sm:mb-3">
+                    <div class="p-4 sm:p-6 transform hover:scale-[1.02] transition-transform duration-300">
+                      <div class="flex items-center mb-3 sm:mb-4">
                         <% if update.user.avatar.present? %>
                           <img src="<%= update.user.avatar %>" alt="<%= update.user.display_name %>" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full mr-2 sm:mr-3">
                         <% end %>
@@ -43,7 +57,7 @@
                       </div>
                       <p class="text-base sm:text-xl break-words"><%= update.text %></p>
                       <% if update.attachment.present? %>
-                        <div class="mt-2 sm:mt-3 overflow-hidden rounded-lg">
+                        <div class="mt-3 sm:mt-4 overflow-hidden rounded-lg">
                           <%= image_tag update.attachment, class: "w-full max-h-48 sm:max-h-64 object-contain" %>
                         </div>
                       <% end %>
@@ -63,7 +77,7 @@
       </div>
 
       <!-- Loading State -->
-      <div data-voting-steps-target="loadingIndicator" class="hidden flex items-center justify-center py-8 sm:py-12">
+      <div data-voting-steps-target="loadingIndicator" class="hidden flex items-center justify-center py-6 sm:py-12">
         <div class="flex flex-col items-center justify-center">
           <%= image_tag 'lollipop.svg', class: 'w-16 h-16 sm:w-24 sm:h-24 animate-spin' %>
         </div>
@@ -73,8 +87,8 @@
       <div data-voting-steps-target="step2" class="hidden">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
           <% @projects.each do |project| %>
-            <div class="bg-soft-bone card-pixel p-4 sm:p-6">
-              <div class="space-y-4 sm:space-y-6">
+            <div class="bg-soft-bone card-pixel p-6 sm:p-12">
+              <div class="space-y-6 sm:space-y-8">
                 <div class="flex items-start gap-3 sm:gap-4">
                   <div class="h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 overflow-hidden rounded-lg">
                     <% project_image = project.banner %>
@@ -86,7 +100,7 @@
                   </div>
                 </div>
 
-                <div class="space-y-3 sm:space-y-4">
+                <div class="space-y-4 sm:space-y-6">
                   <h4 class="text-lg sm:text-xl font-steven">Project Links</h4>
                   <div class="grid grid-cols-1 sm:flex sm:flex-wrap gap-3 sm:gap-4">
                     <% if project.demo_link.present? %>
