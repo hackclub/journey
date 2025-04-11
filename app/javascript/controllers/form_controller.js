@@ -12,7 +12,6 @@ export default class extends Controller {
     this.submitting = false
     this.originalButtonText = null
     this.isDelete = this.element.dataset.delete === 'true'
-    this.lollipopPath = this.element.dataset.formLoadingSpinnerPath
   }
 
   disconnect() {
@@ -35,6 +34,11 @@ export default class extends Controller {
 
     this.submitting = true
     this.disableSubmitButton()
+
+    this.element.addEventListener("turbo:submit-end", () => {
+      this.resetButton()
+      this.element.reset() 
+    }, { once: true })
   }
 
   confirmDelete() {
