@@ -6,7 +6,7 @@ class User < ApplicationRecord
     has_many :followed_projects, through: :project_follows, source: :project
 
     validates :slack_id, presence: true, uniqueness: true
-    validates :email, :first_name, :middle_name, :last_name, :display_name, :timezone, :avatar, presence: true
+    validates :email, :first_name,:last_name, :display_name, :timezone, :avatar, presence: true
     validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
     def self.find_or_create(auth)
