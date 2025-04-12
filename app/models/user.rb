@@ -24,7 +24,7 @@ class User < ApplicationRecord
 
         verification_status = airtable_user.fields["Verification Status"]
         unless %w[Eligible L1 Eligible L2].include?(verification_status)
-          raise StandardError, "You are not eligible. If you think this is an error, please DM @Bartoz on Slack."
+          raise StandardError, "You are not eligible. If you think this is an error, please DM @Bartosz on Slack."
         end
 
         user_info = client.users_info(user: auth.info.authed_user.id)
