@@ -54,87 +54,92 @@
     </div>
   </div>
 
-  <div id="create-project-modal" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
-    <div class="bg-soft-bone w-full max-w-2xl card-pixel mx-4 relative" data-modal-target="container">
-      <div class="absolute -top-8 -right-8 w-16 h-16 z-10">
+  <div id="create-project-modal" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center p-2 md:p-4">
+    <div class="bg-soft-bone w-full max-w-2xl card-pixel mx-2 md:mx-auto relative" data-modal-target="container">
+      <div class="absolute -top-6 -right-6 w-12 h-12 md:-top-8 md:-right-8 md:w-16 md:h-16 z-10">
         <%= image_tag "puppyeyes.svg", class: "w-full h-full", alt: "Puppyeyes peeking" %>
       </div>
-      <div class="p-4 md:p-6 border-b border-saddle-taupe border-opacity-30">
+      <div class="p-3 md:p-6 border-b border-saddle-taupe border-opacity-30">
         <div class="flex justify-between items-center">
-          <h3 class="text-xl md:text-2xl font-steven">Create New Project</h3>
+          <h3 class="text-lg md:text-2xl font-steven">Create New Project</h3>
         </div>
       </div>
 
-      <%= form_with model: Project.new, class: "p-4 md:p-6", data: { controller: "multi-step-form" } do |f| %>
-        <div data-multi-step-form-target="step" class="space-y-3 md:space-y-4">
-          <div class="mb-3 md:mb-4">
-            <%= f.label :title, class: "block text-sm font-medium mb-1" %>
-            <%= f.text_field :title, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base", required: true %>
-          </div>
-
-          <div class="mb-3 md:mb-4">
-            <%= f.label :description, class: "block text-sm font-medium mb-1" %>
-            <%= f.text_area :description, rows: 4, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base", required: true %>
-          </div>
-
-          <div class="mb-3 md:mb-4">
-            <%= f.label :category, class: "block text-sm font-medium mb-1" %>
-            <div class="relative">
-              <%= f.select :category,
-                  [["Select a category", ""], "Software", "Hardware"],
-                  {},
-                  class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base appearance-none pr-10" %>
-              <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                <%= inline_svg "chevron-down.svg", class: "h-5 w-5 text-gray-600" %>
-              </div>
+      <div class="max-h-[calc(90vh-100px)] overflow-y-auto overflow-x-hidden">
+        <%= form_with model: Project.new, class: "p-3 md:p-6 mx-auto w-[calc(100%-2px)]", data: { controller: "project-form", action: "submit->project-form#validateForm" } do |f| %>
+          <div class="space-y-2 md:space-y-4">
+            <div class="mb-2 md:mb-4">
+              <%= f.label :title, class: "block text-sm font-medium mb-1" %>
+              <%= f.text_field :title, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-sm md:text-base", id: "title", data: { project_form_target: "title" } %>
+              <p class="mt-1 text-xs md:text-sm text-vintage-red">Required</p>
+              <p class="mt-1 text-xs md:text-sm text-vintage-red hidden" id="titleError" data-project-form-target="titleError"></p>
             </div>
-          </div>
-        </div>
 
-        <div data-multi-step-form-target="step" class="hidden space-y-3 md:space-y-4">
-          <p class="text-xs md:text-sm text-gray-600">
-            All of these are optional at project creation, but you need to add these when you ship the project!
-          <p>
-          <div class="mb-3 md:mb-4">
-            <%= f.label :banner, "Project Banner", class: "block text-sm font-medium mb-1" %>
-            <%= f.url_field :banner, placeholder: "https://journey.hacklub.com/banner.png", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base" %>
-            <p class="mt-1 text-xs md:text-sm text-gray-600">A banner image for your project</p>
+            <div class="mb-2 md:mb-4">
+              <%= f.label :description, class: "block text-sm font-medium mb-1" %>
+              <%= f.text_area :description, rows: 3, class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-sm md:text-base", id: "description", data: { project_form_target: "description" } %>
+              <p class="mt-1 text-xs md:text-sm text-vintage-red">Required</p>
+              <p class="mt-1 text-xs md:text-sm text-vintage-red hidden" id="descriptionError" data-project-form-target="descriptionError"></p>
+            </div>
+
+            <div class="mb-2 md:mb-4">
+              <%= f.label :category, class: "block text-sm font-medium mb-1" %>
+              <div class="relative">
+                <%= f.select :category,
+                    [["Select a category", ""], "Software", "Hardware", "Both Software & Hardware", "Something else"],
+                    {},
+                    class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-sm md:text-base appearance-none pr-10",
+                    id: "category",
+                    data: { project_form_target: "category" } %>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                  <%= inline_svg "chevron-down.svg", class: "h-5 w-5 text-gray-600" %>
+                </div>
+              </div>
+              <p class="mt-1 text-xs md:text-sm text-vintage-red">Required</p>
+              <p class="mt-1 text-xs md:text-sm text-vintage-red hidden" id="categoryError" data-project-form-target="categoryError"></p>
+            </div>
+
+            <div class="mb-2 md:mb-4">
+              <%= f.label :banner, "Project Banner", class: "block text-sm font-medium mb-1" %>
+              <%= f.url_field :banner, placeholder: "https://journey.hackclub.com/banner.png", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-sm md:text-base", id: "banner", data: { project_form_target: "banner" } %>
+              <p class="mt-1 text-xs md:text-sm text-gray-700">Optional</p>
+              <p class="mt-1 text-xs md:text-sm text-vintage-red hidden" id="bannerError" data-project-form-target="bannerError"></p>
+            </div>
+
+            <div class="mb-2 md:mb-4">
+              <%= f.label :readme_link, "Documentation Link", class: "block text-sm font-medium mb-1" %>
+              <%= f.url_field :readme_link, placeholder: "https://github.com/hackclub/journey/README.md", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-sm md:text-base", id: "readme", data: { project_form_target: "readme" } %>
+              <p class="mt-1 text-xs md:text-sm text-gray-700">Optional</p>
+              <p class="mt-1 text-xs md:text-sm text-vintage-red hidden" id="readmeError" data-project-form-target="readmeError"></p>
+            </div>
+
+            <div class="mb-2 md:mb-4">
+              <%= f.label :demo_link, "Demo Link", class: "block text-sm font-medium mb-1" %>
+              <%= f.url_field :demo_link, placeholder: "https://journey.hackclub.com", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-sm md:text-base", id: "demo", data: { project_form_target: "demo" } %>
+              <p class="mt-1 text-xs md:text-sm text-gray-700">Optional</p>
+              <p class="mt-1 text-xs md:text-sm text-vintage-red hidden" id="demoError" data-project-form-target="demoError"></p>
+            </div>
+
+            <div class="mb-3 md:mb-6">
+              <%= f.label :repo_link, "Repository Link", class: "block text-sm font-medium mb-1" %>
+              <%= f.url_field :repo_link, placeholder: "https://github.com/hackclub/journey", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-sm md:text-base", id: "repo", data: { project_form_target: "repo" } %>
+              <p class="mt-1 text-xs md:text-sm text-gray-700">Optional</p>
+              <p class="mt-1 text-xs md:text-sm text-vintage-red hidden" id="repoError" data-project-form-target="repoError"></p>
+            </div>
+
+            <p class="text-xs md:text-base text-gray-800 border-t border-saddle-taupe border-opacity-30 pt-3">
+              Only Title, Description, and Category are required. All other fields can be added later when you're ready to ship.
+            </p>
           </div>
 
-          <div class="mb-3 md:mb-4">
-            <%= f.label :readme_link, "Documentation Link", class: "block text-sm font-medium mb-1" %>
-            <%= f.url_field :readme_link, placeholder: "https://raw.github.com/hackclub/journey/README.md", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base" %>
-          </div>
-
-          <div class="mb-3 md:mb-4">
-            <%= f.label :demo_link, "Demo Link", class: "block text-sm font-medium mb-1" %>
-            <%= f.url_field :demo_link, placeholder: "https://journey.hackclub.com", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base" %>
-          </div>
-
-          <div class="mb-4 md:mb-6">
-            <%= f.label :repo_link, "Repository Link", class: "block text-sm font-medium mb-1" %>
-            <%= f.url_field :repo_link, placeholder: "https://github.com/hackclub/journey", class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-base" %>
-          </div>
-        </div>
-
-        <div class="flex flex-row justify-end space-x-2 md:space-x-3">
-          <div class="flex space-x-2 md:space-x-3">
-            <button type="button" data-action="modal#close" class="px-3 md:px-4 py-2 bg-vintage-red text-white hover:scale-[1.05] btn-pixel-sm text-sm md:text-base">
+          <div class="flex flex-row justify-end space-x-2 md:space-x-3 mt-3 md:mt-4">
+            <button type="button" data-action="modal#close" class="px-3 md:px-4 py-1 md:py-2 bg-vintage-red text-white hover:scale-[1.05] btn-pixel-sm text-sm md:text-base">
               Cancel
             </button>
-            <button type="button" data-multi-step-form-target="nextButton" data-action="multi-step-form#next" class="px-3 md:px-4 py-2 bg-nice-blue text-white hover:scale-[1.05] btn-pixel-sm text-sm md:text-base">
-              Next
-            </button>
+            <%= f.submit "Create Project", class: "px-3 md:px-4 py-1 md:py-2 bg-forest text-white hover:scale-[1.05] btn-pixel-sm text-sm md:text-base" %>
           </div>
-
-          <div class="flex space-x-2 md:space-x-3">
-            <button type="button" data-multi-step-form-target="prevButton" data-action="multi-step-form#previous" class="hidden px-3 md:px-4 py-2 bg-nice-blue text-white hover:scale-[1.05] btn-pixel-sm text-sm md:text-base">
-              Previous
-            </button>
-            <%= f.submit "Create Project", class: "hidden px-3 md:px-4 py-2 bg-forest text-white hover:scale-[1.05] btn-pixel-sm text-sm md:text-base", data: { form_target: "submitButton", multi_step_form_target: "submitButton" } %>
-          </div>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>

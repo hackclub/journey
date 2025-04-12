@@ -12,7 +12,7 @@ class Project < ApplicationRecord
 
   validates :user_id, uniqueness: { message: "can only have one project" }
 
-  validates :category, inclusion: { in: %w[Software Hardware], message: "%{value} is not a valid category" }
+  validates :category, inclusion: { in: ["Software", "Hardware", "Both Software & Hardware", "Something else"], message: "%{value} is not a valid category" }
 
   after_initialize :set_default_rating, if: :new_record?
 
