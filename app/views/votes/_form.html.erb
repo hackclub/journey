@@ -1,6 +1,6 @@
-<%= form_with(model: [project, vote], 
+<%= form_with(model: [project, vote],
              url: votes_path,
-             class: "space-y-3 sm:space-y-4", 
+             class: "space-y-3 sm:space-y-4",
              id: "vote_form_#{project.id}",
              data: { controller: "form", action: "submit->form#preventDoubleSubmission" }) do |f| %>
     <%= f.hidden_field :project_id, value: project.id %>
@@ -12,7 +12,7 @@
             rows: 3,
             required: true,
             placeholder: "I like this because..." %>
-        
+
         <% if vote.errors[:explanation].any? %>
             <div class="text-vintage-red text-xs sm:text-sm mt-1">
                 <%= vote.errors[:explanation].join(", ") %>
@@ -21,8 +21,8 @@
     </div>
 
     <div class="flex justify-end">
-        <%= f.submit "Vote", 
-            class: "w-full sm:w-auto px-4 sm:px-6 py-2 bg-forest hover:scale-[1.05] text-white transition-transform duration-300 text-base sm:text-lg 2xl:text-xl btn-pixel cursor-pointer", 
+        <%= f.submit "Vote",
+            class: "w-full sm:w-auto px-4 sm:px-6 py-2 bg-forest hover:scale-[1.05] text-white transition-transform duration-300 text-base sm:text-lg 2xl:text-xl btn-pixel cursor-pointer",
             data: { form_target: "submitButton" } %>
     </div>
-<% end %> 
+<% end %>
