@@ -8,7 +8,7 @@
       <% if @projects.any? %>
         <% @projects.each do |project| %>
           <div class="bg-soft-bone card-pixel transform hover:scale-[1.02] transition-transform duration-300 flex flex-col h-full">
-            <% project_image = project.banner %>
+            <% project_image = project.banner.presence || "https://raw.githubusercontent.com/hackclub/dinosaurs/main/confused_dinosaur.png" %>
             <div class="h-36 md:h-48 overflow-hidden relative">
               <img src="<%= project_image %>" alt="<%= project.title %>" class="w-full h-full object-cover">
             </div>
