@@ -1,14 +1,13 @@
 <div class="bg-soft-bone card-pixel p-4 md:p-6 mb-4 md:mb-8">
-  <h3 class="text-xl md:text-2xl 2xl:text-3xl font-steven mb-3 md:mb-4">Add Update</h3>
   <% if ENV['UPDATES_STATUS'] == 'locked' %>
     <div class="text-center">
-      <h2 class="text-xl sm:text-2xl 2xl:text-3xl font-steven mb-3 sm:mb-4">Updates are Locked</h2>
       <div class="flex justify-center items-center">
         <%= image_tag 'sad.png', class: 'w-16 h-16 sm:w-48 sm:h-48 2xl:w-64 2xl:h-64 transform scale-x-[-1] mb-4 sm:mb-6' %>
       </div>
-      <p class="mb-6 sm:mb-8 text-gray-600 text-sm sm:text-base 2xl:text-lg">Posting updates is currently locked. Please check back later when updates are unlocked.</p>
+      <p class="mb-6 sm:mb-8 text-black text-large sm:text-xl 2xl:text-2xl">Posting updates is currently locked. Updates will be unlocked on Tuesday, April 15th.</p>
     </div>
   <% else %>
+    <h3 class="text-xl md:text-2xl 2xl:text-3xl font-steven mb-3 md:mb-4">Add Update</h3>
     <%= form_with(model: [@project, @project.updates.build], class: "space-y-3 md:space-y-4", data: { controller: "form", action: "submit->form#preventDoubleSubmission" }) do |f| %>
       <div class="space-y-1.5 md:space-y-2">
         <%= f.label :text, "Update Text", class: "block text-base md:text-lg 2xl:text-xl" %>
