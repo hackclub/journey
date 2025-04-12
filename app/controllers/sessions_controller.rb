@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
         redirect_to my_projects_path, notice: "Signed in successfully!"
       rescue => e
         Rails.logger.error "Error during sign in: #{e.message}"
-        redirect_to root_path, alert: "Error during sign in"
+        redirect_to root_path, alert: e.message
       end
     end
 

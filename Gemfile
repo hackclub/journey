@@ -73,3 +73,5 @@ gem "cskartikey-omniauth-slack", require: "omniauth-slack", github: "cskartikey/
 gem "slack-ruby-client"
 
 gem "inline_svg"
+
+gem "airrecord"
