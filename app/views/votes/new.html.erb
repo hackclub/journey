@@ -2,23 +2,21 @@
   <h1 class="text-4xl sm:text-5xl font-steven mb-4 sm:text-center">Vote</h1>
 
   <% if ENV['VOTING_STATUS'] == 'locked' %>
-    <div class="bg-soft-bone card-pixel p-6 sm:p-12 text-center">
-      <h2 class="text-xl sm:text-2xl 2xl:text-3xl font-steven mb-3 sm:mb-4">Voting is Locked</h2>
+    <div class="bg-soft-bone card-pixel p-6 sm:p-12 text-center mt-8">
       <div class="flex justify-center items-center">
-        <%= image_tag 'sad.png', class: 'w-16 h-16 sm:w-48 sm:h-48 2xl:w-64 2xl:h-64 transform scale-x-[-1] mb-4 sm:mb-6' %>
+        <%= image_tag 'sad.png', class: 'w-32 h-32 sm:w-48 sm:h-48 2xl:w-64 2xl:h-64 transform scale-x-[-1] mb-4 sm:mb-6' %>
       </div>
-      <p class="mb-6 sm:mb-8 text-gray-600 text-sm sm:text-base 2xl:text-lg">Voting is currently locked. Please check back later when voting is unlocked.</p>
+      <p class="mb-6 sm:mb-8 text-black text-large sm:text-xl 2xl:text-2xl">Voting is currently locked. Voting will be unlocked at the end of the event.</p>
       <%= link_to explore_path, class: "px-4 sm:px-6 py-2 sm:py-3 bg-forest hover:scale-[1.05] text-white transition-transform duration-300 text-base sm:text-lg 2xl:text-xl btn-pixel" do %>
         Explore Projects
       <% end %>
     </div>
   <% elsif @projects.size < 2 %>
-    <div class="bg-soft-bone card-pixel p-6 sm:p-12 text-center">
-      <h2 class="text-xl sm:text-2xl 2xl:text-3xl font-steven mb-3 sm:mb-4">Not Enough Projects Available</h2>
+    <div class="bg-soft-bone card-pixel p-6 sm:p-12 text-center mt-8">
       <div class="flex justify-center items-center">
-        <%= image_tag 'sad.png', class: 'w-16 h-16 sm:w-32 sm:h-32 mb-4 sm:mb-6 transform scale-x-[-1]' %>
+        <%= image_tag 'sad.png', class: 'w-32 h-32 sm:w-32 sm:h-32 mb-4 sm:mb-6 transform scale-x-[-1]' %>
       </div>
-      <p class="mb-6 sm:mb-8 text-gray-600 text-sm sm:text-base 2xl:text-lg">You need at least 2 projects to cast a vote. Check back later for more projects!</p>
+      <p class="mb-6 sm:mb-8 text-black text-large sm:text-xl 2xl:text-2xl">You need at least 2 projects to cast a vote. Check back later for more projects!</p>
       <%= link_to explore_path, class: "px-4 sm:px-6 py-2 sm:py-3 bg-forest hover:scale-[1.05] text-white transition-transform duration-300 text-base sm:text-lg 2xl:text-xl btn-pixel" do %>
         Explore Projects
       <% end %>

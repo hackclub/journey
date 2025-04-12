@@ -63,10 +63,9 @@
       </div>
     </div>
   <% else %>
-    <div class="bg-soft-bone card-pixel p-6 sm:p-12 text-center">
-      <h2 class="text-xl sm:text-2xl 2xl:text-3xl font-steven mb-3 sm:mb-4">No Activity Yet</h2>
-      <%= image_tag "puppyeyes.png", class: "mx-auto w-16 h-16 sm:w-48 sm:h-48 mb-4 sm:mb-6 transform scale-x-[-1]", alt: "Puppy Eyes" %>
-      <p class="mb-6 sm:mb-8 text-gray-600 text-sm sm:text-base 2xl:text-lg">Start following some projects to see their journey here!</p>
+    <div class="bg-soft-bone card-pixel p-6 sm:p-12 text-center mt-8">
+      <%= image_tag "puppyeyes.png", class: "mx-auto w-32 h-32 sm:w-48 sm:h-48 2xl:w-64 2xl:h-64 mb-4 sm:mb-6 transform scale-x-[-1]", alt: "Puppy Eyes" %>
+      <p class="mb-6 sm:mb-8 text-black text-large sm:text-xl 2xl:text-2xl">No activity yet. Start following some projects to see their journey here!</p>
       <%= link_to explore_path, class: "px-4 sm:px-6 py-2 sm:py-3 bg-forest hover:scale-[1.05] text-white transition-transform duration-300 text-base sm:text-lg 2xl:text-xl btn-pixel" do %>
         Explore Projects
       <% end %>

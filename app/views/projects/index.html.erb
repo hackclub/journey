@@ -36,15 +36,17 @@
           </div>
         <% end %>
       <% elsif params[:action] == 'my_projects' || @show_create_project %>
-        <div class="col-span-full flex flex-col items-center justify-center bg-soft-bone p-6 md:p-12 card-pixel">
-          <h2 class="text-xl md:text-2xl 2xl:text-3xl mb-3 md:mb-4 font-steven text-center">You don't have any projects yet</h2>
-          <p class="mb-6 md:mb-8 text-center text-sm md:text-base 2xl:text-lg text-gray-600">Create your first project to start your journey</p>
-          <button data-action="click->modal#open" class="px-4 md:px-6 py-2 md:py-3 bg-forest hover:bg-forest-dark text-white transition-transform duration-300 text-base md:text-lg 2xl:text-xl btn-pixel hover:scale-[1.05] cursor-pointer">
+        <div class="col-span-full flex flex-col items-center justify-center bg-soft-bone p-6 md:p-8 card-pixel mt-2 md:mt-0">
+          <div class="flex justify-center items-center">
+            <%= image_tag 'happytriangle.png', class: 'w-32 h-32 sm:w-48 sm:h-48 2xl:w-64 2xl:h-64 transform scale-x-[-1] mb-4 sm:mb-6' %>
+          </div>
+          <p class="mb-6 sm:mb-8 text-black text-large sm:text-xl 2xl:text-2xl">You don't have a project yet. Create one to start your journey!</p>
+          <button data-action="click->modal#open" class="px-4 md:px-6 py-1 md:py-2 bg-forest hover:bg-forest-dark text-white transition-transform duration-300 text-base md:text-lg 2xl:text-xl btn-pixel hover:scale-[1.05] cursor-pointer">
             Create Your Project
           </button>
         </div>
       <% else %>
-        <div class="col-span-full flex flex-col items-center justify-center bg-soft-bone p-6 md:p-12 card-pixel">
+        <div class="col-span-full flex flex-col items-center justify-center bg-soft-bone p-6 md:p-8 card-pixel mt-2 md:mt-0">
           <h2 class="text-xl md:text-2xl mb-3 md:mb-4 font-steven text-center">No projects available</h2>
           <p class="mb-6 md:mb-8 text-center text-sm md:text-base">Check back later for new projects</p>
         </div>
