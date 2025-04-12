@@ -23,7 +23,8 @@ class User < ApplicationRecord
         end
 
         verification_status = airtable_user.fields["Verification Status"]
-        unless %w[Eligible L1 Eligible L2].include?(verification_status)
+        valid_statuses = ["Eligible L1", "Eligible L2"]
+        unless valid_statuses.include?(verification_status)
           raise StandardError, "You are not eligible. If you think this is an error, please DM @Bartosz on Slack."
         end
 
