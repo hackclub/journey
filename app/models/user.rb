@@ -10,8 +10,8 @@ class User < ApplicationRecord
     validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
     def self.find_or_create(auth)
-        user = User.find_or_initialize_by(slack_id: auth.info.authed_user.id)
-        return user if user.persisted?
+        user = User.find_by(slack_id: auth.info.authed_user.id)
+        return user if user.present?
 
         client = Slack::Web::Client.new(token: ENV["SLACK_BOT_TOKEN"])
         user_table = Airrecord.table(ENV["AIRTABLE_API_KEY"], ENV["AIRTABLE_BASE_ID"], "Users")
@@ -23,22 +23,24 @@ class User < ApplicationRecord
         end
 
         verification_status = airtable_user.fields["Verification Status"]
-        if verification_status == "Eligible L1" || verification_status == "Eligible L2"
-          puts "Found eligible user: #{airtable_user.id}: #{airtable_user.fields["First Name"]} #{airtable_user.fields["Last Name"]}"
-          user.first_name = airtable_user.fields["First Name"]
-          user.middle_name = airtable_user.fields["Middle Name"] || ""
-          user.last_name = airtable_user.fields["Last Name"]
-        else
+        unless %w[Eligible L1 Eligible L2].include?(verification_status)
           raise StandardError, "You are not eligible. If you think this is an error, please DM @Bartoz on Slack."
         end
 
         user_info = client.users_info(user: auth.info.authed_user.id)
-        user.display_name = user_info.user.profile.display_name.presence || user_info.user.profile.real_name
-        user.email = user_info.user.profile.email
-        user.timezone = user_info.user.tz
-        user.avatar = user_info.user.profile.image_original.presence || user_info.user.profile.image_512
+
+        user = User.new(
+          slack_id: auth.info.authed_user.id,
+          first_name: airtable_user.fields["First Name"],
+          middle_name: airtable_user.fields["Middle Name"] || "",
+          last_name: airtable_user.fields["Last Name"],
+          display_name: user_info.user.profile.display_name.presence || user_info.user.profile.real_name,
+          email: user_info.user.profile.email,
+          timezone: user_info.user.tz,
+          avatar: user_info.user.profile.image_original.presence || user_info.user.profile.image_512
+        )
 
         user.save!
         user
-    end
+      end
 end
