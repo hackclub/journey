@@ -22,7 +22,7 @@ class UpdatesController < ApplicationController
     end
 
     def create
-        if ENV['UPDATES_STATUS'] == 'locked'
+        if ENV["UPDATES_STATUS"] == "locked"
             flash.now[:alert] = "Posting updates is currently locked. Please check back later when updates are unlocked."
             respond_to do |format|
                 format.turbo_stream { render turbo_stream: turbo_stream.replace("flash-container", partial: "shared/flash") }

@@ -11,21 +11,21 @@ class VotesController < ApplicationController
 
         respond_to do |format|
             if @vote.save
-                format.turbo_stream { 
+                format.turbo_stream {
                     flash.now[:notice] = "Vote Submitted!"
                     redirect_to new_vote_path
                 }
                 format.html { redirect_to new_vote_path, notice: "Vote Submitted!" }
             else
-                format.turbo_stream { 
+                format.turbo_stream {
                     flash.now[:alert] = @vote.errors.full_messages.join(", ")
-                    render turbo_stream: turbo_stream.update("vote_form_#{@vote.project_id}", 
-                        partial: "votes/form", 
+                    render turbo_stream: turbo_stream.update("vote_form_#{@vote.project_id}",
+                        partial: "votes/form",
                         locals: { project: Project.find(@vote.project_id), vote: @vote })
                 }
-                format.html { 
+                format.html {
                     flash.now[:alert] = @vote.errors.full_messages.join(", ")
-                    render :new, status: :unprocessable_entity 
+                    render :new, status: :unprocessable_entity
                 }
             end
         end
@@ -36,11 +36,11 @@ class VotesController < ApplicationController
     def set_projects
         voted_project_ids = current_user.votes.pluck(:project_id)
         projects_with_updates = Project.joins(:updates).distinct.pluck(:id)
-        
+
         @projects = Project.where(id: projects_with_updates)
                           .where.not(id: voted_project_ids)
                           .where.not(user_id: current_user.id)
-                          .where.not(demo_link: [nil, ""])
+                          .where.not(demo_link: [ nil, "" ])
                           .order("RANDOM()")
                           .limit(2)
     end
