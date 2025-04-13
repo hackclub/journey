@@ -22,6 +22,7 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "pixelart" %>
     <%= javascript_importmap_tags %>
+    <%= Sentry.get_trace_propagation_meta.html_safe %>
   </head>
 
   <body class="min-h-screen bg-warm font-steven tracking-wider">

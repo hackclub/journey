@@ -75,3 +75,7 @@ gem "slack-ruby-client"
 gem "inline_svg"
 
 gem "airrecord"
+
+gem "sentry-ruby"
+
+gem "sentry-rails"
