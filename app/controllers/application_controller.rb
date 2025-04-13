@@ -1,7 +1,12 @@
 class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
-
+  before_action do
+    Rails.logger.info ">>> Session[:user_id] = #{session[:user_id]}"
+    Rails.logger.info ">>> Current user ID: #{current_user&.id}"
+    Rails.logger.info ">>> Request IP: #{request.remote_ip}, User-Agent: #{request.user_agent}"
+  end
+  
   helper_method :current_user, :user_signed_in?
 
   def current_user
