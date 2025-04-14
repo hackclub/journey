@@ -73,7 +73,7 @@
       <% if !@updates.empty? %>
         <div class="absolute left-3 md:left-8 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-saddle-taupe/30"></div>
       <% end %>
-      
+
       <div id="updates" class="space-y-3 md:space-y-8" data-controller="updates">
         <% @updates.reverse.each do |update| %>
           <%= render "updates/update", update: update %>
