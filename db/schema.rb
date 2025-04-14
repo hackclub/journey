@@ -60,15 +60,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_09_195410) do
     t.string "timezone"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "provider"
-    t.string "uid"
-    t.string "slack_access_token"
-    t.string "slack_team_id"
-    t.string "slack_team_name"
-    t.string "slack_user_id"
-    t.string "slack_username"
     t.string "avatar"
-    t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
   end
 
   create_table "votes", force: :cascade do |t|
@@ -90,3 +82,4 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_09_195410) do
   add_foreign_key "votes", "projects"
   add_foreign_key "votes", "users"
 end
+
