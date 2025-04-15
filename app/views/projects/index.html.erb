@@ -1,10 +1,17 @@
 <div data-controller="modal">
-  <div>
-    <div class="flex flex-col justify-between items-start mb-4 md:mb-6 px-4 md:px-8 pt-2 md:pt-8 pb-2">
+  <div data-controller="project-loader">
+    <!-- Loading State -->
+    <div data-project-loader-target="loadingIndicator" class="flex items-center justify-center py-6 sm:py-12">
+      <div class="flex flex-col items-center justify-center">
+          <%= image_tag 'lollipop.svg', class: 'w-16 h-16 sm:w-24 sm:h-24 animate-spin' %>
+      </div>
+    </div>
+
+    <div class="flex flex-col justify-between items-start mb-4 md:mb-6 px-4 md:px-8 pt-2 md:pt-8 pb-2 hidden" data-project-loader-target="title">
       <h1 class="text-4xl sm:text-5xl font-steven mb-0"><%= params[:action] == 'my_projects' ? 'My Project' : 'Explore Projects' %></h1>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-8 px-4 md:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4 md:gap-8 px-4 md:px-8 hidden" data-project-loader-target="content">
       <% if @projects.any? %>
         <% @projects.each do |project| %>
           <div class="bg-soft-bone card-pixel transform hover:scale-[1.02] transition-transform duration-300 flex flex-col h-full">
