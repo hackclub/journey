@@ -13,7 +13,7 @@
               <div class="transform transition-transform duration-300">
                 <div class="flex items-center space-x-2 sm:space-x-4">
                   <div class="h-12 w-12 sm:h-16 sm:w-16 overflow-hidden rounded-lg flex-shrink-0">
-                    <img src="<%= project_image = project.banner.presence || "https://raw.githubusercontent.com/hackclub/dinosaurs/main/confused_dinosaur.png" %>" alt="<%= project.title %>" class="w-full h-full object-cover">
+                    <img src="<%= project.banner.presence || project.updates.find { |u| u.attachment.present? }&.attachment || "https://raw.githubusercontent.com/hackclub/dinosaurs/main/confused_dinosaur.png" %>" alt="<%= project.title %>" class="w-full h-full object-cover">
                   </div>
                   <div class="flex-grow min-w-0">
                     <h3 class="text-lg sm:text-xl 2xl:text-2xl font-steven truncate"><%= project.title %></h3>
