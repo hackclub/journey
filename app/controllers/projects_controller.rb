@@ -8,7 +8,10 @@ class ProjectsController < ApplicationController
                           .where.not(user_id: current_user.id)
                           .order(rating: :desc)
 
-        @projects ||= []
+        @projects = @projects.sort_by do |project|
+            weight = rand + (project.updates.count > 0 ? 1.5 : 0)
+            -weight
+        end
 
         if params[:action] == "my_projects" && @projects.empty?
             @show_create_project = true
