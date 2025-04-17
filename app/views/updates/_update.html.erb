@@ -14,14 +14,16 @@
 
     <% if update.attachment.present? %>
       <div class="mt-3 md:mt-4 overflow-hidden rounded-lg">
-        <% if update.attachment.match?(/\.(jpg|jpeg|png|gif)$/i) %>
-          <img src="<%= update.attachment %>" 
+        <% attachment_url = update.attachment %>
+        <% clean_url = attachment_url.gsub(/\?pub_secret=.*$/, '') %>
+        <% if clean_url.match?(/\.(jpg|jpeg|png|gif)$/i) %>
+          <img src="<%= attachment_url %>" 
                alt="Update attachment" 
                class="w-full h-48 md:h-64 object-contain cursor-pointer hover:opacity-90 transition-opacity" 
                data-action="click->image-viewer#open">
-        <% elsif update.attachment.match?(/\.(mp4|webm)$/i) %>
+        <% elsif clean_url.match?(/\.(mp4|webm)$/i) %>
           <div class="h-48 md:h-64 flex items-center justify-center bg-black">
-            <video src="<%= update.attachment %>" 
+            <video src="<%= attachment_url %>" 
                    class="w-full h-full object-contain" 
                    playsinline
                    controls>
