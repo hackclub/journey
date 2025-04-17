@@ -45,4 +45,11 @@ Rails.application.routes.draw do
   match "/500", to: "errors#internal_server_error", via: :all
   match "/422", to: "errors#unprocessable_entity", via: :all
   match "/400", to: "errors#bad_request", via: :all
+
+  resources :attachments, only: [] do
+    collection do
+      post :upload
+      get :download
+    end
+  end
 end
