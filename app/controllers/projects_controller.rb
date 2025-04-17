@@ -6,7 +6,7 @@ class ProjectsController < ApplicationController
     def index
         @projects = Project.includes(:user)
                           .where.not(user_id: current_user.id)
-                          .order(rating: :desc)
+                          .order(rating: :asc)
 
         @projects = @projects.sort_by do |project|
             weight = rand + (project.updates.count > 0 ? 1.5 : 0)
@@ -19,7 +19,7 @@ class ProjectsController < ApplicationController
     end
 
     def show
-        @updates = @project.updates.order(created_at: :desc)
+        @updates = @project.updates.order(created_at: :asc)
     end
 
     def edit
