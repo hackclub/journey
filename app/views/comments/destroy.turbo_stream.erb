@@ -1,0 +1,5 @@
+<%= turbo_stream.remove @comment %>
+
+<%= turbo_stream.update "flash" do %>
+  <%= render "shared/flash" %>
+<% end %> 

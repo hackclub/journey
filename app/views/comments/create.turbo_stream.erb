@@ -1,0 +1,22 @@
+<%= turbo_stream.prepend "comments-#{@update.id}" do %>
+  <%= render @comment %>
+<% end %>
+
+<%= turbo_stream.update "flash" do %>
+  <%= render "shared/flash" %>
+<% end %>
+
+<%= turbo_stream.update "comment-modal-#{@update.id}" do %>
+  <div id="comment-modal-<%= @update.id %>" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center p-2 md:p-4">
+    <div class="bg-soft-bone w-full max-w-2xl card-pixel mx-2 md:mx-auto relative" data-modal-target="container">
+      <div class="absolute -top-6 -right-6 w-12 h-12 md:-top-8 md:-right-8 md:w-16 md:h-16 z-10">
+        <%= image_tag "puppyeyes.svg", class: "w-full h-full", alt: "Puppyeyes peeking" %>
+      </div>
+      <div class="p-3 md:p-4 border-b border-saddle-taupe border-opacity-30">
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg md:text-2xl font-steven">Add a Comment</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %> 

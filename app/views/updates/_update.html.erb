@@ -1,4 +1,4 @@
-<div class="relative" id="<%= dom_id(update) %>">
+<div class="space-y-3 md:space-y-8" id="<%= dom_id(update) %>" data-controller="modal">
   <div class="bg-soft-bone card-pixel p-4 md:p-6 ml-6 md:ml-16 relative transform hover:scale-[1.02] transition-transform duration-300">
     <div class="flex items-center mb-3 md:mb-4">
       <% if update.user.avatar.present? %>
@@ -50,10 +50,68 @@
             class: "px-2 md:px-4 py-2 bg-vintage-red hover:scale-[1.05] text-white transition-transform duration-300 text-sm md:text-base 2xl:text-large btn-pixel delete-button cursor-pointer",
             data: { controller: "delete-confirmation", action: "click->delete-confirmation#confirm" } %>
       <% end %>
-      <%# Nice to have, but won't be implemented for now %>
-      <%# <button class="px-2 md:px-4 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-transform duration-300 text-sm md:text-base 2xl:text-large btn-pixel">
+      
+      <button data-action="click->modal#open" class="px-2 md:px-4 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-transform duration-300 text-sm md:text-base 2xl:text-large btn-pixel">
         Add Comment
-      </button> %>
+      </button>
+    </div>
+
+    <div id="comments-<%= update.id %>" class="mt-4 space-y-3">
+      <%= render update.comments %>
+    </div>
+  </div>
+
+  <div data-modal-target="modal" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center p-2 md:p-4 min-h-screen">
+    <div class="bg-soft-bone w-full max-w-2xl card-pixel mx-2 md:mx-auto relative" data-modal-target="container" data-controller="comment-modal">
+      <div class="absolute -top-6 -right-6 w-12 h-12 md:-top-8 md:-right-8 md:w-16 md:h-16 z-10">
+        <%= image_tag "puppyeyes.svg", class: "w-full h-full", alt: "Puppyeyes peeking" %>
+      </div>
+      <div class="p-3 md:p-4 border-b border-saddle-taupe border-opacity-30">
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg md:text-2xl font-steven">Add a Comment</h3>
+        </div>
+      </div>
+
+      <div class="p-3 md:p-4">
+        <% if user_signed_in? %>
+          <% if !current_user.has_commented %>
+            <div class="text-center mb-4" data-comment-modal-target="warning">
+              <%= image_tag "journeypheus.png", class: "w-32 h-32 2xl:w-64 2xl:h-64 mx-auto mb-4", alt: "Journeypheus" %>
+              <h4 class="text-xl md:text-2xl 2xl:text-3xl font-steven mb-2">HOLD UP</h4>
+              <p class="text-base md:text-lg mb-4 text-gray-600">Be nice in the comments! <a href="https://hackclub.com/conduct/" class="text-nice-blue underline">Hack Club's Code of Conduct</a> still applies here, so don't be naughty, or Journeypheus might just come and kidnap you. <br> (& don't give Kartikey an excuse to ban :P)</p>
+              <button data-action="click->comment-modal#next" class="px-2 md:px-4 py-2 bg-vintage-red hover:scale-[1.05] text-white transition-transform duration-300 text-sm md:text-base 2xl:text-large btn-pixel-sm">
+                Next
+              </button>
+            </div>
+          <% end %>
+
+          <div class="<%= 'hidden' unless current_user.has_commented %>" data-comment-modal-target="commentForm">
+            <%= form_with model: [update, Comment.new], 
+                id: "comment-form-#{update.id}",
+                class: "space-y-3",
+                data: { 
+                  controller: "comment-form",
+                  action: "submit->comment-form#validateForm"
+                } do |f| %>
+              <div class="space-y-2">
+                <%= f.text_area :text, 
+                    id: "text-#{update.id}",
+                    class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-sm md:text-base rounded-none",
+                    rows: 4,
+                    placeholder: "Write your comment here... (be nice)",
+                    data: { comment_form_target: "text" } %>
+                <p class="text-xs md:text-sm text-vintage-red hidden" id="textError-#{update.id}" data-comment-form-target="textError"></p>
+              
+              <div class="flex flex-row justify-end space-x-4">
+                <button type="button" data-action="modal#close" class="px-2 md:px-4 py-2 bg-vintage-red hover:scale-[1.05] text-white transition-transform duration-300 text-sm md:text-base 2xl:text-large btn-pixel-sm">
+                  Cancel
+                </button>
+                <%= f.submit "Post Comment", class: "px-2 md:px-4 py-2 bg-forest hover:scale-[1.05] text-white transition-transform duration-300 text-sm md:text-base 2xl:text-large btn-pixel-sm" %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
