@@ -8,14 +8,9 @@ class CommentsController < ApplicationController
 
     if @comment.save
       current_user.update(has_commented: true) unless current_user.has_commented
-      respond_to do |format|
-        redirect_to @update.project, notice: "Update was successfully created."
-      end
+      redirect_to @update.project, notice: "Comment was successfully created."
     else
-      flash.now[:alert] = "Failed to add comment."
-      render turbo_stream: turbo_stream.replace("comment-form-#{@update.id}", 
-        partial: "comments/form", 
-        locals: { update: @update, comment: @comment })
+      redirect_to @update.project, alert: "Failed to add comment."
     end
   end
 
