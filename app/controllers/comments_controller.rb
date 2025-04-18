@@ -18,15 +18,9 @@ class CommentsController < ApplicationController
     @comment = @update.comments.find(params[:id])
     
     if @comment.destroy
-      respond_to do |format|
-        format.turbo_stream
-        format.html { redirect_to @update.project, notice: "Comment deleted successfully!" }
-      end
+      redirect_to @update.project, notice: "Comment deleted successfully!"
     else
-      flash.now[:alert] = "Failed to delete comment."
-      render turbo_stream: turbo_stream.replace("comment-#{@comment.id}", 
-        partial: "comments/comment", 
-        locals: { comment: @comment })
+      redirect_to @update.project, alert: "Failed to delete comment."
     end
   end
 
