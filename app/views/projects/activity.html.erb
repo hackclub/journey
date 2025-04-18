@@ -49,7 +49,23 @@
                   <p class="text-gray-600 mb-2 sm:mb-3 text-sm sm:text-base 2xl:text-lg"><%= update.text %></p>
                   <% if update.attachment.present? %>
                     <div class="mt-2 sm:mt-3 overflow-hidden rounded-lg">
-                      <img src="<%= update.attachment %>" alt="Update attachment" class="w-full h-48 sm:h-64 object-contain cursor-pointer hover:opacity-90 transition-opacity" data-action="click->image-viewer#open">
+                      <% attachment_url = update.attachment %>
+                      <% clean_url = attachment_url.gsub(/\?pub_secret=.*$/, '') %>
+                      <% if clean_url.match?(/\.(jpg|jpeg|png|gif)$/i) %>
+                        <img src="<%= attachment_url %>" alt="Update attachment" class="w-full h-48 sm:h-64 object-contain cursor-pointer hover:opacity-90 transition-opacity" data-action="click->image-viewer#open">
+                      <% elsif clean_url.match?(/\.(mp4|webm)$/i) %>
+                        <div class="h-48 sm:h-64 flex items-center justify-center bg-black">
+                          <video src="<%= attachment_url %>" class="w-full h-full object-contain" playsinline controls>
+                            Your browser does not support the video tag.
+                          </video>
+                        </div>
+                      <% elsif update.attachment.match?(/\.(mp3|wavmak)$/i) %>
+                        <div class="w-full h-48 sm:h-64 flex items-center justify-center">
+                          <audio src="<%= update.attachment %>" class="w-[50%]" controls controlsList="nodownload">
+                            Your browser does not support the audio tag.
+                          </audio>
+                        </div>
+                      <% end %>
                     </div>
                   <% end %>
                   <%= link_to project_path(update.project), class: "mt-2 sm:mt-3 inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-nice-blue hover:scale-[1.05] text-white transition-transform duration-300 text-base sm:text-lg 2xl:text-xl btn-pixel" do %>
