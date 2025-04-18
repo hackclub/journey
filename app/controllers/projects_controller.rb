@@ -82,6 +82,9 @@ class ProjectsController < ApplicationController
 
         respond_to do |format|
             if @project_follow.save
+                message = "Well, would you look at that! 💅 You’ve got a brand new follower on your project: **“#{@project.title}”**! :ultrafastparrot:"
+                SendSlackDmJob.perform_later(@project.user.slack_id, message) if @project.user.slack_id.present?
+
                 format.html { redirect_to request.referer || projects_path, notice: "You are now following this project!" }
                 format.turbo_stream do
                     flash.now[:notice] = "You are now following this project!"
