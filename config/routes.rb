@@ -52,4 +52,8 @@ Rails.application.routes.draw do
       get :download
     end
   end
+
+  resources :updates do
+    resources :comments, only: [:create, :destroy]
+  end
 end
