@@ -36,10 +36,6 @@ Rails.application.routes.draw do
   get "updates", to: "updates#index"
   resources :votes, only: [ :new, :create ]
 
-  # api stuff ooooh
-  get "api/check_user", to: "users#check_user"
-  post "api/updates", to: "updates#api_create"
-
   # HTTP Error Routes
   match "/404", to: "errors#not_found", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
@@ -56,4 +52,15 @@ Rails.application.routes.draw do
   resources :updates do
     resources :comments, only: [:create, :destroy]
   end
+
+  # API routes
+  namespace :api do
+    namespace :v1 do
+      resources :projects, only: [:index, :show]
+      resources :updates, only: [:index, :show]
+      resources :comments, only: [:index, :show]
+    end
+  end
+  get "api/check_user", to: "users#check_user"
+  post "api/updates", to: "updates#api_create"
 end
