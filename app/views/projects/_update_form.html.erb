@@ -16,11 +16,11 @@
 
       <div class="space-y-1.5 md:space-y-2">
         <%= f.label :attachment, "Attachment (Optional)", class: "block text-base md:text-lg 2xl:text-xl" %>
-        <div class="w-full border-2 border-dashed border-black p-4 md:p-6 flex flex-col items-center justify-center space-y-4 transition-all duration-300" 
+        <div class="w-full border-2 border-dashed border-black p-4 md:p-6 flex flex-col items-center justify-center space-y-4 transition-all duration-300"
              data-controller="attachment"
              data-action="dragover->attachment#highlight dragleave->attachment#unhighlight drop->attachment#handleDrop click->attachment#handleClick"
              data-attachment-target="dropzone">
-          
+
           <div data-attachment-target="initial" class="flex flex-col items-center space-y-4">
             <%= inline_svg_tag "attachment.svg", class: "w-12 h-12 md:w-16 md:h-16" %>
             <p class="text-base md:text-lg 2xl:text-xl text-center">Drag and drop files here or click to select</p>
@@ -36,17 +36,17 @@
             <div data-attachment-target="imagePreview" class="hidden">
               <img class="w-full h-48 md:h-64 object-contain" data-attachment-target="previewImage">
             </div>
-            
+
             <div data-attachment-target="videoPreview" class="hidden">
               <video class="w-full h-48 md:h-64 object-contain" controls data-attachment-target="previewVideo"></video>
             </div>
-            
+
             <div data-attachment-target="audioPreview" class="hidden">
               <audio class="w-[90%]" controls data-attachment-target="previewAudio"></audio>
             </div>
 
             <div class="flex justify-end mt-4">
-              <button type="button" 
+              <button type="button"
                       class="px-2 md:px-4 py-2 bg-vintage-red hover:scale-[1.05] text-white transition-transform duration-300 text-sm md:text-base 2xl:text-xl btn-pixel cursor-pointer"
                       data-action="click->attachment#removeFile">
                 Remove

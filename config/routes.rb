@@ -50,15 +50,15 @@ Rails.application.routes.draw do
   end
 
   resources :updates do
-    resources :comments, only: [:create, :destroy]
+    resources :comments, only: [ :create, :destroy ]
   end
 
   # API routes
   namespace :api do
     namespace :v1 do
-      resources :projects, only: [:index, :show]
-      resources :updates, only: [:index, :show]
-      resources :comments, only: [:index, :show]
+      resources :projects, only: [ :index, :show ]
+      resources :updates, only: [ :index, :show ]
+      resources :comments, only: [ :index, :show ]
     end
   end
   get "api/check_user", to: "users#check_user"

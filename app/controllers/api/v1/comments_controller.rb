@@ -7,7 +7,7 @@ module Api
             text: comment.text,
             update_id: comment.update_id,
             slack_id: comment.user.slack_id,
-            created_at: comment.created_at,
+            created_at: comment.created_at
           }
         end
         render json: @comments
@@ -19,9 +19,9 @@ module Api
           text: @comment.text,
           update_id: @comment.update_id,
           slack_id: @comment.user.slack_id,
-          created_at: @comment.created_at,
+          created_at: @comment.created_at
         }
       end
     end
   end
-end 
+end

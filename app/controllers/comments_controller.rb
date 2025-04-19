@@ -16,7 +16,7 @@ class CommentsController < ApplicationController
 
   def destroy
     @comment = @update.comments.find(params[:id])
-    
+
     if @comment.destroy
       redirect_to @update.project, notice: "Comment deleted successfully!"
     else
@@ -33,4 +33,4 @@ class CommentsController < ApplicationController
   def comment_params
     params.require(:comment).permit(:text)
   end
-end 
+end
