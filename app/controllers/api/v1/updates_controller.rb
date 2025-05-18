@@ -5,6 +5,7 @@ module Api
         @updates = Update.all.map do |update|
           {
             text: update.text,
+            id: update.id,
             attachment: update.attachment,
             project_id: update.project_id,
             slack_id: update.user.slack_id,
@@ -19,6 +20,7 @@ module Api
         @update = Update.find(params[:id])
         render json: {
           text: @update.text,
+          id: @update.id,
           attachment: @update.attachment,
           project_id: @update.project_id,
           slack_id: @update.user.slack_id,

@@ -39,7 +39,7 @@
           </main>
         <% else %>
           <%= render "shared/sidebar" %>
-          <main class="ml-64 2xl:ml-96 pt-12 py-8 pl-8" data-sidebar-target="mainContent">
+          <main class="ml-64 lg:ml-74 2xl:ml-96 pt-12 py-8 pl-8" data-sidebar-target="mainContent">
             <div id="flash-container">
               <%= render "shared/flash" %>
             </div>
@@ -196,6 +196,10 @@
           </div>
         </div>
       </div>
+    <% end %>
+
+    <% if user_signed_in? && current_user.has_hackatime %>
+      <%= render "shared/timer_indicator" %>
     <% end %>
 
   </body>

@@ -16,7 +16,7 @@ namespace :sync do
         failed_count += 1
         puts "\nFailed to sync vote #{vote.id}: #{e.message}"
       end
-    end 
+    end
 
     puts "\nSync completed!"
     puts "Total votes: #{total_votes}"

@@ -53,6 +53,12 @@ export default class extends Controller {
       case 'timer':
         modalElement = document.getElementById(`timer-modal-${modalId}`)
         break
+      case 'stonks':
+        modalElement = document.getElementById(`stonks-modal-${modalId}`)
+        break
+      case 'delete':
+        modalElement = document.getElementById(`delete-modal-${modalId}`)
+        break
     }
     
     if (!modalElement) {
@@ -89,6 +95,8 @@ export default class extends Controller {
           this.element.id.startsWith('follower-modal-') || 
           this.element.id.startsWith('ship-modal-') ||
           this.element.id.startsWith('timer-modal-') || 
+          this.element.id.startsWith('stonks-modal-') ||
+          this.element.id.startsWith('delete-modal-') ||
           this.element.id === 'create-project-modal' ||
           this.element.id === 'hackatime-modal')) {
         this.close()

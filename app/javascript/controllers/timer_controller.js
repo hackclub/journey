@@ -4,7 +4,8 @@ export default class extends Controller {
   static targets = [
     "title", "initialState", "activeState", "form", 
     "updateText", "hours", "minutes", "seconds", 
-    "pauseButton", "resumeButton", "closeButton"
+    "pauseButton", "resumeButton", "closeButton",
+    "notes"
   ]
 
   static values = {
@@ -20,6 +21,24 @@ export default class extends Controller {
     this.isPaused = false
     this.isCountingDown = false
     this.projectId = this.element.id.replace('timer-modal-', '')
+    
+    if (this.hasNotesTarget) {
+      const savedNotes = localStorage.getItem(`timer_notes_${this.projectId}`)
+      if (savedNotes) {
+        this.notesTarget.value = savedNotes
+      }
+      
+      this.notesTarget.addEventListener('input', this.handleNotesChange.bind(this))
+    }
+    
+    const urlParams = new URLSearchParams(window.location.search)
+    if (urlParams.get('open_timer') === 'true') {
+      const newUrl = window.location.pathname + window.location.hash
+      window.history.replaceState({}, '', newUrl)
+      
+      this.element.classList.remove('hidden')
+      document.body.classList.add('overflow-hidden')
+    }
     
     this.checkForActiveSession()
   }
@@ -274,6 +293,14 @@ export default class extends Controller {
       })
       
       if (!stopResponse.ok) {
+        const errorData = await stopResponse.json()
+        
+        if (errorData && errorData.error && errorData.error.includes("5 minutes")) {
+          alert("Timer sessions must be at least 5 minutes long. Please continue timing or discard this session.")
+          this.checkForActiveSession()
+          return
+        }
+        
         throw new Error('Failed to stop timer session')
       }
       
@@ -300,6 +327,12 @@ export default class extends Controller {
     }
   }
 
+  handleNotesChange(event) {
+    if (this.hasNotesTarget) {
+      localStorage.setItem(`timer_notes_${this.projectId}`, event.target.value)
+    }
+  }
+
   resetTimerState() {
     this.clearTimer()
     this.clearCountdown()
@@ -312,6 +345,12 @@ export default class extends Controller {
     this.hoursTarget.textContent = "00"
     this.minutesTarget.textContent = "00"
     this.secondsTarget.textContent = "00"
+    
+    // Clear saved notes when timer is reset
+    if (this.hasNotesTarget) {
+      localStorage.removeItem(`timer_notes_${this.projectId}`)
+      this.notesTarget.value = ""
+    }
     
     this.timer = null
     this.timerSessionId = null

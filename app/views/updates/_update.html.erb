@@ -14,6 +14,13 @@
             <% seconds = timer_session.net_time % 60 %>
             <%= image_tag "hourglass.png", class: "w-4 h-4 inline-block" %> Time spent: <%= hours > 0 ? "#{hours}h " : "" %><%= minutes > 0 ? "#{minutes}m " : "" %><%= seconds > 0 ? "#{seconds}s" : "" %>
           </span>
+        <% elsif update.last_hackatime_time.present? && update.last_hackatime_time > 0 %>
+          <span class="text-forest text-xs md:text-sm ml-2 block md:inline">
+            <% hours = update.last_hackatime_time / 3600 %>
+            <% minutes = (update.last_hackatime_time % 3600) / 60 %>
+            <% seconds = update.last_hackatime_time % 60 %>
+            <%= image_tag "hourglass.png", class: "w-4 h-4 inline-block" %> Time spent: <%= hours > 0 ? "#{hours}h " : "" %><%= minutes > 0 ? "#{minutes}m " : "" %><%= seconds > 0 ? "#{seconds}s" : "" %>
+          </span>
         <% end %>
       </div>
     </div>

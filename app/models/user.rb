@@ -5,6 +5,8 @@ class User < ApplicationRecord
     has_many :project_follows
     has_many :followed_projects, through: :project_follows, source: :project
     has_many :timer_sessions
+    has_many :stonks
+    has_many :staked_projects, through: :stonks, source: :project
     has_one :hackatime_stat
 
     validates :slack_id, presence: true, uniqueness: true
@@ -151,6 +153,18 @@ class User < ApplicationRecord
 
     def has_hackatime?
       has_hackatime
+    end
+
+    def can_stake_more_projects?
+      staked_projects.distinct.count < 5
+    end
+
+    def staked_projects_count
+      staked_projects.distinct.count
+    end
+
+    def projects_left_to_stake
+      5 - staked_projects_count
     end
 
     private

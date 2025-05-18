@@ -7,14 +7,23 @@ class TimerSession < ApplicationRecord
 
   validates :user, :project, :started_at, :status, presence: true
   validate :validate_no_changes_if_stopped, on: :update
+  validate :validate_minimum_duration, on: :update
 
   before_destroy :prevent_destroy_if_stopped
+
+  MINIMUM_DURATION = 300 # 5 minutes
 
   private
 
   def validate_no_changes_if_stopped
     if status_was == "stopped" && changed? && (changed - [ "update_id" ]).present?
       errors.add(:base, "Stopped timer sessions cannot be modified")
+    end
+  end
+
+  def validate_minimum_duration
+    if status_changed? && status == "stopped" && net_time < MINIMUM_DURATION
+      errors.add(:base, "Timer sessions must be at least 5 minutes long")
     end
   end
 

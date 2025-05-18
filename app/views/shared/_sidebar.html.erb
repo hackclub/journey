@@ -25,9 +25,9 @@
         <% end %>
       </li>
       <li class="flex justify-start">
-        <%= link_to activity_path, class: "px-4 py-2 block hover:bg-saddle-taupe hover-btn-pixel #{'bg-saddle-taupe btn-pixel' if current_page?(activity_path)}" do %>
-          <%= inline_svg "notification.svg", class: "2xl:h-12 2xl:w-12 inline mr-2 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
-          <span data-sidebar-target="content">Activity</span>
+        <%= link_to stonks_path, class: "px-4 py-2 block hover:bg-saddle-taupe hover-btn-pixel #{'bg-saddle-taupe btn-pixel' if current_page?(stonks_path)}" do %>
+          <%= inline_svg "dollar.svg", class: "2xl:h-12 2xl:w-12 inline mr-2 h-10 w-10", data: { 'sidebar-target': 'icon' } %>
+          <span data-sidebar-target="content">Stonks</span>
         <% end %>
       </li>
       <li class="flex justify-start">

@@ -10,9 +10,9 @@
     <span class="text-xs mt-1">My Project</span>
   <% end %>
 
-  <%= link_to activity_path, class: "flex flex-col items-center #{'text-saddle-taupe' if current_page?(activity_path)}" do %>
-    <%= inline_svg "notification.svg", class: "h-8 w-8" %>
-    <span class="text-xs mt-1">Activity</span>
+  <%= link_to stonks_path, class: "flex flex-col items-center #{'text-saddle-taupe' if current_page?(stonks_path)}" do %>
+    <%= inline_svg "dollar.svg", class: "h-8 w-8" %>
+    <span class="text-xs mt-1">Stonks</span>
   <% end %>
 
   <%= link_to new_vote_path, class: "flex flex-col items-center #{'text-saddle-taupe' if current_page?(new_vote_path)}" do %>

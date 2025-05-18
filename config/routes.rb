@@ -23,8 +23,12 @@ Rails.application.routes.draw do
 
   get "explore", to: "projects#index"
   get "activity", to: "projects#activity"
+  get "stonks", to: "projects#stonks"
   get "my_projects", to: "projects#my_projects"
   post "check_link", to: "projects#check_link"
+
+  # Global timer session check - must be before projects resource
+  get "timer_sessions/active", to: "timer_sessions#global_active"
 
   resources :projects do
     resources :updates, only: [ :create, :destroy, :update ]
@@ -37,6 +41,9 @@ Rails.application.routes.draw do
       post :follow
       delete :unfollow
       patch :ship
+      post :stake_stonks
+      delete :unstake_stonks
+      # patch :recover
     end
   end
 

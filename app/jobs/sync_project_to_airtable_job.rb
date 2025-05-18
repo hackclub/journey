@@ -2,7 +2,7 @@ class SyncProjectToAirtableJob < ApplicationJob
   queue_as :default
 
   def perform(project_id)
-    project = Projects.find(project_id)
+    project = Project.find(project_id)
     return unless project
 
     table = Airrecord.table(ENV["AIRTABLE_API_KEY"], ENV["AIRTABLE_BASE_ID_JOURNEY"], "projects")

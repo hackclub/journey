@@ -1,8 +1,9 @@
 class ProjectsController < ApplicationController
     include ActionView::RecordIdentifier
     before_action :authenticate_user!
-    before_action :set_project, only: [ :show, :edit, :update, :follow, :unfollow, :ship ]
+    before_action :set_project, only: [ :show, :edit, :update, :follow, :unfollow, :ship, :stake_stonks, :unstake_stonks, :destroy ]
     before_action :check_if_shipped, only: [ :edit, :update ]
+    before_action :authorize_user, only: [ :destroy ]
 
     def index
         @projects = Project.includes(:user)
@@ -21,10 +22,16 @@ class ProjectsController < ApplicationController
 
     def show
         @updates = @project.updates.order(created_at: :asc)
-        if current_user && (@project.category == "Hardware" || @project.category == "Something else")
-            @unlinked_timer_sessions = @project.timer_sessions
-                .where(user: current_user, update_id: nil, status: :stopped)
-                .order(created_at: :desc)
+
+        @unlinked_timer_sessions = @project.timer_sessions
+            .where(user: current_user, update_id: nil, status: :stopped)
+            .where("net_time >= ?", TimerSession::MINIMUM_DURATION)
+            .order(created_at: :desc)
+
+        @stonks = @project.stonks.includes(:user).order(amount: :desc)
+
+        if current_user
+            @user_stonk = @project.stonks.find_by(user: current_user)
         end
     end
 
@@ -77,6 +84,13 @@ class ProjectsController < ApplicationController
         @followed_projects = current_user.followed_projects.includes(:user)
         @recent_updates = Update.includes(:project, :user)
                               .where(project_id: @followed_projects.pluck(:id))
+                              .order(created_at: :desc)
+    end
+
+    def stonks
+        @stonked_projects = current_user.staked_projects.includes(:user)
+        @recent_updates = Update.includes(:project, :user)
+                              .where(project_id: @stonked_projects.pluck(:id))
                               .order(created_at: :desc)
     end
 
@@ -330,15 +344,91 @@ class ProjectsController < ApplicationController
         end
     end
 
+    def stake_stonks
+        @project = Project.find(params[:id])
+
+        existing_stonk = current_user.stonks.find_by(project: @project)
+
+        if existing_stonk.nil? && !current_user.can_stake_more_projects?
+            redirect_to project_path(@project), alert: "You can only stake in a maximum of 5 projects"
+            return
+        end
+
+        @stonk = Stonk.find_or_initialize_by(
+            user: current_user,
+            project: @project
+        )
+
+        @stonk.amount = Stonk::DEFAULT_AMOUNT
+
+        if @stonk.save
+            redirect_to project_path(@project), notice: "Successfully staked stonks!"
+        else
+            redirect_to project_path(@project), alert: "Failed to stake stonks"
+        end
+    end
+
+    def unstake_stonks
+        @project = Project.find(params[:id])
+
+        @stonk = Stonk.find_by(user: current_user, project: @project)
+
+        if @stonk.nil?
+            redirect_to project_path(@project), alert: "You do not have any stonks to unstake"
+            return
+        end
+
+        if @stonk.destroy
+            redirect_to project_path(@project), notice: "Successfully unstaked all your stonks"
+        else
+            redirect_to project_path(@project), alert: "Failed to unstake stonks"
+        end
+    end
+
+    def destroy
+        if @project.update(is_deleted: true)
+            redirect_to my_projects_path, notice: "Project was successfully deleted."
+        else
+            redirect_to project_path(@project), alert: "Could not delete project."
+        end
+    end
+
+    # Admin methods
+    # def recover
+    #     deleted_project = Project.with_deleted.find_by(id: params[:id])
+    #     if deleted_project && deleted_project.is_deleted? && current_user.admin?
+    #         if deleted_project.update(is_deleted: false)
+    #             redirect_to project_path(deleted_project), notice: "Project has been recovered."
+    #         else
+    #             redirect_to projects_path, alert: "Could not recover project."
+    #         end
+    #     else
+    #         redirect_to projects_path, alert: "Project not found or cannot be recovered."
+    #     end
+    # end
+
     private
 
     def set_project
         @project = Project.includes(:user, updates: :user).find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+        deleted_project = Project.with_deleted.find_by(id: params[:id])
+        if deleted_project && deleted_project.is_deleted?
+            redirect_to projects_path, alert: "This project has been deleted by its owner."
+        else
+            redirect_to projects_path, alert: "Project not found."
+        end
     end
 
     def check_if_shipped
         if @project.is_shipped?
             redirect_to project_path(@project), alert: "This project has been shipped and cannot be edited."
+        end
+    end
+
+    def authorize_user
+        unless current_user == @project.user
+            redirect_to project_path(@project), alert: "You can only delete your own projects."
         end
     end
 

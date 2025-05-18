@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_12_200159) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_17_160312) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -57,6 +57,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_12_200159) do
     t.string "category"
     t.boolean "is_shipped", default: false
     t.string "hackatime_project_keys", default: [], array: true
+    t.boolean "is_deleted", default: false
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
@@ -192,6 +193,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_12_200159) do
     t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
   end
 
+  create_table "stonks", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "project_id", null: false
+    t.integer "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_stonks_on_project_id"
+    t.index ["user_id"], name: "index_stonks_on_user_id"
+  end
+
   create_table "timer_sessions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "project_id", null: false
@@ -216,6 +227,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_12_200159) do
     t.bigint "project_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "last_hackatime_time"
     t.index ["project_id"], name: "index_updates_on_project_id"
     t.index ["user_id"], name: "index_updates_on_user_id"
   end
@@ -269,6 +281,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_12_200159) do
   add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "stonks", "projects"
+  add_foreign_key "stonks", "users"
   add_foreign_key "timer_sessions", "projects"
   add_foreign_key "timer_sessions", "updates"
   add_foreign_key "timer_sessions", "users"
