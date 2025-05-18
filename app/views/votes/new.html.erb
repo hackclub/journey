@@ -215,9 +215,8 @@
     </div>
   <% end %>
 </div>
-
 <!-- Music Player Toggle -->
-<div data-controller="music" class="fixed -bottom-32 -right-12 z-50">
+<div data-controller="music" class="fixed -bottom-32 -right-12 max-sm:mb-[140px]">
   <div data-music-target="speechBubble" class="absolute -top-12 -left-10 2xl:-top-16 2xl:-left-12 p-3 bg-bread card-pixel max-w-[150px] opacity-50">
     <div class="text-sm text-forest font-medium">Click me, please!</div>
   </div>
@@ -236,7 +235,6 @@
     </div>
   </button>
 </div>
-
 <!-- Image Viewer for Attachments -->
 <div data-controller="image-viewer">
   <div data-image-viewer-target="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-75" data-action="click->image-viewer#closeBackground">

@@ -44,7 +44,12 @@ export default class extends Controller {
     this.currentTrack.play()
     this.isPlaying = true
     this.toggleTarget.classList.add('active')
-    this.element.classList.add('music-playing')
+
+    if (window.innerWidth < 640) {
+      this.element.classList.add('mobile-music-playing')
+    } else {
+      this.element.classList.add('music-playing')
+    }
     
     const trackName = this.currentTrack.dataset.trackName
     localStorage.setItem('journeyMusicEnabled', 'true')
@@ -64,7 +69,11 @@ export default class extends Controller {
     }
     this.isPlaying = false
     this.toggleTarget.classList.remove('active')
-    this.element.classList.remove('music-playing')
+    if (window.innerWidth < 640) {
+      this.element.classList.remove('mobile-music-playing')
+    } else {
+      this.element.classList.remove('music-playing')
+    }
     localStorage.setItem('journeyMusicEnabled', 'false')
   }
   

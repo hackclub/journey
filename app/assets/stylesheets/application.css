@@ -56,6 +56,10 @@
   [data-controller="music"].music-playing {
     transform: translateY(-80px);
   }
+
+  [data-controller="music"].mobile-music-playing {
+    transform: translateY(-40px);
+  }
   
   [data-music-target="speechBubble"] {
     animation: bubble-pulse 2.5s ease-in-out infinite;
