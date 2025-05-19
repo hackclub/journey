@@ -48,7 +48,7 @@
   <div class="p-4 flex items-center justify-between mt-auto" data-sidebar-target="logoutContainer">
     <div class="flex items-center">
       <%= image_tag current_user.avatar, class: "h-12 w-12 rounded-full", data: { 'sidebar-target': 'avatar' } %>
-      <span class="text-xl underline" data-sidebar-target="content">@<%= current_user.display_name %></span>
+      <span class="text-xl underline ml-2" data-sidebar-target="content">@<%= current_user.display_name %></span>
     </div>
 
     <div class="hover:scale-110 transition-transform cursor-pointer">
