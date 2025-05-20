@@ -25,7 +25,11 @@ class UpdatesController < ApplicationController
     def create
         @project = Project.find(params[:project_id])
 
-        if @project.hackatime_keys.present? && current_user.has_hackatime? &&
+        # current_user.refresh_hackatime_data if current_user.has_hackatime?
+
+        # Skip time verification if user is linking a timer session
+        if params[:update] && params[:update][:timer_session_id].blank? &&
+           @project.hackatime_keys.present? && current_user.has_hackatime? &&
            current_user.hackatime_stat.present? &&
            !current_user.hackatime_stat.has_enough_time_since_last_update?(@project)
             seconds_needed = current_user.hackatime_stat.seconds_needed_since_last_update(@project)
