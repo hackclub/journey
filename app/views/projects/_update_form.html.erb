@@ -29,7 +29,12 @@
           <p class="text-base md:text-lg 2xl:text-xl text-center">
             To post an update, you need to track time either with a Timer Session or with Hackatime.
             <% if @project.hackatime_project_keys.present? && @project.user.has_hackatime %>
-              <br><br>Your Hackatime time since last update is 0h 0m 0s.
+              <br><br>Your Hackatime time since last update is 
+              <% time_since_last = @project.user.hackatime_stat.time_since_last_update_for_project(@project) %>
+              <% since_last_hours = time_since_last / 3600 %>
+              <% since_last_minutes = (time_since_last % 3600) / 60 %>
+              <% since_last_seconds = time_since_last % 60 %>
+              <%= "#{since_last_hours}h #{since_last_minutes}m #{since_last_seconds}s" %>.
             <% end %>
           </p>
 
