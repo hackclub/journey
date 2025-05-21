@@ -145,6 +145,25 @@ class User < ApplicationRecord
       RefreshHackatimeStatsJob.perform_later(id, from: from, to: to)
     end
 
+    def refresh_hackatime_data_now
+      return unless has_hackatime?
+      
+      from = "2025-05-16"
+      to = Date.today.strftime("%Y-%m-%d")
+      
+      query_params = { user: slack_id, from: from, to: to }
+      uri = URI("https://hackatime.hackclub.com/api/summary")
+      uri.query = URI.encode_www_form(query_params)
+      
+      response = Faraday.get(uri.to_s)
+      return unless response.success?
+      
+      result = JSON.parse(response.body)
+      
+      stats = hackatime_stat || build_hackatime_stat
+      stats.update(data: result, last_updated_at: Time.current)
+    end
+
     def project_time_from_hackatime(project_key)
       data = hackatime_stat&.data
       project_stats = data.dig("projects")&.find { |p| p["key"] == project_key }

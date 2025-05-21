@@ -101,7 +101,7 @@
                                  alt="Update attachment"
                                  class="w-full max-h-48 sm:max-h-64 object-contain cursor-pointer hover:opacity-90 transition-opacity"
                                  data-action="click->image-viewer#open">
-                          <% elsif clean_url.match?(/\.(mp4|webm)$/i) %>
+                          <% elsif clean_url.match?(/\.(mp4|webm|mov)$/i) %>
                             <div class="h-48 sm:h-64 flex items-center justify-center bg-black">
                               <video src="<%= attachment_url %>"
                                      class="w-full h-full object-contain"

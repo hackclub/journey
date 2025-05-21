@@ -1,24 +1,4 @@
-<div class="flex flex-col items-center justify-center min-h-screen relative" style="background-color: #f8e2b8; background-image: url('<%= asset_path('pattern-frame.svg') %>');
-  background-size: 60px 60px, 84px 84px;
-  background-position: 0 0, 30px 30px;
-  background-attachment: fixed;">
-
-  <div class="absolute inset-0 z-0 opacity-30 pointer-events-none">
-    <div class="absolute top-24 left-[10%] transform rotate-12 hidden sm:block">
-      <%= inline_svg "lollipop.svg", class: "w-16 h-16 2xl:w-20 2xl:h-20 animate-spin", style: "animation-duration: 6s;" %>
-    </div>
-    <div class="absolute top-[65%] left-[8%] transform -rotate-6 hidden sm:block">
-      <div class="relative">
-        <%= image_tag "nest_hat_orpheus.png", class: "w-32 h-32 2xl:w-40 2xl:h-40" %>
-        <div class="absolute -top-16 -left-12 bg-white p-3 card-pixel max-w-[150px]">
-          <div class="text-sm text-forest">I wonder what I'll make...</div>
-        </div>
-      </div>
-    </div>
-    <div class="absolute top-[20%] right-[8%] transform -rotate-1 hidden sm:block">
-      <%= image_tag "happytriangle.png", class: "w-32 h-32 2xl:w-40 2xl:h-40 animate-bounce", style: "animation-duration: 4s;" %>
-    </div>
-  </div>
+<div class="flex flex-col items-center justify-center min-h-screen w-full bg-cover bg-center" style="background-image: url('<%= asset_path('herobg.png') %>');">
 
   <div class="absolute top-4 left-4 z-10">
     <%= inline_svg "icon.svg", class: "lg:h-12 lg:w-12 h-10 w-10" %>
@@ -47,8 +27,10 @@
       </div>
 
       <p class="mt-4 sm:mt-8 text-base sm:text-lg" style="color: #B94D3A; text-shadow: 1px 1px 0 #f8e2b8, 2px 2px 0 rgba(88, 60, 40, 0.2);">
-        The Journey starts on May 16th, sign up now!
+        The Journey is running now, sign up now!
       </p>
     </div>
   </div>
 </div>
+
+  

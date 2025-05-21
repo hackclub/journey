@@ -29,7 +29,12 @@
           <p class="text-base md:text-lg 2xl:text-xl text-center">
             To post an update, you need to track time either with a Timer Session or with Hackatime.
             <% if @project.hackatime_project_keys.present? && @project.user.has_hackatime %>
-              <br><br>Your Hackatime time since last update is 0h 0m 0s.
+              <br><br>Your Hackatime time since last update is
+              <% time_since_last = @project.user.hackatime_stat.time_since_last_update_for_project(@project) %>
+              <% since_last_hours = time_since_last / 3600 %>
+              <% since_last_minutes = (time_since_last % 3600) / 60 %>
+              <% since_last_seconds = time_since_last % 60 %>
+              <%= "#{since_last_hours}h #{since_last_minutes}m #{since_last_seconds}s" %>.
             <% end %>
           </p>
 
@@ -38,10 +43,9 @@
               Start a Timer
             </button>
             <% if @project.hackatime_project_keys.present? && @project.user.has_hackatime %>
-              <%= button_to "Refresh Hackatime",
-                  users_refresh_hackatime_path,
-                  method: :post,
-                  class: "px-4 md:px-6 py-2 bg-nice-blue hover:scale-[1.05] text-white transition-transform duration-300 text-sm md:text-base 2xl:text-xl btn-pixel cursor-pointer" %>
+              <button data-controller="modal" data-action="click->modal#open" data-modal-type="hackatime" class="px-4 py-2 btn-pixel bg-nice-blue text-white hover:scale-[1.05] transition-transform text-base md:text-lg mt-2 md:mt-0">
+                Manually Sync Hackatime
+              </button>
             <% end %>
           </div>
         </div>
@@ -49,13 +53,15 @@
 
       <div class="<%= 'hidden' if show_timer_prompt %>">
         <% if has_unlinked_timer_sessions && @project.hackatime_project_keys.present? && @project.user.has_hackatime && has_hackatime_time %>
-          <div class="mb-6">
+          <div data-controller="time-source" class="mb-6">
             <label class="block text-base md:text-lg 2xl:text-xl mb-2">Choose Time Tracking Source</label>
             <div class="space-y-4">
 
               <div class="flex items-center p-3 border border-saddle-taupe">
                 <input type="radio" id="timer_source_session" name="update[time_source]" value="timer_session"
-                      class="mr-3" checked>
+                      class="mr-3" checked
+                      data-time-source-target="timerSession"
+                      data-action="change->time-source#showTimerSessions">
                 <label for="timer_source_session" class="flex-grow cursor-pointer">
                   <span class="text-base md:text-lg font-medium">Timer Sessions</span>
                 </label>
@@ -63,82 +69,59 @@
 
               <div class="flex items-center p-3 border border-saddle-taupe">
                 <input type="radio" id="timer_source_hackatime" name="update[time_source]" value="hackatime"
-                      class="mr-3">
+                      class="mr-3"
+                      data-time-source-target="hackatime"
+                      data-action="change->time-source#showHackatime">
                 <label for="timer_source_hackatime" class="flex-grow cursor-pointer">
                   <span class="text-base md:text-lg font-medium">Hackatime</span>
                 </label>
               </div>
             </div>
-          </div>
 
-          <div class="mb-6" id="timer-sessions-section">
-            <label class="block text-base md:text-lg 2xl:text-xl mb-2">Select Timer Session</label>
-            <div class="space-y-3">
-              <% @unlinked_timer_sessions.each do |session| %>
-                <div class="flex items-center p-3 border border-saddle-taupe">
-                  <input type="radio" id="timer_session_<%= session.id %>" name="update[timer_session_id]" value="<%= session.id %>"
-                         class="mr-3" <%= 'checked' if @unlinked_timer_sessions.first.id == session.id %>>
-                  <label for="timer_session_<%= session.id %>" class="flex-grow cursor-pointer">
-                    <div class="text-base md:text-lg">
-                      <% hours = session.net_time / 3600 %>
-                      <% minutes = (session.net_time % 3600) / 60 %>
-                      <% seconds = session.net_time % 60 %>
-                      <div>Duration: <%= "#{hours}h #{minutes}m #{seconds}s" %></div>
-                      <div class="text-xs md:text-sm text-gray-600">
-                        Created: <%= session.created_at.in_time_zone(current_user.timezone).strftime("%b %d, %Y at %I:%M %p") %>
+            <div class="mb-6" data-time-source-target="sessionsSection">
+              <label class="block text-base md:text-lg 2xl:text-xl mb-2">Select Timer Session</label>
+              <div class="space-y-3">
+                <% @unlinked_timer_sessions.each do |session| %>
+                  <div class="flex items-center p-3 border border-saddle-taupe">
+                    <input type="radio" id="timer_session_<%= session.id %>" name="update[timer_session_id]" value="<%= session.id %>"
+                           class="mr-3" <%= 'checked' if @unlinked_timer_sessions.first.id == session.id %>
+                           data-time-source-target="timerSessionInput">
+                    <label for="timer_session_<%= session.id %>" class="flex-grow cursor-pointer">
+                      <div class="text-base md:text-lg">
+                        <% hours = session.net_time / 3600 %>
+                        <% minutes = (session.net_time % 3600) / 60 %>
+                        <% seconds = session.net_time % 60 %>
+                        <div>Duration: <%= "#{hours}h #{minutes}m #{seconds}s" %></div>
+                        <div class="text-xs md:text-sm text-gray-600">
+                          Created: <%= session.created_at.in_time_zone(current_user.timezone).strftime("%b %d, %Y at %I:%M %p") %>
+                        </div>
                       </div>
-                    </div>
-                  </label>
-                </div>
-              <% end %>
+                    </label>
+                  </div>
+                <% end %>
+              </div>
             </div>
-          </div>
 
-          <div class="mb-6 hidden" id="hackatime-section">
-            <label class="block text-base md:text-lg 2xl:text-xl mb-2">Time tracked with Hackatime</label>
-            <div class="p-3 border border-saddle-taupe">
-              <div class="text-base md:text-lg">
-                <% hackatime_time = @project.hackatime_total_time %>
-                <% hackatime_hours = hackatime_time / 3600 %>
-                <% hackatime_minutes = (hackatime_time % 3600) / 60 %>
-                <% hackatime_seconds = hackatime_time % 60 %>
-                <div>Total Duration: <%= "#{hackatime_hours}h #{hackatime_minutes}m #{hackatime_seconds}s" %></div>
+            <div class="mb-6 hidden" data-time-source-target="hackatimeSection">
+              <label class="block text-base md:text-lg 2xl:text-xl mb-2">Time tracked with Hackatime</label>
+              <div class="p-3 border border-saddle-taupe">
+                <div class="text-base md:text-lg">
+                  <% hackatime_time = @project.hackatime_total_time %>
+                  <% hackatime_hours = hackatime_time / 3600 %>
+                  <% hackatime_minutes = (hackatime_time % 3600) / 60 %>
+                  <% hackatime_seconds = hackatime_time % 60 %>
+                  <div>Total Duration: <%= "#{hackatime_hours}h #{hackatime_minutes}m #{hackatime_seconds}s" %></div>
 
-                <% time_since_last = @project.user.hackatime_stat.time_since_last_update_for_project(@project) %>
-                <% since_last_hours = time_since_last / 3600 %>
-                <% since_last_minutes = (time_since_last % 3600) / 60 %>
-                <% since_last_seconds = time_since_last % 60 %>
-                <div>Since Last Update: <%= "#{since_last_hours}h #{since_last_minutes}m #{since_last_seconds}s" %></div>
-                <%= f.hidden_field :use_hackatime, value: "true", id: "hackatime_input" %>
+                  <% time_since_last = @project.user.hackatime_stat.time_since_last_update_for_project(@project) %>
+                  <% since_last_hours = time_since_last / 3600 %>
+                  <% since_last_minutes = (time_since_last % 3600) / 60 %>
+                  <% since_last_seconds = time_since_last % 60 %>
+                  <div>Since Last Update: <%= "#{since_last_hours}h #{since_last_minutes}m #{since_last_seconds}s" %></div>
+                  <%= f.hidden_field :use_hackatime, value: "true", id: "hackatime_input", data: { time_source_target: "hackatimeInput" } %>
+                </div>
               </div>
             </div>
           </div>
-
-          <script>
-            document.addEventListener('DOMContentLoaded', function() {
-              const timerSourceSession = document.getElementById('timer_source_session');
-              const timerSourceHackatime = document.getElementById('timer_source_hackatime');
-              const timerSessionsSection = document.getElementById('timer-sessions-section');
-              const hackatimeSection = document.getElementById('hackatime-section');
-              const hackatimeInput = document.getElementById('hackatime_input');
-
-              timerSourceSession.addEventListener('change', function() {
-                if (this.checked) {
-                  timerSessionsSection.classList.remove('hidden');
-                  hackatimeSection.classList.add('hidden');
-                  hackatimeInput.disabled = true;
-                }
-              });
-
-              timerSourceHackatime.addEventListener('change', function() {
-                if (this.checked) {
-                  timerSessionsSection.classList.add('hidden');
-                  hackatimeSection.classList.remove('hidden');
-                  hackatimeInput.disabled = false;
-                }
-              });
-            });
-          </script>
         <% else %>
           <% if has_unlinked_timer_sessions %>
             <div class="mb-6">

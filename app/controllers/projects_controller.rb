@@ -77,6 +77,9 @@ class ProjectsController < ApplicationController
     def my_projects
         @projects = current_user.projects.order(created_at: :desc)
         @show_create_project = true
+        
+        current_user.refresh_hackatime_data if current_user.has_hackatime?
+        
         render :index
     end
 
@@ -386,8 +389,17 @@ class ProjectsController < ApplicationController
     end
 
     def destroy
-        if @project.update(is_deleted: true)
-            redirect_to my_projects_path, notice: "Project was successfully deleted."
+        Project.transaction do
+            @project.stonks.destroy_all
+            @project.project_follows.destroy_all
+            
+            unless @project.update(is_deleted: true)
+                raise ActiveRecord::Rollback
+            end
+        end
+        
+        if @project.is_deleted?
+            redirect_to my_projects_path, notice: "Project was successfully deleted along with all stonks."
         else
             redirect_to project_path(@project), alert: "Could not delete project."
         end
