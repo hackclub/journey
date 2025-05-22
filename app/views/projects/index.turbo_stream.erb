@@ -38,7 +38,7 @@
             <div class="mt-2 sm:mt-3 overflow-hidden rounded-lg">
               <% attachment_url = update.attachment %>
               <% clean_url = attachment_url.gsub(/\?pub_secret=.*$/, '') %>
-              <% if clean_url.match?(/\.(jpg|jpeg|png|gif)$/i) %>
+              <% if clean_url.match?(/\.(jpg|jpeg|png|gif|heic|heif|webp)$/i) %>
                 <img src="<%= attachment_url %>" alt="Update attachment" class="w-full h-48 sm:h-64 object-contain cursor-pointer hover:opacity-90 transition-opacity" data-action="click->image-viewer#open">
               <% elsif clean_url.match?(/\.(mp4|webm|mov)$/i) %>
                 <div class="h-48 sm:h-64 flex items-center justify-center bg-black">
@@ -46,7 +46,7 @@
                     Your browser does not support the video tag.
                   </video>
                 </div>
-              <% elsif update.attachment.match?(/\.(mp3|wavmak)$/i) %>
+              <% elsif update.attachment.match?(/\.(mp3|wav|m4a|ogg|flac)$/i) %>
                 <div class="w-full h-48 sm:h-64 flex items-center justify-center">
                   <audio src="<%= update.attachment %>" class="w-[50%]" controls controlsList="nodownload">
                     Your browser does not support the audio tag.
