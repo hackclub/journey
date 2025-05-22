@@ -77,7 +77,7 @@
         </div>
       <% else %>
         <div class="px-4 md:px-8">
-          <div class="space-y-4 sm:space-y-6">
+          <div class="space-y-4 sm:space-y-6" id="updates-list">
             <% if @recent_updates && @recent_updates.any? %>
               <% @recent_updates.each do |update| %>
                 <div class="bg-soft-bone card-pixel p-4 sm:p-6 transform hover:scale-[1.01] transition-transform duration-300">
@@ -170,6 +170,24 @@
               </div>
             <% end %>
           </div>
+
+          <!-- Dear Lord Pagy life saver, but it is infitnie scroll trigger -->
+          <% if @pagy && @pagy.next %>
+            <%= turbo_frame_tag "load-more-updates",
+                  src: explore_path(page: @pagy.next, format: :turbo_stream),
+                  loading: "lazy",
+                  class: "block" do %>
+              <div class="flex flex-col items-center justify-center">
+                  <%= image_tag 'lollipop.svg', class: 'w-8 h-8 sm:w-16 sm:h-16 animate-spin' %>
+              </div>
+            <% end %>
+          <% elsif @recent_updates && @recent_updates.any? %>
+            <div class="flex justify-center py-6">
+              <div class="text-gray-500 text-sm sm:text-base">
+                No more updates to load... Phew you're a doomscroller! Drink water!!
+              </div>
+            </div>
+          <% end %>
         </div>
       <% end %>
     </div>

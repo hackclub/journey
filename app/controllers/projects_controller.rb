@@ -19,10 +19,10 @@ class ProjectsController < ApplicationController
             if @projects.empty?
                 @show_create_project = true
             end
-        # Just limitlessly show all updates, for now....
         else
-            @recent_updates = Update.includes(:project, :user, comments: :user)
-                                  .order(created_at: :desc)
+            updates_query = Update.includes(:project, :user, comments: :user).order(created_at: :desc)
+
+            @pagy, @recent_updates = pagy(updates_query, items: 5)
         end
     end
 
