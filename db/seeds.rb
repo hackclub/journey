@@ -340,6 +340,49 @@ created_users.each do |user|
   end
 end
 
+# Create timer sessions BEFORE updates
+puts "Creating timer sessions..."
+created_projects.each do |project|
+  # Each project gets 3-8 timer sessions
+  rand(3..8).times do
+    # Create a completed timer session
+    start_time = rand(1..30).days.ago
+    duration_minutes = rand(15..120)
+    stop_time = start_time + duration_minutes.minutes
+
+    TimerSession.create!(
+      user: project.user,
+      project: project,
+      started_at: start_time,
+      stopped_at: stop_time,
+      net_time: duration_minutes * 60, # in seconds
+      status: 2 # stopped status (completed)
+    )
+  end
+
+  # 30% chance of having an active timer session
+  if rand < 0.3
+    # For active timer sessions, we need to set proper status and ensure minimum duration
+    # Since the session is active, set a start time in the past with a duration that meets the 5-minute minimum
+    start_time = rand(20..120).minutes.ago
+    duration_minutes = rand(10..30) # At least 10 minutes (above the 5-minute minimum)
+
+    # For running sessions, we set the net_time based on how long it's been running
+    net_time = ((Time.now - start_time) / 60).to_i * 60 # Convert to minutes then seconds
+
+    # Ensure net_time is at least 5 minutes (300 seconds)
+    net_time = [ net_time, 300 ].max
+
+    TimerSession.create!(
+      user: project.user,
+      project: project,
+      started_at: start_time,
+      net_time: net_time, # Set an appropriate net_time for validation
+      status: 0 # running status
+    )
+  end
+end
+
 puts "Creating updates..."
 updates_data = [
   {
@@ -393,19 +436,28 @@ updates_data = [
 ]
 
 created_projects.each do |project|
-  # Ensure each project gets at least 10 updates
-  updates_to_create = updates_data.shuffle.take(10)
+  # Ensure each project gets up to 10 updates, but no more than available timer sessions
+  available_timer_sessions = project.timer_sessions.where(status: 2, update_id: nil).to_a
+  updates_to_create = updates_data.shuffle.take([ available_timer_sessions.count, 10 ].min)
 
   updates_to_create.each_with_index do |update_data, index|
     # Space out the updates over the last 60 days
     days_ago = (60.0 / updates_to_create.length * (updates_to_create.length - index)).round
 
-    update = project.updates.create!(
+    # Get a timer session for this update
+    timer_session = available_timer_sessions.pop
+
+    # Create the update with timer_session_id
+    update = Update.new(
       update_data.merge(
         user: project.user,
-        created_at: days_ago.days.ago
+        project: project,
+        created_at: days_ago.days.ago,
+        timer_session_id: timer_session.id
       )
     )
+
+    update.save!
 
     # Add comments to some updates
     if rand < 0.7 # 70% chance of having comments
@@ -438,47 +490,12 @@ puts "Creating stonks..."
 created_users.each do |user|
   # Each user gets stonks for 3-5 random projects (including potentially their own)
   projects_to_invest = created_projects.sample(rand(3..5))
-  
+
   projects_to_invest.each do |project|
     Stonk.create!(
       user: user,
       project: project,
-      amount: rand(10..100)
-    )
-  end
-end
-
-# Create timer sessions
-puts "Creating timer sessions..."
-created_projects.each do |project|
-  # Each project gets 3-8 timer sessions
-  rand(3..8).times do
-    # Some timer sessions are linked to updates, some are not
-    update = rand < 0.7 ? project.updates.sample : nil
-    
-    # Create a completed timer session
-    start_time = rand(1..30).days.ago
-    duration_minutes = rand(15..120)
-    stop_time = start_time + duration_minutes.minutes
-    
-    TimerSession.create!(
-      user: project.user,
-      project: project,
-      update: update,
-      started_at: start_time,
-      stopped_at: stop_time,
-      net_time: duration_minutes * 60, # in seconds
-      status: 2 # completed status
-    )
-  end
-  
-  # 30% chance of having an active timer session
-  if rand < 0.3
-    TimerSession.create!(
-      user: project.user,
-      project: project,
-      started_at: rand(10..60).minutes.ago,
-      status: 1 # active status
+      amount: 3 # Use the fixed DEFAULT_AMOUNT of 3 as required by the model
     )
   end
 end

@@ -578,13 +578,19 @@
       <div class="text-center mb-8">
         <%= image_tag "stonks.png", class: "w-auto h-96 mx-auto mb-4", alt: "Stonks" %>
         <h4 class="text-xl md:text-2xl 2xl:text-3xl font-steven mb-2">Stonks Stonks Stonks</h4>
-        <p class="text-base md:text-lg mb-4 text-gray-600">
-          Stonks are a way to invest in a project's success. The better the project does in voting, and the earlier you are to invest, the more you earn!
-          <span class="block mt-2 text-vintage-red">You have used <%= current_user.stonks.count %>/5 stonk tokens.</span>
-          <% if current_user != @project.user && @project.user_stonks(current_user) == 0 && current_user.can_stake_more_projects? %>
-            <span class="block mt-2 text-forest">You would get a <%= @project.stonks.count == 0 ? 100 : (100 / (@project.stonks.count + 1)) %>% earlybird bonus as stonker <%= @project.stonks.count + 1 %>!</span>
-          <% end %>
-        </p>
+        <% if current_user != @project.user %>
+          <p class="text-base md:text-lg mb-4 text-gray-600">
+            Stonks are a way to invest in a project's success. The better the project does in voting, and the earlier you are to invest, the more you earn!
+            <span class="block mt-2 text-vintage-red">You have used <%= current_user.stonks.count %>/5 stonk tokens.</span>
+            <% if @project.user_stonks(current_user) == 0 && current_user.can_stake_more_projects? %>
+              <span class="block mt-2 text-forest">You would get a <%= @project.stonks.count == 0 ? 100 : (100 / (@project.stonks.count + 1)) %>% earlybird bonus as stonker <%= @project.stonks.count + 1 %>!</span>
+            <% end %>
+          </p>
+        <% else %>
+          <p class="text-base md:text-lg mb-4 text-gray-600">
+            See who's invested in your project!
+          </p>
+        <% end %>
       </div>
 
       <% if current_user != @project.user %>
@@ -606,6 +612,12 @@
           <% end %>
         </div>
 
+        <% admin_tool do %>
+          <div class="mt-4 flex justify-center">
+            <%= line_chart @cumulative_stonk_dollars, width: "60%", height: "200px", prefix: "$", colors: ["#573C28"] %>
+          </div>
+        <% end %>
+
         <div class="border-t border-saddle-taupe/30 pt-4 mt-4">
           <h4 class="text-lg md:text-xl font-steven mb-3 text-center">Stonkers</h4>
           <div class="card-pixel p-4">
@@ -617,6 +629,9 @@
                     <img src="<%= stonk.user.avatar %>" alt="<%= stonk.user.display_name %>" class="w-8 h-8 mr-2 rounded-full">
                     <span class="font-steven"><%= stonk.user.display_name %></span>
                   </div>
+                  <div class="text-sm font-medium text-forest">
+                    +<%= 100 / (index + 1) %>% bonus
+                  </div>
                 </div>
               <% end %>
             <% else %>
@@ -626,9 +641,26 @@
           </div>
         </div>
       <% else %>
-        <div class="mb-6 p-4 card-pixel">
-          <div class="text-center">
-            <p class="text-gray-600">In development</p>
+        <div class="border-t border-saddle-taupe/30 pt-4 mt-4">
+          <h4 class="text-lg md:text-xl font-steven mb-3 text-center">Stonkers</h4>
+          <div class="card-pixel p-4">
+            <% if @project.stonks.any? %>
+              <% @project.stonks.order(created_at: :asc).each_with_index do |stonk, index| %>
+                <div class="flex items-center justify-between py-2 <%= index < @project.stonks.count - 1 ? 'border-b border-saddle-taupe/20' : '' %>">
+                  <div class="flex items-center">
+                    <span class="font-bold mr-2 <%= index < 3 ? 'text-vintage-red' : 'text-gray-600' %>">#<%= index + 1 %></span>
+                    <img src="<%= stonk.user.avatar %>" alt="<%= stonk.user.display_name %>" class="w-8 h-8 mr-2 rounded-full">
+                    <span class="font-steven"><%= stonk.user.display_name %></span>
+                  </div>
+                  <div class="text-sm font-medium text-forest">
+                    +<%= 100 / (index + 1) %>% bonus
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <%= image_tag "sadjourneypheus.png", class: "w-auto h-96 mx-auto mb-4", alt: "No Stonkers" %>
+              <div class="text-center text-gray-600 py-4">No stonkers yet</div>
+            <% end %>
           </div>
         </div>
       <% end %>

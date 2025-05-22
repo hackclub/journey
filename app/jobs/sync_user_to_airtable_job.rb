@@ -16,14 +16,15 @@ class SyncUserToAirtableJob < ApplicationJob
       "email" => user.email,
       "slack_id" => user.slack_id,
       "avatar_url" => user.avatar,
-      "has_commented" => user.has_commented
+      "has_commented" => user.has_commented,
+      "is_admin" => user.is_admin
     }
 
     existing_record = table.all(filter: "{slack_id} = '#{user.slack_id}'").first
 
     if existing_record
       updated = false
-      %w[first_name middle_name last_name email slack_id avatar_url has_commented].each do |field|
+      %w[first_name middle_name last_name email slack_id avatar_url has_commented is_admin].each do |field|
         new_value = user_data[field]
         if existing_record[field] != new_value
           existing_record[field] = new_value

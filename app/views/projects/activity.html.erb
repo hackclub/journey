@@ -3,6 +3,17 @@
     <h1 class="text-4xl sm:text-5xl font-steven mb-0">Activity Feed</h1>
   </div>
 
+  <% admin_tool do %>
+  <div class="bg-soft-bone card-pixel p-4 sm:p-6 top-4 mb-8">
+    <h2 class="text-2xl sm:text-3xl 2xl:text-4xl font-steven mb-1 sm:mb-2">Daily report</h2>
+
+    <div class="flex flex-col gap-4">
+      <%= DailyStonkReport.last.report.html_safe %>
+      <p class="text-gray-600 line-clamp-2 text-xs sm:text-sm 2xl:text-base">See ya tomorrow!</p>
+    </div>
+  </div>
+  <% end %>
+
   <% if @followed_projects.any? %>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8 pt-2">
       <div class="lg:col-span-1">

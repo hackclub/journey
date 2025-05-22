@@ -2,7 +2,8 @@ class AttachmentsController < ApplicationController
   def upload
     file = params[:file]
 
-    filename = "#{SecureRandom.hex(10)}_#{file.original_filename}"
+    ext = File.extname(file.original_filename).downcase
+    filename = "#{SecureRandom.hex(32).to_s}#{ext}"
     temp_path = Rails.root.join("tmp", "uploads", filename)
 
     FileUtils.mkdir_p(File.dirname(temp_path))
@@ -42,4 +43,6 @@ class AttachmentsController < ApplicationController
       head :not_found
     end
   end
+
+  private
 end

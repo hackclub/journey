@@ -39,6 +39,14 @@ class ProjectsController < ApplicationController
         if current_user
             @user_stonk = @project.stonks.find_by(user: current_user)
         end
+
+
+
+        stonk_dollars_by_day = @project.stonks.group_by_day(:created_at).sum(:amount)
+        @cumulative_stonk_dollars = stonk_dollars_by_day.each_with_object({}) { |(date, count), result|
+          previous = result.empty? ? 0 : result.values.last
+          result[date] = previous + count
+        }
     end
 
     def edit
@@ -372,6 +380,9 @@ class ProjectsController < ApplicationController
 
         if @stonk.save
             redirect_to project_path(@project), notice: "Successfully staked stonks!"
+
+            message = "Wohoo! #{current_user.display_name} has staked stonks in your project: *#{@project.title}*! :moneybag:"
+            SendSlackDmJob.perform_later(@project.user.slack_id, message) if @project.user.slack_id.present?
         else
             redirect_to project_path(@project), alert: "Failed to stake stonks"
         end
