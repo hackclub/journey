@@ -79,3 +79,5 @@ gem "sentry-ruby"
 gem "sentry-rails"
 
 gem "redcarpet"
+
+gem "pagy"
