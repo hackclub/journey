@@ -6,17 +6,23 @@ class ProjectsController < ApplicationController
     before_action :authorize_user, only: [ :destroy ]
 
     def index
-        @projects = Project.includes(:user)
+        if params[:action] == "my_projects"
+            @projects = Project.includes(:user)
                           .where.not(user_id: current_user.id)
                           .order(rating: :asc)
 
-        @projects = @projects.sort_by do |project|
-            weight = rand + (project.updates.count > 0 ? 1.5 : 0)
-            -weight
-        end
+            # @projects = @projects.sort_by do |project|
+            #     weight = rand + (project.updates.count > 0 ? 1.5 : 0)
+            #     -weight
+            # end
 
-        if params[:action] == "my_projects" && @projects.empty?
-            @show_create_project = true
+            if @projects.empty?
+                @show_create_project = true
+            end
+        # Just limitlessly show all updates, for now....
+        else
+            @recent_updates = Update.includes(:project, :user, comments: :user)
+                                  .order(created_at: :desc)
         end
     end
 
@@ -77,9 +83,9 @@ class ProjectsController < ApplicationController
     def my_projects
         @projects = current_user.projects.order(created_at: :desc)
         @show_create_project = true
-        
+
         current_user.refresh_hackatime_data if current_user.has_hackatime?
-        
+
         render :index
     end
 
@@ -392,12 +398,12 @@ class ProjectsController < ApplicationController
         Project.transaction do
             @project.stonks.destroy_all
             @project.project_follows.destroy_all
-            
+
             unless @project.update(is_deleted: true)
                 raise ActiveRecord::Rollback
             end
         end
-        
+
         if @project.is_deleted?
             redirect_to my_projects_path, notice: "Project was successfully deleted along with all stonks."
         else
