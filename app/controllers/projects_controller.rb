@@ -40,7 +40,15 @@ class ProjectsController < ApplicationController
             @user_stonk = @project.stonks.find_by(user: current_user)
         end
 
-
+        @ogp_data = {
+            title: @project.title,
+            description: @project.description&.truncate(160) || "Check out #{@project.title} on The Journey",
+            image: @project.banner.present? ? @project.banner : nil,
+            url: project_url(@project),
+            type: "article",
+            author: @project.user.display_name,
+            published_time: @project.created_at.iso8601
+        }
 
         stonk_dollars_by_day = @project.stonks.group_by_day(:created_at).sum(:amount)
         @cumulative_stonk_dollars = stonk_dollars_by_day.each_with_object({}) { |(date, count), result|

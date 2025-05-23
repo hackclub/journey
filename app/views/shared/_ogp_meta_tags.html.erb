@@ -1,0 +1,24 @@
+<%
+  # Set default values from local variables or use defaults
+  ogp_title = local_assigns[:title] || content_for(:ogp_title)
+  ogp_description = local_assigns[:description] || content_for(:ogp_description)
+  ogp_image = local_assigns[:image] || content_for(:ogp_image)
+  ogp_url = local_assigns[:url] || content_for(:ogp_url)
+  ogp_type = local_assigns[:type] || content_for(:ogp_type) || 'website'
+  ogp_author = local_assigns[:author] || content_for(:ogp_author)
+  ogp_published_time = local_assigns[:published_time] || content_for(:ogp_published_time)
+  ogp_image_width = local_assigns[:image_width] || content_for(:ogp_image_width)
+  ogp_image_height = local_assigns[:image_height] || content_for(:ogp_image_height)
+%>
+
+<%= render_ogp_tags(
+  title: ogp_title,
+  description: ogp_description,
+  image: ogp_image,
+  url: ogp_url,
+  type: ogp_type,
+  author: ogp_author,
+  published_time: ogp_published_time,
+  image_width: ogp_image_width,
+  image_height: ogp_image_height
+) %>

@@ -1,0 +1,31 @@
+# Open Graph Protocol (OGP) Configuration
+# This file contains default settings for OGP meta tags
+
+default: &default
+  site_name: "The Journey"
+  default_title: "The Journey - Hack Club's Social Platform"
+  default_description: "Join The Journey - Hack Club's social platform where teenagers share their coding projects, daily updates, and embark on their learning journey together."
+  default_image: "/icon.png"
+  twitter_card: "summary_large_image"
+  twitter_creator: "@hackclub"
+  twitter_site: "@hackclub"
+  
+  # Image dimensions for better social media display
+  default_image_width: 1200
+  default_image_height: 630
+  
+  # Fallback values
+  fallback_images:
+    project: "/icon.png"
+    user: "/icon.png"
+    update: "/icon.png"
+    
+development:
+  <<: *default
+  
+test:
+  <<: *default
+  
+production:
+  <<: *default
+  base_url: "https://journey.hackclub.com" 

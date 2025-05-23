@@ -1,3 +1,11 @@
+<% content_for :ogp_title, @ogp_data[:title] %>
+<% content_for :ogp_description, @ogp_data[:description] %>
+<% content_for :ogp_image, @ogp_data[:image] if @ogp_data[:image] %>
+<% content_for :ogp_url, @ogp_data[:url] %>
+<% content_for :ogp_type, @ogp_data[:type] %>
+<% content_for :ogp_author, @ogp_data[:author] %>
+<% content_for :ogp_published_time, @ogp_data[:published_time] %>
+
 <div data-controller="image-viewer">
   <div data-image-viewer-target="modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-75" data-action="click->image-viewer#closeBackground">
     <div class="relative max-w-7xl max-h-[90vh] w-full flex items-center justify-center">

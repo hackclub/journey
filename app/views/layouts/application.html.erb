@@ -8,6 +8,9 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%# Open Graph Protocol (OGP) Meta Tags %>
+    <%= render_ogp_tags %>
+
     <%= yield :head %>
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
