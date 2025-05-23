@@ -101,5 +101,11 @@
   [contenteditable="true"] {
     cursor: url("cursorText.svg") 6 12, text;
   }
+    
+  /* EditorJS container focus styling */
+  [data-editor-target="editor"]:focus-within {
+    border-color: #508364;
+    box-shadow: 0 0 0 1px #508364;
+  }
   
   

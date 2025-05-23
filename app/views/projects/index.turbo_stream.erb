@@ -1,7 +1,7 @@
 <% if @recent_updates.any? %>
   <% @recent_updates.each do |update| %>
     <%= turbo_stream.append "updates-list" do %>
-      <div class="bg-soft-bone card-pixel p-4 sm:p-6 transform hover:scale-[1.01] transition-transform duration-300">
+      <div class="bg-soft-bone card-pixel p-4 sm:p-6 transform hover:scale-[1.01] transition-transform duration-300" data-controller="modal">
         <div class="flex items-center mb-2 sm:mb-3">
           <% if update.user.avatar.present? %>
             <img src="<%= update.user.avatar %>" alt="<%= update.user.display_name %>" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full mr-2 sm:mr-3">
@@ -82,7 +82,13 @@
                       <span class="font-medium text-sm sm:text-base"><%= comment.user.display_name %></span>
                       <span class="text-gray-600 text-xs sm:text-sm ml-2"><%= time_ago_in_words(comment.created_at) %> ago</span>
                     </div>
-                    <div class="text-gray-700 text-sm sm:text-base"><%= comment.text %></div>
+                    <div class="text-gray-700 text-sm sm:text-base">
+                      <% if comment.rich_content? %>
+                        <%= raw comment.display_content %>
+                      <% else %>
+                        <%= comment.display_content %>
+                      <% end %>
+                    </div>
                   </div>
                 <% end %>
 
@@ -96,6 +102,62 @@
               </div>
             </div>
           <% end %>
+        </div>
+      </div>
+      
+      <!-- Comment Modal for this update -->
+      <div class="modal hidden fixed inset-0 z-50 overflow-auto bg-black/30 flex items-center justify-center p-2 md:p-4 min-h-screen" id="comment-modal-<%= update.id %>" data-controller="modal comment-modal">
+        <div class="bg-soft-bone w-full max-w-2xl card-pixel mx-2 md:mx-auto relative" data-modal-target="container">
+          <div class="p-3 md:p-4 border-b border-saddle-taupe border-opacity-30">
+            <div class="flex justify-between items-center">
+              <h3 class="text-lg md:text-2xl font-steven">Add a Comment</h3>
+              <button type="button" class="text-gray-600 hover:text-vintage-red cursor-pointer" data-action="click->modal#close">
+                <%= inline_svg_tag "close.svg", class: "h-6 w-6 2xl:h-8 2xl:w-8" %>
+              </button>
+            </div>
+          </div>
+
+          <div class="p-3 md:p-4">
+            <% if user_signed_in? %>
+              <% if !current_user.has_commented %>
+                <div class="text-center mb-4" data-comment-modal-target="warning">
+                  <%= image_tag "journeypheus.png", class: "w-32 h-32 2xl:w-64 2xl:h-64 mx-auto mb-4", alt: "Journeypheus" %>
+                  <h4 class="text-xl md:text-2xl 2xl:text-3xl font-steven mb-2">HOLD UP</h4>
+                  <p class="text-base md:text-lg mb-4 text-gray-600">Be nice in the comments! <a href="https://hackclub.com/conduct/" class="text-nice-blue underline">Hack Club's Code of Conduct</a> still applies here, so don't be naughty, or Journeypheus might just come and kidnap you. <br> (& don't give Kartikey an excuse to ban :P)</p>
+                  <button data-action="click->comment-modal#next" class="px-2 md:px-4 py-2 bg-vintage-red hover:scale-[1.05] text-white transition-transform duration-300 text-sm md:text-base 2xl:text-large btn-pixel-sm">
+                    Next
+                  </button>
+                </div>
+              <% end %>
+
+              <div class="<%= 'hidden' unless current_user.has_commented %>" data-comment-modal-target="commentForm">
+                <%= form_with model: [update, Comment.new],
+                    id: "comment-form-#{update.id}",
+                    class: "space-y-3",
+                    data: {
+                      action: "submit->comment-modal#validateForm",
+                      controller: "editor",
+                      comment_modal_target: "editor"
+                    } do |f| %>
+                  <div class="space-y-2">
+                    <div id="editor-#{update.id}"
+                         data-editor-target="editor"
+                         class="w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-sm md:text-base rounded-none">
+                    </div>
+                    <%= f.hidden_field :rich_content, data: { editor_target: "input" } %>
+                    <p class="text-xs md:text-sm text-vintage-red hidden" id="textError-#{update.id}" data-comment-modal-target="textError"></p>
+                  </div>
+
+                  <div class="flex flex-row justify-end space-x-4">
+                    <button type="button" class="px-2 md:px-4 py-2 bg-vintage-red hover:scale-[1.05] text-white transition-transform duration-300 text-sm md:text-base 2xl:text-large btn-pixel-sm" data-action="click->modal#close">
+                      Cancel
+                    </button>
+                    <%= f.submit "Post Comment", class: "px-2 md:px-4 py-2 bg-forest hover:scale-[1.05] text-white transition-transform duration-300 text-sm md:text-base 2xl:text-large btn-pixel-sm" %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
         </div>
       </div>
     <% end %>

@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["commentForm", "warning", "text", "textError"]
+  static targets = ["commentForm", "warning", "text", "textError", "editor"]
 
   connect() {
     if (this.element.tagName === 'FORM') {
@@ -22,21 +22,17 @@ export default class extends Controller {
     }
   }
   
-  validateForm(event) {
+  async validateForm(event) {
     this.clearErrors()
     
-    let isValid = true
-
-    if (this.hasTextTarget && this.hasTextErrorTarget) {
-      const text = this.textTarget.value.trim()
-      
-      if (!text) {
-        this.showError(this.textErrorTarget, "Comment cannot be empty")
-        isValid = false
-      }
-    }
-
-    if (!isValid) {
+    const editorController = this.application.getControllerForElementAndIdentifier(
+      this.editorTarget, 
+      "editor"
+    )
+    
+    const hasContent = await editorController.validateContent()
+    if (!hasContent) {
+      this.showError(this.textErrorTarget, "Comment cannot be empty")
       event.preventDefault()
       const firstError = this.element.querySelector('.text-vintage-red')
       if (firstError) {

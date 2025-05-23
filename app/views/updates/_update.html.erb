@@ -113,16 +113,18 @@
                 id: "comment-form-#{update.id}",
                 class: "space-y-3",
                 data: {
-                  action: "submit->comment-modal#validateForm"
+                  action: "submit->comment-modal#validateForm",
+                  controller: "editor",
+                  comment_modal_target: "editor"
                 } do |f| %>
               <div class="space-y-2">
-                <%= f.text_area :text,
-                    id: "text-#{update.id}",
-                    class: "w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 focus:outline-none focus:ring-forest focus:border-forest text-sm md:text-base rounded-none",
-                    rows: 4,
-                    placeholder: "Write your comment here... (be nice)",
-                    data: { comment_modal_target: "text" } %>
+                <div id="editor-#{update.id}"
+                     data-editor-target="editor"
+                     class="w-full px-3 py-2 border border-saddle-taupe bg-bread border-opacity-50 text-sm md:text-base rounded-none">
+                </div>
+                <%= f.hidden_field :rich_content, data: { editor_target: "input" } %>
                 <p class="text-xs md:text-sm text-vintage-red hidden" id="textError-#{update.id}" data-comment-modal-target="textError"></p>
+              </div>
 
               <div class="flex flex-row justify-end space-x-4">
                 <button type="button" class="px-2 md:px-4 py-2 bg-vintage-red hover:scale-[1.05] text-white transition-transform duration-300 text-sm md:text-base 2xl:text-large btn-pixel-sm" data-action="click->modal#close">

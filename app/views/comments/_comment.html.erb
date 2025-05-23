@@ -12,7 +12,13 @@
           </div>
         </div>
         <div class="flex items-center justify-between">
-          <p class="text-xs sm:text-sm md:text-base text-gray-600"><%= comment.text %></p>
+          <div class="text-xs sm:text-sm md:text-base text-gray-600">
+            <% if comment.rich_content? %>
+              <%= raw comment.display_content %>
+            <% else %>
+              <%= comment.display_content %>
+            <% end %>
+          </div>
           <% if comment.user == current_user %>
             <%= button_to "Delete", update_comment_path(comment.update_record, comment),
                 method: :delete,
