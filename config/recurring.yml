@@ -10,8 +10,12 @@
 #     schedule: at 5am every day
 
 production:
-hourly_hackatime_refresh:
-  class: HourlyHackatimeRefreshJob
-  queue: default
-  schedule: every hour
-  description: "Refresh Hackatime stats for all users with Hackatime enabled"
+  hourly_hackatime_refresh:
+    class: HourlyHackatimeRefreshJob
+    queue: default
+    schedule: every hour
+    description: "Refresh Hackatime stats for all users with Hackatime enabled"
+
+  generate_stonk_reports:
+    class: GenerateStonkReportJob
+    schedule: every day

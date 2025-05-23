@@ -1,0 +1,2 @@
+class StonkTickler < ApplicationRecord
+end

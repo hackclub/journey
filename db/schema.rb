@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_23_141941) do
+
+ActiveRecord::Schema[8.0].define(version: 2025_05_23_155314) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -202,6 +203,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_23_141941) do
     t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
   end
 
+  create_table "stonk_ticklers", force: :cascade do |t|
+    t.text "tickler", null: false
+    t.bigint "project_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_stonk_ticklers_on_project_id"
+  end
+
   create_table "stonks", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "project_id", null: false
@@ -291,6 +300,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_23_141941) do
   add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "stonk_ticklers", "projects"
   add_foreign_key "stonks", "projects"
   add_foreign_key "stonks", "users"
   add_foreign_key "timer_sessions", "projects"
