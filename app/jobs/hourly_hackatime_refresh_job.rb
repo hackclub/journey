@@ -4,8 +4,11 @@ class HourlyHackatimeRefreshJob < ApplicationJob
   def perform
     users = User.where(has_hackatime: true).distinct
 
+    from = "2025-05-16"
+    to = Date.today.strftime("%Y-%m-%d")
+
     users.find_each do |user|
-      RefreshHackatimeStatsJob.perform_later(user.id)
+      RefreshHackatimeStatsJob.perform_later(user.id, from: from, to: to)
     end
     puts "Hourly Hackatime refresh job performed for #{users.count} users"
     message = "Hourly Hackatime refresh job performed for #{users.count} users"
