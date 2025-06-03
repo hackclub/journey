@@ -85,7 +85,7 @@ gem "pagy"
 
 gem "chartkick", "~> 5.1"
 
-gem "groupdate", "~> 6.6"
+gem "groupdate", "~> 6.7"
 
 gem "ruby-openai", "~> 8.1"
 
