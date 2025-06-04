@@ -48,7 +48,7 @@ module ShopItemsHelper
             raise NotImplementedError
           end
 
-          safe_join([form_field, f.submit])
+          safe_join([ form_field, f.submit ])
         end
       ])
     end
