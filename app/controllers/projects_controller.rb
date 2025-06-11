@@ -89,6 +89,20 @@ class ProjectsController < ApplicationController
     def create
         flash.now[:alert] = "Project creation is disabled. Journey has ended :("
         render :index, status: :forbidden
+        return
+
+        @project = current_user.projects.build(project_params)
+
+        if @project.hackatime_project_keys.present?
+          @project.hackatime_project_keys = @project.hackatime_project_keys.reject(&:blank?).uniq
+        end
+
+        if @project.save
+            redirect_to project_path(@project), notice: "Project was successfully created."
+        else
+            flash.now[:alert] = "Could not create project. Please check the form for errors."
+            render :index, status: :unprocessable_entity
+        end
     end
 
     def my_projects
