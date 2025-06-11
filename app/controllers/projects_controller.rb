@@ -87,6 +87,10 @@ class ProjectsController < ApplicationController
     end
 
     def create
+        flash.now[:alert] = "Project creation is disabled. Journey has ended :("
+        render :index, status: :forbidden
+        return
+
         @project = current_user.projects.build(project_params)
 
         if @project.hackatime_project_keys.present?
