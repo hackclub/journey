@@ -8,7 +8,7 @@ namespace :hackatime do
     puts "Found #{total} users with Hackatime enabled"
 
     from = Date.parse("2025-05-16") # The earliest date in the migrations
-    to = Date.today.strftime("%Y-%m-%d")
+    to = "2025-06-06"
 
     users_with_hackatime.each_with_index do |user, index|
       puts "Updating Hackatime data for user #{user.id} (#{index + 1}/#{total})"
@@ -35,7 +35,7 @@ namespace :hackatime do
 
     puts "Updating Hackatime data for user #{user.id}"
     from = Date.parse("2025-05-16") # The earliest date in the migrations
-    to = Date.today.strftime("%Y-%m-%d")
+    to = "2025-06-06"
 
     RefreshHackatimeStatsJob.perform_later(user.id, from: from, to: to)
     puts "Hackatime update job for user #{user.id} has been queued"

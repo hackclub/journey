@@ -5,7 +5,7 @@ class HourlyHackatimeRefreshJob < ApplicationJob
     users = User.where(has_hackatime: true).distinct
 
     from = "2025-05-16"
-    to = Date.today.strftime("%Y-%m-%d")
+    to = "2025-06-06"
 
     users.find_each do |user|
       RefreshHackatimeStatsJob.perform_later(user.id, from: from, to: to)
