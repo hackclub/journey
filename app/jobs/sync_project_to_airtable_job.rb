@@ -18,7 +18,8 @@ class SyncProjectToAirtableJob < ApplicationJob
       "category" => project.category,
       "author_slack_id" => author_slack_id,
       "project_id" => project.id.to_s,
-      "is_shipped" => project.is_shipped
+      "is_shipped" => project.is_shipped,
+      "total_time" => project.total_time
     }
 
     existing_record = table.all(filter: "{project_id} = '#{project.id}'").first
@@ -27,7 +28,7 @@ class SyncProjectToAirtableJob < ApplicationJob
 
     if existing_record
       updated = false
-      %w[title description repo_link readme_link demo_link banner_link category author_slack_id project_id is_shipped].each do |field|
+      %w[title description repo_link readme_link demo_link banner_link category author_slack_id project_id is_shipped total_time].each do |field|
         new_value = project_data[field]
         if existing_record[field] != new_value
           existing_record[field] = new_value
