@@ -1,6 +1,5 @@
 module ApplicationHelper
   include MarkdownHelper
-  include Pagy::Frontend
 
   def mobile_device?
     request.user_agent&.match?(

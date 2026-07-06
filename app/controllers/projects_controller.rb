@@ -27,7 +27,7 @@ class ProjectsController < ApplicationController
                               .where(projects: { is_deleted: false })
                               .order(created_at: :desc)
 
-            @pagy, @recent_updates = pagy(@recent_updates, items: 5)
+            @pagy, @recent_updates = pagy(:offset, @recent_updates, limit: 5)
         elsif params[:tab] == "stonked"
             @stonked_projects = current_user.staked_projects.includes(:user)
             @recent_updates = Update.joins(:project)
@@ -36,14 +36,14 @@ class ProjectsController < ApplicationController
                               .where(projects: { is_deleted: false })
                               .order(created_at: :desc)
 
-            @pagy, @recent_updates = pagy(@recent_updates, items: 5)
+            @pagy, @recent_updates = pagy(:offset, @recent_updates, limit: 5)
         else
             updates_query = Update.joins(:project)
                                  .includes(:project, :user, comments: :user)
                                  .where(projects: { is_deleted: false })
                                  .order(created_at: :desc)
 
-            @pagy, @recent_updates = pagy(updates_query, items: 5)
+            @pagy, @recent_updates = pagy(:offset, updates_query, limit: 5)
         end
     end
 
