@@ -93,6 +93,6 @@ gem "ferrum_pdf", "~> 0.3.0"
 
 gem "streamio-ffmpeg", "~> 3.0"
 
-gem "image_processing", "~> 1.14"
+gem "image_processing", "~> 2.0"
 
 gem "aws-sdk-s3", require: false
